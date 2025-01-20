@@ -45,3 +45,18 @@ def mandate_detail(request, id):
 def mandate_print(request, id):
 	mandate = Mandate.objects.get(id=id)
 	return render(request, "mandate/mandate_print.html", {"mandate": mandate})
+
+def test_form(request):
+	if request.method == 'POST':
+		for item in request.POST.getlist('name'):
+			print(item)
+	return render(request, "mandate/test_form.html")
+
+def mandate_download(request):
+	if request.method == 'POST':
+		for id in request.POST.getlist('download'):
+			m = Mandate.objects.get(id=id)
+			print(m.id, m.mandate_image)
+	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
+	context = {"mandates": mandates}
+	return render(request, "mandate/mandate_download.html", context)

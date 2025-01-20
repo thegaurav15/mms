@@ -1,0 +1,126 @@
+import os
+import xml.etree.ElementTree as ET
+import zipfile
+import csv
+from datetime import datetime
+
+os.chdir(r'D:\Out mandates\2025-01-17')
+
+def xml2dict(f):
+    tree = ET.parse(f)
+    
+    root = tree.getroot()
+    ns = {'ns': 'urn:iso:std:iso:20022:tech:xsd:pain.012.001.01'}
+    dict = {}
+    
+    try:
+        dict['AcqMsgId'] = root.find('./ns:MndtAccptncRpt/ns:GrpHdr/ns:MsgId', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['AcqCreDtTm'] = datetime.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:GrpHdr/ns:CreDtTm', ns).text).strftime('%d-%m-%Y %H:%M:%S')
+    except AttributeError:
+        pass
+    
+    try:
+        dict['OriginalMsgId'] = root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMsgInf/ns:MsgId', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['OriginalCreDtTm'] = datetime.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMsgInf/ns:CreDtTm', ns).text).strftime('%d-%m-%Y %H:%M:%S')
+    except AttributeError:
+        pass
+    
+    try:
+        dict['Accptd'] = root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:AccptncRslt/ns:Accptd', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['UMRN'] = root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:MndtId', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['Error'] = root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:AccptncRslt/ns:RjctRsn/ns:Prtry', ns).text
+    except AttributeError:
+        pass
+        
+    try:
+        dict['MndtReqId'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:MndtReqId', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['Dt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:Drtn/ns:FrDt', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['FrstColltnDt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:FrstColltnDt', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['FnlColltnDt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:FnlColltnDt', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['Amt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:ColltnAmt', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['DbtrName'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Dbtr/ns:Nm', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['DbtrAcct'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:DbtrAcct/ns:Id/ns:Othr/ns:Id', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['DbtrAcctType'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:DbtrAcct/ns:Tp/ns:Prtry', ns).text
+    except AttributeError:
+        pass
+    
+    try:
+        dict['DbtrAcctIFSC'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:DbtrAgt/ns:FinInstnId/ns:ClrSysMmbId/ns:MmbId', ns).text
+    except AttributeError:
+        pass
+    
+    return dict
+
+
+#def zip2csv(data):
+fieldnames = [
+    'AcqMsgId',
+    'AcqCreDtTm',
+    'OriginalMsgId',
+    'OriginalCreDtTm',
+    'MndtReqId',
+    'Dt',
+    'FrstColltnDt',
+    'FnlColltnDt',
+    'Amt',
+    'DbtrName',
+    'DbtrAcct',
+    'DbtrAcctType',
+    'DbtrAcctIFSC',
+    'Accptd',
+    'UMRN',
+    'Error',
+]
+
+with open('output.csv', 'w', newline='') as outfile:
+    writer = csv.DictWriter(outfile, fieldnames = fieldnames, extrasaction='ignore')
+    writer.writeheader()
+
+    with zipfile.ZipFile('MMS-CREATE-HGBX-HGBX344857-17012025-000001-INP-ACK.zip') as zip:
+        for file in zip.infolist():
+            if not file.is_dir():
+                writer.writerow(xml2dict(zip.open(file)))

@@ -1,0 +1,28 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+
+{% block title %}Mandate Form{% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+{% block content %}
+<form class="mandate-form" action="{% url 'mandate:test' %}" method="post">
+
+	{% csrf_token %}
+
+    <input type="checkbox" value="1" name="name"><br>
+    <input type="checkbox" value="2" name="name"><br>
+    <input type="checkbox" value="3" name="name"><br>
+    <input type="checkbox" value="4" name="name"><br>
+    <input type="checkbox" value="5" name="name"><br>
+    <input type="checkbox" value="6" name="name"><br>
+
+    <button type="submit">Submit</button>
+
+</form> 
+
+{% endblock %}

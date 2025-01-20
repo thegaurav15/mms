@@ -1,0 +1,43 @@
+{% extends "mandate/base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+
+<!-- main container start -->
+<div style="width: 1000px;">
+<form class="mandate-form" action="{% url 'mandate:mandate_download' %}" method="post">
+  {% csrf_token %}
+  <h4>Download Mandate Data for uploading on NPCI:</h4>
+  <table class="table text-center table-sm">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Debtor Name</th>
+          <th scope="col">Debtor Bank</th>
+          <th scope="col">Debtor Acc No.</th>
+          <th scope="col">UMRN</th>
+          <th scope="col">Amount</th>
+          <th scope="col">D/L</th>
+        </tr>
+      </thead>
+      <tbody>
+          {% for m in mandates %}
+          <tr>
+              <td scope="row"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
+              <td>{{m.name_of_debtor_account_holder}}</td>
+              <td>{{m.debtor_bank}}</td>
+              <td>{{m.debtor_legal_account_number}}</td>
+              <td>{{m.umrn}}</td>
+              <td>{{m.amount|intcomma}}</td>
+              <td><input type="checkbox" value="{{m.id}}" name="download"></td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <button type="submit">Submit</button>
+</form>
+</div> 
+<!-- main container end -->
+
+{% endblock %}
