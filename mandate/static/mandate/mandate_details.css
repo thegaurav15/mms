@@ -1,0 +1,48 @@
+.mandate-details {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	width: 840px;
+	justify-content: center;
+	margin: auto;
+    background-color: rgb(245 245 245);
+	/* border: solid lightgray 1px; */
+    border-radius: 4px;
+    padding: 1em 2em;
+}
+
+.key {
+    font-weight: bold;
+    color: lightslategrey;
+    font-size: 12px;
+    margin-top: 0.75em;
+    margin-bottom: 0.25em;
+}
+
+.value {
+	/* margin-bottom: 0.75em; */
+}
+
+.status-container {
+	display: grid;
+	justify-content: center;
+	text-align: center;	
+	width: 600px;
+	border: 1px solid lightgrey;
+	border-radius: 4px;
+	padding: 8px 20px;
+	margin: 20px auto;
+}
+
+.mandate-image-container {
+	width: 1000px;
+	display: grid;
+	align-items: start;
+	justify-content: center;
+	margin: 24px auto;
+}
+
+.img {
+	width: 100%;
+	object-fit: contain;
+	border: 1px solid lightgrey;
+}

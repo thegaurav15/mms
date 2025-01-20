@@ -1,0 +1,34 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+
+{% block title %}Mandate Form{% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+{% block content %}
+<form class="mandate-form" action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
+	<p style="font-weight: bold; font-size: 22px; margin: 2px;">Mandate Form</p>
+
+	{% csrf_token %}
+
+	{{ form.non_field_errors }}
+	{% for field in form %}
+    <div class="form-group row my-1">
+        {{ field.errors }}
+		
+		<label for="id_{{ field.label_name }}" class="col-form-label">
+			{{ field.label }}
+		</label>
+		
+		{{ field }}
+    </div>
+	{% endfor %}
+
+	<button class="btn btn-primary" type="submit">Submit</button>
+</form> 
+
+{% endblock %}

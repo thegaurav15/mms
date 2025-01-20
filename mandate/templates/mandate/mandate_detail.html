@@ -1,0 +1,110 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+{% load humanize %}
+
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'mandate/mandate_details.css' %}">{% endblock %}
+
+{% block content %}
+
+	<div class="card text-center">
+		<div class="card-body">
+	  		You can take a printout of the pre-filled mandate form
+			<a href="print">here</a>.
+		</div>
+  	</div>
+	
+	<div class="status-container">
+		{% if mandate.mandate_image %}
+		
+		<p>Image uploaded and mandate submitted successfully.</p>
+		
+		{% else %}
+		
+		<p>Mandate image is not uploaded, upload it here:</p>
+		
+		<form action = "/mandates/mandate/{{mandate.id}}/" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{form}}
+			<input class="light-blue-button" type="reset" value="RESET">
+			<input class="solid-blue-button" type="submit" value="SUBMIT">
+		</form>
+		
+		{% endif %}
+	</div>
+
+	<div class="mandate-details">
+		<div>
+	
+			<div class="key">{{mandate|verbose_name:'umrn'}}</div>
+			<div class="value">{{mandate.umrn}}UMRN WILL COME HERE</div>
+	
+			<div class="key">{{mandate|verbose_name:'message_reference'}}</div>
+			<div class="value">{{mandate.message_reference}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'currency'}}</div>
+			<div class="value">{{mandate.currency}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'fixed_or_max'}}</div>
+			<div class="value">{{mandate.get_fixed_or_max_display}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'amount'}}</div>
+			<div class="value">{{mandate.amount|intcomma}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'category'}}</div>
+			<div class="value">{{mandate.category}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'variant'}}</div>
+			<div class="value">{{mandate.variant}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'frequency'}}</div>
+			<div class="value">{{mandate.frequency}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'date_of_mandate'}}</div>
+			<div class="value">{{mandate.date_of_mandate}}</div>
+	
+		</div>
+
+
+		<div>
+
+			<div class="key">{{mandate|verbose_name:'start_date'}}</div>
+			<div class="value">{{mandate.start_date}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'end_date'}}</div>
+			<div class="value">{{mandate.end_date}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'name_of_debtor_account_holder'}}</div>
+			<div class="value">{{mandate.name_of_debtor_account_holder}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'debtor_bank'}}</div>
+			<div class="value">{{mandate.debtor_bank}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'debtor_acc_type'}}</div>
+			<div class="value">{{mandate.debtor_acc_type}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'debtor_legal_account_number'}}</div>
+			<div class="value">{{mandate.debtor_legal_account_number}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'creditor_name'}}</div>
+			<div class="value">{{mandate.creditor_name}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'creditor_bank'}}</div>
+			<div class="value">{{mandate.creditor_bank}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'creditor_utility_code'}}</div>
+			<div class="value">{{mandate.creditor_utility_code}}</div>
+	
+			<div class="key">{{mandate|verbose_name:'credit_account'}}</div>
+			<div class="value">{{mandate.credit_account}}</div>
+		</div>
+	</div>
+
+
+	{% if mandate.mandate_image %}
+	<div class="mandate-image-container">
+		<img class="img" src="/media/{{mandate.mandate_image}}">
+	</div>
+	{% endif %}
+{% endblock %}

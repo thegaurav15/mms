@@ -1,0 +1,242 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+{% load humanize %}
+
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'mandate/mandate_print.css' %}">{% endblock %}
+
+{% block content %}
+
+<div class="print-main">
+
+	<div class="top-row">
+		<div class="logo-container">
+			<img src="/media/mandate/static/assets/images/logo.png">
+		</div>
+		<div class="form-title">ECS/NACH New Mandate Format (effective from 01.04.2024)</div>
+		<div class="text"></div>
+
+		<div class="umrn-container">
+			<div class="text">UMRN</div>
+			<div class="umrn-boxes-container">
+				{% for i in '12345678901234567890' %}
+				<div class="umrn-boxes"></div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="dates" style="justify-self: right;">
+			<div class="text" style="justify-self: right;">Date</div>
+			<div class="date-container">
+				{% for char in mandate.start_date|date:"dmY" %}
+				<div class="date-char">{{char}}</div>
+				{% endfor %}
+			</div>
+		</div>
+		
+	</div>
+
+	<div class="line-0">
+		<div class="text">B.O.</div>
+		<div class="text">Branch Name goes here</div>
+		<div class="text">Sponsor Bank Code</div>
+		<div class="box">PUNB0HGB001</div>
+		<div class="text">Utility Code</div>
+		<div class="box">HGBX00002000017848</div>
+	</div>
+	
+	<div class="line-1">
+		<div class="text">Tick (✓)</div>
+
+		<div class="chechbox"><div class="check">✓</div></div>
+		<div class="text">Create</div>
+		<div class="chechbox"></div>
+		<div class="text">Modify</div>
+		<div class="chechbox"></div>
+		<div class="text">Cancel</div>
+
+		<div class="text" style="text-align: right;">I/We hereby authorize</div>
+		<div class="box">SARVA HARYANA GRAMIN BANK</div>
+		<div class="text">to debit (tick ✓)</div>
+		<div>
+			<div class="acc-type-container">
+				<div class="acc-type-box">
+					SB
+					{% if mandate.debtor_acc_type.name == 'SAVINGS' %}
+					<div class="check">✓</div>
+					{% endif %}
+				</div>
+				<div class="acc-type-box">
+					CA
+					{% if mandate.debtor_acc_type.name == 'CURRENT' %}
+					<div class="check">✓</div>
+					{% endif %}
+				</div>
+				<div class="acc-type-box">
+					CC
+					{% if mandate.debtor_acc_type.name == 'CC' %}
+					<div class="check">✓</div>
+					{% endif %}
+				</div>
+				<div class="acc-type-box">
+					Other
+					{% if mandate.debtor_acc_type.name == 'Other' %}
+					<div class="check">✓</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="line-2">
+		<div class="text">Bank a/c number</div>
+		<div class="box">{{mandate.debtor_legal_account_number}}</div>
+		<div class="text">with Bank</div>
+		<div class="box">{{mandate.debtor_bank}}</div>
+	</div>
+
+	<div class="line-3">
+		<div class="text">IFSC</div>
+		<div class="box">{{mandate.debtor_account_number_ifsc}}</div>
+		<div class="text">or MICR</div>
+		<div class="box"></div>
+		<div class="text"> ₹</div>
+		<div class="box">{{mandate.amount|intcomma}}</div>
+	</div>
+
+	<div class="line-4">
+		<div class="text">an amount (in words)  of Rs.</div>
+		<div class="box">{{mandate.amount|rs_in_words|lower|capfirst}} only</div>
+	</div>
+
+	<!-- FREQUENCY -->
+	<div class="line-5">
+		<div class="text">FREQUENCY</div>
+		<div class="chechbox">
+			{% if mandate.frequency.code == 'MNTH' %}
+			<div class="check">✓</div>
+			{% endif %}
+		</div>
+		<div class="text">Mthly</div>
+
+		<div class="chechbox"></div>
+		<div class="text">Qtly</div>
+
+		<div class="chechbox"></div>
+		<div class="text">H-Yrly</div>
+
+		<div class="chechbox"></div>
+		<div class="text">Yrly</div>
+
+		<div class="chechbox">
+			{% if mandate.frequency.code == 'ADHO' %}
+			<div class="check">✓</div>
+			{% endif %}
+		</div>
+		<div class="text">As & when presented</div>
+
+		<!-- FIXED / MAX -->
+		<div class="text">DEBIT TYPE</div>
+
+		<div class="chechbox">
+			{% if mandate.fixed_or_max == 'F' %}
+			<div class="check">✓</div>
+			{% endif %}
+		</div>
+		<div class="text">Fixed Amount</div>
+
+		<div class="chechbox">
+			{% if mandate.fixed_or_max == 'M' %}
+			<div class="check">✓</div>
+			{% endif %}
+		</div>
+		<div class="text">Max Amount</div>
+	</div>
+
+	<div class="line-67">
+		<div class="text">Reference 1</div>
+		<div class="box">{{mandate.credit_account}}<div class="box-subset">LOAN A/C NO.</div></div>
+		<div class="text">Mobile Number</div>
+		<div class="box"></div>
+	</div>
+
+	<div class="line-67">
+		<div class="text">Reference 2</div>
+		<div class="box"><div class="box-subset">PAN OR AADHAAR NO.</div></div>
+		<div class="text">Email ID</div>
+		<div class="box"></div>
+	</div>
+
+	<div class="line-8">I agree for the debit of mandate processing charges by the Bank whom I am authorizing to debit my account as per latest schedule of charges of the Bank.</div>
+
+	<div class="line-9">
+		<div class="dates">
+			<div class="text">PERIOD</div>
+			<div class="date-label-container">
+				{% for char in 'DDMMYYYY' %}
+				<span style="justify-self: stretch;">{{char}}</span>
+				{% endfor %}
+			</div>
+
+			<!-- from date -->
+			<div class="text">From</div>
+			<div class="date-container">
+				{% for char in mandate.start_date|date:"dmY" %}
+				<div class="date-char">{{char}}</div>
+				{% endfor %}
+			</div>
+
+			<!-- to date -->
+			<div class="text">To</div>
+			<div class="date-container">
+				{% for char in mandate.end_date|date:"dmY" %}
+				<div class="date-char">{{char}}</div>
+				{% endfor %}
+			</div>
+
+			<div class="validity-text">
+				Maximum period of validity of this
+			</div>
+			<div class="validity-text">
+				mandate is 40 years only.
+			</div>
+			
+		</div>
+
+		<div class="signature-container">
+			<div class="signature-area">
+				<div class="sign"></div>
+				<hr class="sign-line">
+				<p class="sign-sub">Signature of Account Holder</p>
+				<p class="sign-name">{{mandate.name_of_debtor_account_holder|upper}}</p>
+				<hr class="sign-line">
+				<p class="sign-sub">Name as per bank record</p>
+			</div>
+
+			<div class="signature-area">
+				<div class="sign"></div>
+				<hr class="sign-line">
+				<p class="sign-sub">Signature of Account Holder</p>
+				<p class="sign-name">{{mandate.name_of_debtor_account_holder|upper}}</p>
+				<hr class="sign-line">
+				<p class="sign-sub">Name as per bank record</p>
+			</div>
+
+			<div class="signature-area">
+				<div class="sign"></div>
+				<hr class="sign-line">
+				<p class="sign-sub">Signature of Account Holder</p>
+				<p class="sign-name">{{mandate.name_of_debtor_account_holder|upper}}</p>
+				<hr class="sign-line">
+				<p class="sign-sub">Name as per bank record</p>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div>
+	<a class="btn btn-outline-primary" href=".." role="button">Back</a>
+</div>
+
+{% endblock %}
