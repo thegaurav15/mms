@@ -1,9 +1,14 @@
 from django.shortcuts import render
 from .forms import MandateForm, MandateImageForm
 from .models import Mandate
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from datetime import date
 from django.db.models import Q
+import tempfile
+import zipfile
+from django.core.files import File
+from extras.mandate_image import makeJpg
+import os
 
 
 # Create your views here.
@@ -54,9 +59,37 @@ def test_form(request):
 
 def mandate_download(request):
 	if request.method == 'POST':
+		if request.POST.getlist('download'):
+			file_zip = tempfile.TemporaryFile()
+			zip = zipfile.ZipFile(file_zip, 'w')
+		else:
+			print(os.getcwd())
+			mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
+			context = {"mandates": mandates}
+			return render(request, "mandate/mandate_download.html", context)
+
 		for id in request.POST.getlist('download'):
 			m = Mandate.objects.get(id=id)
 			print(m.id, m.mandate_image)
+			imgfile = makeJpg(m.mandate_image)
+			imgfile.seek(0)
+			with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
+				fp.write(imgfile.read())
+				imgfile.close()
+				fp.close()
+				zip.write(fp.name, arcname='zipped_' + str(m.id) + '.jpg')
+		
+		zip.close()
+		file_zip.seek(0)
+		response = HttpResponse(
+			file_zip,
+			headers={
+				"Content-Type": "application/zip",
+				"Content-Disposition": 'attachment; filename="TestZip.zip"',
+			},
+		)
+		return response
+
 	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
 	context = {"mandates": mandates}
 	return render(request, "mandate/mandate_download.html", context)

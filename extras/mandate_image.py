@@ -29,6 +29,8 @@ def makeJpg(file):
     
     x = 0
     while size > MAXSIZE:          #applying successive passes
+        output.close()
+        output = tempfile.TemporaryFile()
         w, h = floor(img.width * (1-x)), floor(img.height * (1-x))
         img.convert('L').resize((w, h)).save(output, format='JPEG', optimize=True, quality=55)
         size = output.tell()
@@ -47,6 +49,8 @@ def makeTif(file):
     
     x = 0
     while size > MAXSIZE:          #applying successive passes
+        output.close()
+        output = tempfile.TemporaryFile()
         x = x + 4/100
         w, h = floor(img.width * (1-x)), floor(img.height * (1-x))
         img.convert('1').resize((w, h)).save(output, format="TIFF",  optimize=True)
