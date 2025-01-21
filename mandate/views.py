@@ -6,9 +6,8 @@ from datetime import date
 from django.db.models import Q
 import tempfile
 import zipfile
-from django.core.files import File
-from extras.mandate_image import makeJpg
-import os
+from extras.mandate_image import makeJpg, makeTif
+from extras.mandate_xml import makeXml
 
 
 # Create your views here.
@@ -62,33 +61,36 @@ def mandate_download(request):
 		if request.POST.getlist('download'):
 			file_zip = tempfile.TemporaryFile()
 			zip = zipfile.ZipFile(file_zip, 'w')
-		else:
-			print(os.getcwd())
-			mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
-			context = {"mandates": mandates}
-			return render(request, "mandate/mandate_download.html", context)
 
-		for id in request.POST.getlist('download'):
-			m = Mandate.objects.get(id=id)
-			print(m.id, m.mandate_image)
-			imgfile = makeJpg(m.mandate_image)
-			imgfile.seek(0)
-			with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
-				fp.write(imgfile.read())
-				imgfile.close()
-				fp.close()
-				zip.write(fp.name, arcname='zipped_' + str(m.id) + '.jpg')
-		
-		zip.close()
-		file_zip.seek(0)
-		response = HttpResponse(
-			file_zip,
-			headers={
-				"Content-Type": "application/zip",
-				"Content-Disposition": 'attachment; filename="TestZip.zip"',
-			},
-		)
-		return response
+			for id in request.POST.getlist('download'):
+				m = Mandate.objects.get(id=id)
+				print(m.id, m.mandate_image)
+				
+				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
+					fp.write(makeJpg(m.mandate_image).read())
+					fp.close()
+					zip.write(fp.name, arcname='zipped_JPEG_' + str(m.id) + '.jpg')
+				
+				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
+					fp.write(makeTif(m.mandate_image).read())
+					fp.close()
+					zip.write(fp.name, arcname='zipped_TIFF_' + str(m.id) + '.tif')
+				
+				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
+					fp.write(makeXml(m, 'test_ref').read())
+					fp.close()
+					zip.write(fp.name, arcname='zipped_XML_' + str(m.id) + '.xml')
+			
+			zip.close()
+			file_zip.seek(0)
+			response = HttpResponse(
+				file_zip,
+				headers={
+					"Content-Type": "application/zip",
+					"Content-Disposition": 'attachment; filename="TestZip.zip"',
+				},
+			)
+			return response
 
 	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
 	context = {"mandates": mandates}
