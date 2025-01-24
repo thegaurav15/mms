@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import MandateForm, MandateImageForm
 from .models import Mandate
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from datetime import date
 from django.db.models import Q
 import tempfile
