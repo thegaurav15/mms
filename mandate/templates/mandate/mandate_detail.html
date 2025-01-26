@@ -15,7 +15,7 @@
 		</div>
   	</div>
 	
-	<div class="status-container">
+	<div class="status-container" id="status-container">
 		{% if mandate.mandate_image %}
 		
 		<p>Image uploaded and mandate submitted successfully.</p>
@@ -30,7 +30,7 @@
 			<input class="light-blue-button" type="reset" value="RESET">
 			<input class="solid-blue-button" type="submit" value="SUBMIT">
 		</form>
-		
+		<div id="preview-container" class="preview-container"></div>
 		{% endif %}
 	</div>
 
@@ -106,5 +106,33 @@
 	<div class="mandate-image-container">
 		<img class="img" src="/media/{{mandate.mandate_image}}">
 	</div>
+
+	{% else %}
+
+	<script>
+		container = document.getElementById('preview-container');
+		input = document.getElementById('id_mandate_image');
+		img = document.createElement('img');
+		img.setAttribute('id', 'previewImg');
+		img.style.cssText = ("max-width:100%;width:100%;display:block;");
+		
+		function changePreview(event) {
+			img.src = URL.createObjectURL(input.files[0]);
+			if  (document.getElementById('previewImg')) {
+				document.getElementById('previewImg').remove();
+			}
+			container.append(img);
+		}
+
+		function resetPreview(event) {
+			if  (document.getElementById('previewImg')) {
+				document.getElementById('previewImg').remove();
+			}
+		}
+
+		input.addEventListener('change', changePreview);
+		input.form.addEventListener('reset', resetPreview);
+	</script>
+
 	{% endif %}
 {% endblock %}
