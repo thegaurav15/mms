@@ -8,6 +8,9 @@ import tempfile
 import zipfile
 from extras.mandate_image import makeJpg, makeTif
 from extras.mandate_xml import makeXml
+from django.views.decorators.cache import never_cache
+from djangoproject.settings import MEDIA_URL
+
 
 
 # Create your views here.
@@ -32,7 +35,7 @@ def mandate_create(request):
 		form = MandateForm()
 	return render(request, "mandate/mandate_form.html", {"form": form})
 
-
+@never_cache
 def mandate_detail(request, id):
 	mandate = Mandate.objects.get(id=id)
 	if request.method == 'POST':
@@ -40,6 +43,7 @@ def mandate_detail(request, id):
 		if form.is_valid():
 			#save form
 			form.save()
+			return HttpResponse(MEDIA_URL + mandate.mandate_image.name)
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 	else:
 		form = MandateImageForm(instance=mandate)

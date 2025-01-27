@@ -3,12 +3,6 @@
 {% load extras %}
 {% load static %}
 
-{% block title %}Mandate Form{% endblock %}
-
-{% block stylesheet %}
-
-{% endblock %}
-
 {% block content %}
 <form class="mandate-form" action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
 	<p style="font-weight: bold; font-size: 22px; margin: 2px;">Mandate Form</p>
