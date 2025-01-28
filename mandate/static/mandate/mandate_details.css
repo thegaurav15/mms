@@ -41,14 +41,30 @@
 	margin: 24px auto;
 }
 
+.preview-container {
+	height: 600px;
+	width: 792px;
+	display: none;
+}
+
 .img {
 	width: 100%;
 	object-fit: contain;
 	border: 1px solid lightgrey;
 }
 
-#form-buttons .btn {
+.form-buttons > .btn,
+.form-buttons > .btn-group {
 	display: none;
+}
+
+.form-buttons > .btn-group > .btn {
+	vertical-align: middle;
+}
+
+.form-buttons > .btn-group > .btn > img {
+	object-fit: contain;
+	object-position: 50% 50%;
 }
 
 .form-buttons {

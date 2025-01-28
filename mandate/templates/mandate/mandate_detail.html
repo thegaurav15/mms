@@ -30,8 +30,15 @@
 			
 			<div id="preview-container" class="preview-container"></div>
 			
-			<div id="form-buttons" class="form-buttons">
+			<div id="formButtons" class="form-buttons">
 				<button id="resetBtn" type="button" class="btn btn-outline-dark btn-sm" onClick="form.reset()">Reset</button>
+
+				<div id="rotateBtn" class="btn-group" role="group">
+					<button id="rotateLeft" type="button" class="btn btn-light btn-sm"><img src="/media/mandate/static/assets/images/arrow-counterclockwise.svg"></button>
+					<button id="fitWidth" type="button" class="btn btn-light btn-sm"><img src="/media/mandate/static/assets/images/arrows.svg"></button>
+					<button id="rotateRight" type="button" class="btn btn-light btn-sm"><img src="/media/mandate/static/assets/images/arrow-clockwise.svg"></button>
+				</div>
+
 				<button id="cropBtn" type="button" class="btn btn-danger btn-sm">Crop</button>
 				<button id="originalBtn" type="button" class="btn btn-info btn-sm">Use Original</button>
 				<button id="submitBtn" type="button" class="btn btn-primary btn-sm">Submit Image</button>
@@ -121,7 +128,7 @@
 		let form = input.form;
 		let img = document.createElement('img');
 		img.setAttribute('id', 'previewImg');
-		img.style.cssText = ("max-width:100%;width:100%;display:block;");
+		img.style.cssText = ("width:100%;object-fit:contain;object-position: 50% 50%");
 		let cropper = null;
 		let canvas = null;
 		
@@ -143,9 +150,11 @@
 			submitBtn.style.display = 'none';
 			
 			container.append(img);
-			cropper = new Cropper(img, {viewMode: 2, zoomable: false});
+			cropper = new Cropper(img, {viewMode: 2, responsive: false});
 
+			container.style.display = 'block';
 			resetBtn.style.display = 'inline-block';
+			rotateBtn.style.display = 'inline-block';
 			cropBtn.style.display = 'inline-block';
 			originalBtn.style.display = 'inline-block';
 
@@ -166,18 +175,22 @@
 			}
 			
 			resetBtn.style.display = 'none';
+			rotateBtn.style.display = 'none';
 			cropBtn.style.display = 'none';
 			originalBtn.style.display = 'none';
 			submitBtn.style.display = 'none';
-
+			container.style.display = 'none';
 			input.parentElement.style.display = '';
 		}
 
 		cropBtn.onclick = function() {
 			canvas = cropper.getCroppedCanvas();
-			canvas.style.cssText = "width:100%;";
+			canvas.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%";
 			cropper.destroy();
-			img.replaceWith(canvas);
+			img.remove();
+			container.style.display = 'none';
+			formButtons.before(canvas);
+			rotateBtn.style.display = 'none';
 			cropBtn.style.display = 'none';
 			originalBtn.style.display = 'none';
 			submitBtn.style.display = 'inline-block';
@@ -185,9 +198,22 @@
 
 		originalBtn.onclick = function() {
 			cropper.destroy();
+			formButtons.before(img);
+			container.style.display = 'none';
+			rotateBtn.style.display = 'none';
 			cropBtn.style.display = 'none';
 			originalBtn.style.display = 'none';
 			submitBtn.style.display = 'inline-block';
+		}
+
+		rotateLeft.onclick = function() {
+			cropper.rotate(-90);
+			// cropper.reset();
+		}
+
+		rotateRight.onclick = function() {
+			cropper.rotate(90);
+			// cropper.reset();
 		}
 
 		submitBtn.onclick = async function() {
