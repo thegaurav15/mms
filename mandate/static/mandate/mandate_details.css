@@ -42,7 +42,7 @@
 }
 
 .preview-container {
-	height: 600px;
+	max-height: 600px;
 	width: 792px;
 	display: none;
 }
@@ -58,15 +58,25 @@
 	display: none;
 }
 
-.form-buttons > .btn-group > .btn {
-	vertical-align: middle;
+.icon-container {
+	height: 15px;
+	width: 15px;
+	position: relative;
+	margin: 3px;
 }
 
-.form-buttons > .btn-group > .btn > img {
-	object-fit: contain;
-	object-position: 50% 50%;
+.icon-container > img {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
 }
 
 .form-buttons {
 	margin: 12px;
+}
+
+#fitWidth {
+	display: none;
 }

@@ -33,10 +33,22 @@
 			<div id="formButtons" class="form-buttons">
 				<button id="resetBtn" type="button" class="btn btn-outline-dark btn-sm" onClick="form.reset()">Reset</button>
 
-				<div id="rotateBtn" class="btn-group" role="group">
-					<button id="rotateLeft" type="button" class="btn btn-light btn-sm"><img src="/media/mandate/static/assets/images/arrow-counterclockwise.svg"></button>
-					<button id="fitWidth" type="button" class="btn btn-light btn-sm"><img src="/media/mandate/static/assets/images/arrows.svg"></button>
-					<button id="rotateRight" type="button" class="btn btn-light btn-sm"><img src="/media/mandate/static/assets/images/arrow-clockwise.svg"></button>
+				<div id="rotateBtn" class="btn-group" role="group" aria-label="Basic example">
+					<button id="rotateLeft" type="button" class="btn btn-warning btn-sm">
+						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrow-counterclockwise.svg"></div>
+					</button>
+
+					<button id="fitWidth" type="button" class="btn btn-warning btn-sm">
+						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrows.svg"></div>
+					</button>
+					
+					<button id="fitCanvas" type="button" class="btn btn-warning btn-sm">
+						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrows-angle-contract.svg"></div>
+					</button>
+					
+					<button id="rotateRight" type="button" class="btn btn-warning btn-sm">
+						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrow-clockwise.svg"></div>
+					</button>
 				</div>
 
 				<button id="cropBtn" type="button" class="btn btn-danger btn-sm">Crop</button>
@@ -150,11 +162,11 @@
 			submitBtn.style.display = 'none';
 			
 			container.append(img);
-			cropper = new Cropper(img, {viewMode: 2, responsive: false});
+			cropper = new Cropper(img, {viewMode: 2, responsive: false, dragMode: 'move', cropBoxMovable: false, toggleDragModeOnDblclick: false});
 
 			container.style.display = 'block';
 			resetBtn.style.display = 'inline-block';
-			rotateBtn.style.display = 'inline-block';
+			rotateBtn.style.display = 'inline-flex';
 			cropBtn.style.display = 'inline-block';
 			originalBtn.style.display = 'inline-block';
 
@@ -206,14 +218,51 @@
 			submitBtn.style.display = 'inline-block';
 		}
 
+		function centerCanvas(cropper, ratio) {
+			cropper.clear();
+			ctnrData = cropper.getContainerData();
+			cnvsData = cropper.getCanvasData();
+			if (cnvsData.height > ctnrData.height) {
+				cropper.setCanvasData({height: ctnrData.height});
+				cropper.setCanvasData({left: ctnrData.width/2 - cropper.getCanvasData().width/2});
+			}
+			else {
+				cropper.setCanvasData({width: ctnrData.width});
+				cropper.setCanvasData({top: ctnrData.height/2 - cropper.getCanvasData().height/2});
+			}
+
+			c = cropper.getCanvasData();
+			obj = {
+				left: c.left + c.width * (1 - ratio)/2,
+				top: c.top + c.height * (1 - ratio)/2,
+				width: c.width * ratio,
+				height: c.height * ratio
+			}
+
+			cropper.crop();
+			cropper.setCropBoxData(obj);
+		}
+
 		rotateLeft.onclick = function() {
 			cropper.rotate(-90);
-			// cropper.reset();
+			centerCanvas(cropper, 0.8);
 		}
 
 		rotateRight.onclick = function() {
 			cropper.rotate(90);
-			// cropper.reset();
+			centerCanvas(cropper, 0.8);
+		}
+
+		fitWidth.onclick = function() {
+			cropper.setCanvasData({
+				width: cropper.getContainerData().width,
+				left: 0,
+				top: cropper.getCropBoxData().top
+			});
+		}
+
+		fitCanvas.onclick = function() {
+			centerCanvas(cropper, 0.8);
 		}
 
 		submitBtn.onclick = async function() {
