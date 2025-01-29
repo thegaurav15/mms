@@ -8,23 +8,33 @@
 
 {% block content %}
 
-	<div class="card text-center">
-		<div class="card-body">
-	  		You can take a printout of the pre-filled mandate form
-			<a href="print">here</a>.
+	{% if not mandate.mandate_image %}
+		<div class="card text-center">
+			<div class="card-body">
+				You can take a printout of the pre-filled mandate form
+				<a style="font-weight: bold;" href="print">here</a>.
+			</div>
 		</div>
-  	</div>
-	
+	{% endif %}
+
 	<div class="status-container" id="status-container">
 		{% if mandate.mandate_image %}
 		
-		<p>Image uploaded and mandate submitted successfully.</p>
+		<p style="margin:0;">Image uploaded and mandate submitted successfully.</p>
 		
 		{% else %}
 		
-		<p>Mandate image is not uploaded, upload it here:</p>
+		<div id="loadingModal" style="display: none;position: absolute;left:0;top:0;bottom:0;right:0;background-color: white;opacity: 0.75;z-index: 50000;">
+			<img src="/media/mandate/static/assets/images/spinner.gif" style="
+			margin: auto;
+			object-fit: contain;
+			max-width: 72px;
+			max-height: 72px;
+		">
+		</div>
 		
-		<form action = "/mandates/mandate/{{mandate.id}}/" method="post" enctype="multipart/form-data">
+		<p>Mandate image is not uploaded, upload it here:</p>
+		<form action = "/mandates/mandate/{{mandate.id}}/" method="post" enctype="multipart/form-data">		
 			{% csrf_token %}
 			{{form}}
 			
@@ -197,11 +207,11 @@
 
 		cropBtn.onclick = function() {
 			canvas = cropper.getCroppedCanvas();
-			canvas.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%";
+			canvas.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
 			cropper.destroy();
 			img.remove();
 			container.style.display = 'none';
-			formButtons.before(canvas);
+			form.before(canvas);
 			rotateBtn.style.display = 'none';
 			cropBtn.style.display = 'none';
 			originalBtn.style.display = 'none';
@@ -210,7 +220,8 @@
 
 		originalBtn.onclick = function() {
 			cropper.destroy();
-			formButtons.before(img);
+			form.before(img);
+			img.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
 			container.style.display = 'none';
 			rotateBtn.style.display = 'none';
 			cropBtn.style.display = 'none';
@@ -266,20 +277,26 @@
 		}
 
 		submitBtn.onclick = async function() {
+			loadingModal.style.display = 'grid';
 			let formData = new FormData(form);
 
-			if (img.parentElement == container) {
+			if (form.previousSibling == img) {
 				// original image will be uploaded
 				let response = await fetch('/mandates/mandate/{{mandate.id}}/', {
 					method: 'POST',
 					body: formData
 				});
-
-				let result = await response.text();
-				console.log(result);
+				
+				if (response.ok) {
+					let result = await response.text();
+					alert('Image uploaded successfully.\n' + result);
+					window.location.reload();
+				} else {
+					alert("HTTP-Error: " + response.status);
+				}
 			}
 
-			else if (canvas.parentElement == container) {
+			else if (form.previousSibling == canvas) {
 				//cropped image will be uploaded
 				//first create image/png blob from canvas
 				//and add it in form data in the callback function
@@ -290,14 +307,20 @@
 						method: 'POST',
 						body: formData
 					});
-
-					let result = await response.text();
-					console.log(result);
+					
+					if (response.ok) {
+						let result = await response.text();
+						alert('Image uploaded successfully.\n' + result);
+						window.location.reload();
+					} else {
+						alert("HTTP-Error: " + response.status);
+					}
 				}, 'image/png');
 			}
 
 			else {
 				alert('Some error has occured, please reload the page and try again.');
+				window.location.reload();
 			}
 		}
 
