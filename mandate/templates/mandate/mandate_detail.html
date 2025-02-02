@@ -9,12 +9,10 @@
 {% block content %}
 
 	{% if not mandate.mandate_image %}
-		<div class="card text-center">
-			<div class="card-body">
-				You can take a printout of the pre-filled mandate form
-				<a style="font-weight: bold;" href="print">here</a>.
-			</div>
-		</div>
+	<div class="alert alert-info text-center mb-0" role="alert">
+		You can take a printout of the pre-filled mandate form
+		<a style="font-weight: bold;" href="print">here</a>.
+	</div>
 	{% endif %}
 
 	<div class="status-container" id="status-container">
@@ -89,10 +87,7 @@
 	
 			<div class="key">{{mandate|verbose_name:'category'}}</div>
 			<div class="value">{{mandate.category}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'variant'}}</div>
-			<div class="value">{{mandate.variant}}</div>
-	
+
 			<div class="key">{{mandate|verbose_name:'frequency'}}</div>
 			<div class="value">{{mandate.frequency}}</div>
 	

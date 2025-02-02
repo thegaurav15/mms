@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import MandateForm, MandateImageForm
 from .models import Mandate
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from datetime import date
 from django.db.models import Q
 import tempfile
@@ -10,6 +10,8 @@ from extras.mandate_image import makeJpg, makeTif
 from extras.mandate_xml import makeXml
 from django.views.decorators.cache import never_cache
 from djangoproject.settings import MEDIA_URL
+from django.core.paginator import Paginator
+from django.core import serializers
 
 
 
@@ -20,6 +22,24 @@ def index(request):
 	mandates_pending_image = Mandate.objects.filter(Q(mandate_image__isnull=True) | Q(mandate_image__exact = ''))
 	context = {"mandates": mandates, "mandates_pending_image": mandates_pending_image}
 	return render(request, "mandate/index.html", context)
+
+def paginate(request, page):
+	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
+	p = Paginator(mandates, 2)
+	context = {"cur_page": p.page(page), "range": p.page_range}
+	return render(request, "mandate/paginate.html", context)
+
+def paginate_api(request, page):
+	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
+	p = Paginator(mandates, 2)
+	items = serializers.serialize("json", p.page(page), fields=[
+		'name_of_debtor_account_holder',
+		'debtor_bank',
+		'debtor_legal_account_number',
+		'umrn',
+		'amount'])
+	context = {"items": items}
+	return JsonResponse(items, safe=False)
 
 
 def mandate_create(request):

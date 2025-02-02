@@ -19,14 +19,6 @@ class Category(models.Model):
 		return self.code + " : " + self.name
 
 
-class Variant(models.Model):
-	name = models.CharField(max_length=100)
-	is_deleted = models.BooleanField(default=False)
-
-	def __str__(self):
-		return self.name
-
-
 class Frequency(models.Model):
 	code = models.CharField(max_length=10)
 	name = models.CharField(max_length=200)
@@ -64,7 +56,6 @@ class Mandate(models.Model):
 	fixed_or_max					= models.CharField(max_length=1, choices=fixed_or_max_choices, default='F', verbose_name='Amount Type')
 	amount							= models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Amount')
 	category						= models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Category')
-	variant							= models.ForeignKey(Variant, on_delete=models.PROTECT, verbose_name='Variant')
 	frequency						= models.ForeignKey(Frequency, on_delete=models.PROTECT, verbose_name='Frequency')
 	date_of_mandate					= models.DateField(verbose_name='Date of Mandate')
 	start_date						= models.DateField(verbose_name='Start Date')

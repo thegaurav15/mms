@@ -7,12 +7,12 @@
 <!-- main container start -->
 <div style="width: 1000px;">
 <!-- image upload pending -->
-<h4>Pending for image upload</h4>
+<h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
 <p class="text-muted">Image is mandatory. Please upload image for final submission.</p>
 <table class="table table-sm table-hover">
     <thead class="thead-light">
       <tr>
-        <th scope="col">#</th>
+        <th scope="col" class="text-center">ID</th>
         <th scope="col">Debtor Name</th>
         <th scope="col">Debtor Bank</th>
         <th scope="col">Debtor Acc No.</th>
@@ -23,7 +23,7 @@
     <tbody>
         {% for m in mandates_pending_image %}
         <tr>
-            <td scope="row"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
+            <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
             <td>{{m.name_of_debtor_account_holder}}</td>
             <td>{{m.debtor_bank}}</td>
             <td>{{m.debtor_legal_account_number}}</td>
@@ -35,11 +35,11 @@
   </table>
 
 <!-- image uploaded -->
- <h4>Image uploaded and submitted</h4>
+<h4><a href="1/" class="text-dark">Image uploaded and submitted ({{ mandates.count }})</a></h4>
 <table class="table table-sm table-hover">
     <thead class="thead-light">
       <tr>
-        <th scope="col">#</th>
+        <th scope="col" class="text-center">ID</th>
         <th scope="col">Debtor Name</th>
         <th scope="col">Debtor Bank</th>
         <th scope="col">Debtor Acc No.</th>
@@ -50,7 +50,7 @@
     <tbody>
         {% for m in mandates %}
         <tr>
-            <td scope="row"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
+            <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
             <td>{{m.name_of_debtor_account_holder}}</td>
             <td>{{m.debtor_bank}}</td>
             <td>{{m.debtor_legal_account_number}}</td>
