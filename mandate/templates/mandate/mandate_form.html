@@ -4,7 +4,7 @@
 {% load static %}
 
 {% block content %}
-<form action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
+<form style="width: 700px;" action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
 	<p style="font-weight: bold; font-size: 22px; margin: 2px;">Mandate Form</p>
 
 	{% csrf_token %}
@@ -14,17 +14,18 @@
     <div class="form-group row">
         {{ field.errors }}
 		
-		<label for="id_{{ field.label_name }}" class="col-sm-4 col-form-label">
+		<label for="id_{{ field.label_name }}" class="col-sm-5 col-form-label font-weight-bold">
 			{{ field.label }}
 		</label>
 		
-		<div class="col-sm-8">
+		<div class="col-sm-7">
 			{{ field }}
+			{% if field.help_text %}
+			<small class="form-text text-muted">{{ field.help_text }}</small>
+			{% endif %}
 		</div>
     </div>
-	{% if field.help_text %}
-		<small id="passwordHelpBlock" class="form-text text-muted">{{ field.help_text }}</small>
-		{% endif %}
+
 	{% endfor %}
 
 	<button class="btn btn-primary" type="submit">Submit</button>

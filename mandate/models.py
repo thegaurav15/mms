@@ -44,8 +44,8 @@ class DebtorAccType(models.Model):
 		return self.name
 
 fixed_or_max_choices = [
-	('F', 'Fixed'),
-	('M', 'Max'),
+	('F', 'Fixed Amount'),
+	('M', 'Max Amount'),
 ]
 
 class Mandate(models.Model):
