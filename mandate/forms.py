@@ -33,14 +33,19 @@ class MandateForm(ModelForm):
 			"credit_account"
 		]
 		widgets = {
-			"date_of_mandate": forms.DateInput(attrs={'type': 'date'}),
-			"start_date": forms.DateInput(attrs={'type': 'date'}),
-			"end_date": forms.DateInput(attrs={'type': 'date'}),
+			"date_of_mandate": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+			"start_date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+			"end_date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
 			"fixed_or_max": forms.Select(attrs=attrs_bs),
 			"category": forms.Select(attrs=attrs_bs),
 			"frequency": forms.Select(attrs=attrs_bs),
 			"debtor_acc_type": forms.Select(attrs=attrs_bs),
 			"debtor_bank": forms.Select(attrs=attrs_bs_search),
+			"amount": forms.DateInput(attrs={'class': 'form-control'}),
+			"name_of_debtor_account_holder": forms.DateInput(attrs={'class': 'form-control'}),
+			"debtor_legal_account_number": forms.DateInput(attrs={'class': 'form-control'}),
+			"debtor_account_number_ifsc": forms.DateInput(attrs={'class': 'form-control'}),
+			"credit_account": forms.DateInput(attrs={'class': 'form-control'}),
 		}
 
 

@@ -4,22 +4,27 @@
 {% load static %}
 
 {% block content %}
-<form class="mandate-form" action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
+<form action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
 	<p style="font-weight: bold; font-size: 22px; margin: 2px;">Mandate Form</p>
 
 	{% csrf_token %}
 
 	{{ form.non_field_errors }}
 	{% for field in form %}
-    <div class="form-group row my-1">
+    <div class="form-group row">
         {{ field.errors }}
 		
-		<label for="id_{{ field.label_name }}" class="col-form-label">
+		<label for="id_{{ field.label_name }}" class="col-sm-4 col-form-label">
 			{{ field.label }}
 		</label>
 		
-		{{ field }}
+		<div class="col-sm-8">
+			{{ field }}
+		</div>
     </div>
+	{% if field.help_text %}
+		<small id="passwordHelpBlock" class="form-text text-muted">{{ field.help_text }}</small>
+		{% endif %}
 	{% endfor %}
 
 	<button class="btn btn-primary" type="submit">Submit</button>

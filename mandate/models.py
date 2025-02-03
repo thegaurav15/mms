@@ -58,9 +58,12 @@ class Mandate(models.Model):
 	category						= models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Category')
 	frequency						= models.ForeignKey(Frequency, on_delete=models.PROTECT, verbose_name='Frequency')
 	date_of_mandate					= models.DateField(verbose_name='Date of Mandate')
-	start_date						= models.DateField(verbose_name='Start Date')
-	end_date						= models.DateField(verbose_name='End Date')
-	name_of_debtor_account_holder	= models.CharField(max_length=300, verbose_name='Name of Debor Account Holder')
+	start_date						= models.DateField(verbose_name='Start Date', 
+										help_text="The start date should be on or after the date of mandate.")
+	end_date						= models.DateField(verbose_name='End Date',
+								  		help_text="The end date can not be beyond 40 years after start date ")
+	name_of_debtor_account_holder	= models.CharField(max_length=300, verbose_name='Name of Debor Account Holder', 
+										help_text="The name as per the debit account.")
 	debtor_bank						= models.ForeignKey(DebtorBank, on_delete=models.PROTECT, verbose_name='Debtor Bank')
 	debtor_acc_type					= models.ForeignKey(DebtorAccType, on_delete=models.PROTECT, verbose_name='Debtor Account Type')
 	debtor_legal_account_number		= models.CharField(max_length=100, verbose_name='Debtor Legal Account Number')
@@ -71,7 +74,8 @@ class Mandate(models.Model):
 	mandate_image					= models.ImageField(upload_to="mandate/images/mandate/", null=True, verbose_name='Mandate Image')
 	mandate_file					= models.FileField(null=True, blank=True, verbose_name='Mandate File')
 
-	credit_account					= models.CharField(max_length=100, verbose_name='Credit Account')
+	credit_account					= models.CharField(max_length=100, verbose_name='Credit Account',
+										help_text="The loan/other account in SHGB in which the installment is to be credited.")
 
 	#other model fields to manage flow
 	is_deleted						= models.BooleanField(default=False)
