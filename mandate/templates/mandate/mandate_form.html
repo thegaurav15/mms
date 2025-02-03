@@ -28,11 +28,16 @@
 			{% endif %}
 
 		</div>
-		<div class="col-sm-1 col-form-label text-success font-weight-bold px-2">✓</div>
+		<div class="col-sm-1 col-form-label font-weight-bold px-2">
+			<span id="id_{{ field.name }}_y" class="text-success d-none">✓</span>
+			<span id="id_{{ field.name }}_n" class="text-danger d-none">X</span>
+		</div>
 	</div>
 	{% endfor %}
 
 	<button class="btn btn-primary" type="submit">Submit</button>
-</form> 
+</form>
+
+<script src="{% static 'mandate/form_validate.js' %}"></script>
 
 {% endblock %}
