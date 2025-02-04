@@ -41,7 +41,7 @@ class MandateForm(ModelForm):
 			"frequency": forms.Select(attrs=attrs_bs),
 			"debtor_acc_type": forms.Select(attrs=attrs_bs),
 			"debtor_bank": forms.Select(attrs=attrs_bs_search),
-			"amount": forms.DateInput(attrs={'class': 'form-control', 'type': 'number'}),
+			"amount": forms.DateInput(attrs={'class': 'form-control', 'type': 'number', 'step': '0.01'}),
 			"name_of_debtor_account_holder": forms.DateInput(attrs={'class': 'form-control'}),
 			"debtor_legal_account_number": forms.DateInput(attrs={'class': 'form-control'}),
 			"debtor_account_number_ifsc": forms.DateInput(attrs={'class': 'form-control'}),
