@@ -55,29 +55,35 @@ function dateChange(e) {
         id_start_date.setAttribute('disabled', '');
         return;
     }
-    id_start_date.setAttribute('min', id_date_of_mandate.value);
-    id_start_date.removeAttribute('disabled');
-    validIcon(id_start_date);
+    if (e.target.checkValidity()) {
+        id_start_date.setAttribute('min', id_date_of_mandate.value);
+        id_start_date.removeAttribute('disabled');
+        validIcon(id_start_date);
+    }
 }
 
 id_start_date.addEventListener('change', startDateChange);
 function startDateChange(e) {
     if (id_start_date.value == '') {
+        console.log('inside if (start date value is null)');
         id_end_date.value = '';
         id_end_date.dispatchEvent(new Event('change', {bubbles: true}));
         id_end_date.setAttribute('disabled', '');
         return
     }
-    id_end_date.setAttribute('min', id_start_date.value);
     
-    let d = new Date(id_start_date.value);
-    d.setFullYear(d.getFullYear() + 40);
-    d.setDate(d.getDate() - 1);
-    // console.log(d.toISOString().split('T')[0]);
-    id_end_date.setAttribute('max', d.toISOString().split('T')[0]);
+    if (e.target.checkValidity()) {
+        id_end_date.setAttribute('min', id_start_date.value);
+        
+        let d = new Date(id_start_date.value);
+        d.setFullYear(d.getFullYear() + 40);
+        d.setDate(d.getDate() - 1);
+        // console.log(d.toISOString().split('T')[0]);
+        id_end_date.setAttribute('max', d.toISOString().split('T')[0]);
 
-    id_end_date.removeAttribute('disabled');
-    validIcon(id_end_date);
+        id_end_date.removeAttribute('disabled');
+        validIcon(id_end_date);
+    }
 }
 
 id_debtor_account_number_ifsc.addEventListener('change', function() {
