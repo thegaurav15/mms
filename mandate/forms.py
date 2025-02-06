@@ -14,6 +14,7 @@ attrs_bs_search = attrs_bs.copy()
 attrs_bs_search['data-live-search'] = 'true'
 
 class MandateForm(ModelForm):
+	fixed_or_max = forms.ChoiceField(choices=Mandate.fixed_or_max_choices, widget = forms.Select(attrs=attrs_bs), label='Debit Type')
 	category = forms.ModelChoiceField(Category.objects.all(), empty_label="", widget = forms.Select(attrs=attrs_bs))
 	frequency = forms.ModelChoiceField(Frequency.objects.all(), empty_label="", widget = forms.Select(attrs=attrs_bs))
 	debtor_bank = forms.ModelChoiceField(DebtorBank.objects.all(), empty_label="", widget = forms.Select(attrs=attrs_bs_search))

@@ -22,7 +22,7 @@
 		
 		{% else %}
 		
-		<div id="loadingModal" style="display: none;position: absolute;left:0;top:0;bottom:0;right:0;background-color: white;opacity: 0.75;z-index: 50000;">
+		<div id="loadingModal" style="display: none;position: absolute;left:0;top:0;bottom:0;right:0;background-color: white;opacity: 0.75;z-index: 1000;">
 			<img src="/media/mandate/static/assets/images/spinner.gif" style="
 			margin: auto;
 			object-fit: contain;
@@ -116,15 +116,6 @@
 	
 			<div class="key">{{mandate|verbose_name:'debtor_legal_account_number'}}</div>
 			<div class="value">{{mandate.debtor_legal_account_number}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'creditor_name'}}</div>
-			<div class="value">{{mandate.creditor_name}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'creditor_bank'}}</div>
-			<div class="value">{{mandate.creditor_bank}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'creditor_utility_code'}}</div>
-			<div class="value">{{mandate.creditor_utility_code}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'credit_account'}}</div>
 			<div class="value">{{mandate.credit_account}}</div>

@@ -43,17 +43,18 @@ class DebtorAccType(models.Model):
 	def __str__(self):
 		return self.name
 
-fixed_or_max_choices = [
-	('F', 'Fixed Amount'),
-	('M', 'Max Amount'),
-]
-
 class Mandate(models.Model):
+	fixed_or_max_choices = [
+		(None, ''),
+		('F', 'Fixed Amount'),
+		('M', 'Max Amount'),
+	]
+
 	#mandatory mandate fields
 	umrn							= models.CharField(max_length=50, verbose_name='UMRN')
 	message_reference				= models.CharField(max_length=100, null=True, verbose_name='Message Reference')
 	currency						= models.CharField(max_length=5, default='INR', verbose_name='Currency')
-	fixed_or_max					= models.CharField(max_length=1, choices=fixed_or_max_choices, default='F', verbose_name='Amount Type')
+	fixed_or_max					= models.CharField(max_length=1, choices=fixed_or_max_choices, verbose_name='Debit Type')
 	amount							= models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Amount')
 	category						= models.ForeignKey(Category, on_delete=models.PROTECT, verbose_name='Category')
 	frequency						= models.ForeignKey(Frequency, on_delete=models.PROTECT, verbose_name='Frequency')
