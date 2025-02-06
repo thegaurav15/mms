@@ -4,8 +4,8 @@ from .models import Mandate
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from datetime import date
 from django.db.models import Q
-import tempfile
-import zipfile
+import tempfile, zipfile
+from datetime import datetime
 from extras.mandate_image import makeJpg, makeTif
 from extras.mandate_xml import makeXml
 from django.views.decorators.cache import never_cache
@@ -48,7 +48,7 @@ def mandate_create(request):
 		if form.is_valid():
 			#save form
 			mandate = form.save()
-			mandate.message_reference = "HGBX" + date.today().strftime("%y%m%d") + str(mandate.id).zfill(6)
+			mandate.ref = "HGBX" + date.today().strftime("%y%m%d") + str(mandate.id).zfill(6)
 			mandate.save()
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 	else:
@@ -85,25 +85,29 @@ def mandate_download(request):
 		if request.POST.getlist('download'):
 			file_zip = tempfile.TemporaryFile()
 			zip = zipfile.ZipFile(file_zip, 'w')
-
+			i = 1 #this is a temporary measure
 			for id in request.POST.getlist('download'):
+				i = i + 1
+				#file names and numbering system has to be designed first
+				name = "MMS-CREATE-HGBX-HGBX344857-" + datetime.now().strftime('%d%m%Y') + '-' + str(i).zfill(6)
+				print(name)
 				m = Mandate.objects.get(id=id)
 				print(m.id, m.mandate_image)
 				
 				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
 					fp.write(makeJpg(m.mandate_image).read())
 					fp.close()
-					zip.write(fp.name, arcname='zipped_JPEG_' + str(m.id) + '.jpg')
+					zip.write(fp.name, arcname=name + '_detailfront.jpg')
 				
 				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
 					fp.write(makeTif(m.mandate_image).read())
 					fp.close()
-					zip.write(fp.name, arcname='zipped_TIFF_' + str(m.id) + '.tif')
+					zip.write(fp.name, arcname=name + '_front.tif')
 				
 				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
-					fp.write(makeXml(m, 'test_ref').read())
+					fp.write(makeXml(m, 'HGBX' + datetime.now().strftime('%d%m%Y') + str(i).zfill(6)).read())
 					fp.close()
-					zip.write(fp.name, arcname='zipped_XML_' + str(m.id) + '.xml')
+					zip.write(fp.name, arcname=name + '-INP.xml')
 			
 			zip.close()
 			file_zip.seek(0)

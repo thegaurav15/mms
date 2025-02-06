@@ -83,26 +83,26 @@ def makeXml(mandate, ref):
     Nm_creditor_bank_head.text = 'SARVA HARYANA GRAMIN BANK'
     MmbId_creditor.text = 'PUNB0HGB001'
     Nm_creditor_bank.text = 'SARVA HARYANA GRAMIN BANK'
-    Prtry_S.text = 'L001'
     Prtry_L.text = 'DEBIT'
     Id_2_creditor.text = 'HGBX00002000017848'
     SeqTp.text = 'RCUR'
-    Frqcy.text = 'MNTH'
     ColltnAmt.set('Ccy', 'INR')
     Nm_creditor_customer.text = 'SARVA HARYANA GRAMIN BANK'
     
     #variables
     MsgId.text = ref
-    MndtReqId.text = mandate.message_reference
+    MndtReqId.text = mandate.ref
     CreDtTm.text = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30))).replace(microsecond=0).isoformat() #system time in ISO format
     ColltnAmt.text = str(mandate.amount)
-    FrDt.text = mandate.date_of_mandate.isoformat()
+    FrDt.text = mandate.date.isoformat()
     FrstColltnDt.text = mandate.start_date.isoformat()
     FnlColltnDt.text = mandate.end_date.isoformat()
-    Nm_debtor_customer.text = mandate.name_of_debtor_account_holder
-    Id_2_debtor.text = mandate.debtor_legal_account_number
+    Nm_debtor_customer.text = mandate.debtor_name
+    Id_2_debtor.text = mandate.debtor_acc_no
     Prtry_debtor.text = str(mandate.debtor_acc_type)
-    MmbId_debtor.text = MmbId2.text = mandate.debtor_account_number_ifsc
+    MmbId_debtor.text = MmbId2.text = mandate.debtor_acc_ifsc
+    Prtry_S.text = mandate.category
+    Frqcy.text = mandate.frequency
     
     #indent and save the file
     ET.indent(tree, space='\t')

@@ -62,25 +62,25 @@
 			<div class="acc-type-container">
 				<div class="acc-type-box">
 					SB
-					{% if mandate.debtor_acc_type.name == 'SAVINGS' %}
+					{% if mandate.debtor_acc_type == 'SAVINGS' %}
 					<div class="check">✓</div>
 					{% endif %}
 				</div>
 				<div class="acc-type-box">
 					CA
-					{% if mandate.debtor_acc_type.name == 'CURRENT' %}
+					{% if mandate.debtor_acc_type == 'CURRENT' %}
 					<div class="check">✓</div>
 					{% endif %}
 				</div>
 				<div class="acc-type-box">
 					CC
-					{% if mandate.debtor_acc_type.name == 'CC' %}
+					{% if mandate.debtor_acc_type == 'CC' %}
 					<div class="check">✓</div>
 					{% endif %}
 				</div>
 				<div class="acc-type-box">
 					Other
-					{% if mandate.debtor_acc_type.name == 'Other' %}
+					{% if mandate.debtor_acc_type == 'Other' %}
 					<div class="check">✓</div>
 					{% endif %}
 				</div>
@@ -90,14 +90,14 @@
 
 	<div class="line-2">
 		<div class="text">Bank a/c number</div>
-		<div class="box">{{mandate.debtor_legal_account_number}}</div>
+		<div class="box">{{mandate.debtor_acc_no}}</div>
 		<div class="text">with Bank</div>
 		<div class="box">{{mandate.debtor_bank}}</div>
 	</div>
 
 	<div class="line-3">
 		<div class="text">IFSC</div>
-		<div class="box">{{mandate.debtor_account_number_ifsc}}</div>
+		<div class="box">{{mandate.debtor_acc_ifsc}}</div>
 		<div class="text">or MICR</div>
 		<div class="box"></div>
 		<div class="text"> ₹</div>
@@ -113,7 +113,7 @@
 	<div class="line-5">
 		<div class="text">FREQUENCY</div>
 		<div class="chechbox">
-			{% if mandate.frequency.code == 'MNTH' %}
+			{% if mandate.frequency == 'MNTH' %}
 			<div class="check">✓</div>
 			{% endif %}
 		</div>
@@ -129,7 +129,7 @@
 		<div class="text">Yrly</div>
 
 		<div class="chechbox">
-			{% if mandate.frequency.code == 'ADHO' %}
+			{% if mandate.frequency == 'ADHO' %}
 			<div class="check">✓</div>
 			{% endif %}
 		</div>
@@ -139,14 +139,14 @@
 		<div class="text">DEBIT TYPE</div>
 
 		<div class="chechbox">
-			{% if mandate.fixed_or_max == 'F' %}
+			{% if mandate.debit_type == 'F' %}
 			<div class="check">✓</div>
 			{% endif %}
 		</div>
 		<div class="text">Fixed Amount</div>
 
 		<div class="chechbox">
-			{% if mandate.fixed_or_max == 'M' %}
+			{% if mandate.debit_type == 'M' %}
 			<div class="check">✓</div>
 			{% endif %}
 		</div>
@@ -208,7 +208,7 @@
 				<div class="sign"></div>
 				<hr class="sign-line">
 				<p class="sign-sub">Signature of Account Holder</p>
-				<p class="sign-name">{{mandate.name_of_debtor_account_holder|upper}}</p>
+				<p class="sign-name">{{mandate.debtor_name|upper}}</p>
 				<hr class="sign-line">
 				<p class="sign-sub">Name as per bank record</p>
 			</div>
@@ -217,7 +217,7 @@
 				<div class="sign"></div>
 				<hr class="sign-line">
 				<p class="sign-sub">Signature of Account Holder</p>
-				<p class="sign-name">{{mandate.name_of_debtor_account_holder|upper}}</p>
+				<p class="sign-name">{{mandate.debtor_name|upper}}</p>
 				<hr class="sign-line">
 				<p class="sign-sub">Name as per bank record</p>
 			</div>
@@ -226,7 +226,7 @@
 				<div class="sign"></div>
 				<hr class="sign-line">
 				<p class="sign-sub">Signature of Account Holder</p>
-				<p class="sign-name">{{mandate.name_of_debtor_account_holder|upper}}</p>
+				<p class="sign-name">{{mandate.debtor_name|upper}}</p>
 				<hr class="sign-line">
 				<p class="sign-sub">Name as per bank record</p>
 			</div>

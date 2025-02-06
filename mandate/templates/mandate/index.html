@@ -24,9 +24,9 @@
         {% for m in mandates_pending_image %}
         <tr>
             <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-            <td>{{m.name_of_debtor_account_holder}}</td>
+            <td>{{m.debtor_name}}</td>
             <td>{{m.debtor_bank}}</td>
-            <td>{{m.debtor_legal_account_number}}</td>
+            <td>{{m.debtor_acc_no}}</td>
             <td>{{m.umrn}}</td>
             <td class="text-right">{{m.amount|intcomma}}</td>
         </tr>
@@ -51,9 +51,9 @@
         {% for m in mandates %}
         <tr>
             <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-            <td>{{m.name_of_debtor_account_holder}}</td>
+            <td>{{m.debtor_name}}</td>
             <td>{{m.debtor_bank}}</td>
-            <td>{{m.debtor_legal_account_number}}</td>
+            <td>{{m.debtor_acc_no}}</td>
             <td>{{m.umrn}}</td>
             <td class="text-right">{{m.amount|intcomma}}</td>
         </tr>

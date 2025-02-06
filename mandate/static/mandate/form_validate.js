@@ -47,16 +47,16 @@ form.addEventListener('change', function(e) {
     validIcon(e.target);
 });
 
-id_date_of_mandate.addEventListener('change', dateChange);
+id_date.addEventListener('change', dateChange);
 function dateChange(e) {
-    if (id_date_of_mandate.value == '') {
+    if (id_date.value == '') {
         id_start_date.value = '';
         id_start_date.dispatchEvent(new Event('change', {bubbles: true}));
         id_start_date.setAttribute('disabled', '');
         return;
     }
     if (e.target.checkValidity()) {
-        id_start_date.setAttribute('min', id_date_of_mandate.value);
+        id_start_date.setAttribute('min', id_date.value);
         id_start_date.removeAttribute('disabled');
         validIcon(id_start_date);
     }
@@ -86,7 +86,7 @@ function startDateChange(e) {
     }
 }
 
-id_debtor_account_number_ifsc.addEventListener('change', function() {
+id_debtor_acc_ifsc.addEventListener('change', function() {
     this.value = this.value.toUpperCase();
 });
 

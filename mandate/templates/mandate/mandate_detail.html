@@ -73,14 +73,14 @@
 			<div class="key">{{mandate|verbose_name:'umrn'}}</div>
 			<div class="value">{{mandate.umrn}}UMRN WILL COME HERE</div>
 	
-			<div class="key">{{mandate|verbose_name:'message_reference'}}</div>
-			<div class="value">{{mandate.message_reference}}</div>
+			<div class="key">{{mandate|verbose_name:'ref'}}</div>
+			<div class="value">{{mandate.ref}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'currency'}}</div>
 			<div class="value">{{mandate.currency}}</div>
 	
-			<div class="key">{{mandate|verbose_name:'fixed_or_max'}}</div>
-			<div class="value">{{mandate.get_fixed_or_max_display}}</div>
+			<div class="key">{{mandate|verbose_name:'debit_type'}}</div>
+			<div class="value">{{mandate.get_debit_type_display}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'amount'}}</div>
 			<div class="value">{{mandate.amount|intcomma}}</div>
@@ -91,8 +91,8 @@
 			<div class="key">{{mandate|verbose_name:'frequency'}}</div>
 			<div class="value">{{mandate.frequency}}</div>
 	
-			<div class="key">{{mandate|verbose_name:'date_of_mandate'}}</div>
-			<div class="value">{{mandate.date_of_mandate}}</div>
+			<div class="key">{{mandate|verbose_name:'date'}}</div>
+			<div class="value">{{mandate.date}}</div>
 	
 		</div>
 
@@ -105,8 +105,8 @@
 			<div class="key">{{mandate|verbose_name:'end_date'}}</div>
 			<div class="value">{{mandate.end_date}}</div>
 	
-			<div class="key">{{mandate|verbose_name:'name_of_debtor_account_holder'}}</div>
-			<div class="value">{{mandate.name_of_debtor_account_holder}}</div>
+			<div class="key">{{mandate|verbose_name:'debtor_name'}}</div>
+			<div class="value">{{mandate.debtor_name}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'debtor_bank'}}</div>
 			<div class="value">{{mandate.debtor_bank}}</div>
@@ -114,8 +114,8 @@
 			<div class="key">{{mandate|verbose_name:'debtor_acc_type'}}</div>
 			<div class="value">{{mandate.debtor_acc_type}}</div>
 	
-			<div class="key">{{mandate|verbose_name:'debtor_legal_account_number'}}</div>
-			<div class="value">{{mandate.debtor_legal_account_number}}</div>
+			<div class="key">{{mandate|verbose_name:'debtor_acc_no'}}</div>
+			<div class="value">{{mandate.debtor_acc_no}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'credit_account'}}</div>
 			<div class="value">{{mandate.credit_account}}</div>
