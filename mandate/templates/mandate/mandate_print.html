@@ -119,13 +119,25 @@
 		</div>
 		<div class="text">Mthly</div>
 
-		<div class="chechbox"></div>
+		<div class="chechbox">
+			{% if mandate.frequency == 'QURT' %}
+			<div class="check">✓</div>
+			{% endif %}
+		</div>
 		<div class="text">Qtly</div>
 
-		<div class="chechbox"></div>
+		<div class="chechbox">
+			{% if mandate.frequency == 'MIAN' %}
+			<div class="check">✓</div>
+			{% endif %}
+		</div>
 		<div class="text">H-Yrly</div>
 
-		<div class="chechbox"></div>
+		<div class="chechbox">
+			{% if mandate.frequency == 'YEAR' %}
+			<div class="check">✓</div>
+			{% endif %}
+		</div>
 		<div class="text">Yrly</div>
 
 		<div class="chechbox">
