@@ -11,6 +11,7 @@ from django.views.decorators.cache import never_cache
 from djangoproject.settings import MEDIA_URL
 from django.core.paginator import Paginator
 from django.core import serializers
+from .custom_functions import *
 
 
 
@@ -39,9 +40,6 @@ def paginate_api(request, page):
 		'amount'])
 	context = {"items": items}
 	return JsonResponse(items, safe=False)
-
-def to_midnight(d):
-    return datetime(d.year, d.month, d.day)
 
 def mandate_create(request):
 	if request.method == 'POST':
@@ -93,29 +91,31 @@ def mandate_download(request):
 		if request.POST.getlist('download'):
 			file_zip = tempfile.TemporaryFile()
 			zip = zipfile.ZipFile(file_zip, 'w')
-			i = 1 #this is a temporary measure
+			zip_object = zip_object_factory('HGBX344857')
+			
 			for id in request.POST.getlist('download'):
-				i = i + 1
-				#file names and numbering system has to be designed first
-				name = "MMS-CREATE-HGBX-HGBX344857-" + datetime.now().strftime('%d%m%Y') + '-' + str(i).zfill(6)
-				print(name)
 				m = Mandate.objects.get(id=id)
 				print(m.id, m.mandate_image)
+
+				p = presentation_object_factory('HGBX344857')
+				p.mandate = m
+				p.zip = zip_object
+				p.save()
 				
 				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
 					fp.write(makeJpg(m.mandate_image).read())
 					fp.close()
-					zip.write(fp.name, arcname=name + '_detailfront.jpg')
+					zip.write(fp.name, arcname=p.filename_prefix + '_detailfront.jpg')
 				
 				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
 					fp.write(makeTif(m.mandate_image).read())
 					fp.close()
-					zip.write(fp.name, arcname=name + '_front.tif')
+					zip.write(fp.name, arcname=p.filename_prefix + '_front.tif')
 				
 				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
-					fp.write(makeXml(m, 'HGBX' + datetime.now().strftime('%d%m%Y') + str(i).zfill(6)).read())
+					fp.write(makeXml(m, p.npci_MsgId).read())
 					fp.close()
-					zip.write(fp.name, arcname=name + '-INP.xml')
+					zip.write(fp.name, arcname=p.filename_prefix + '-INP.xml')
 			
 			zip.close()
 			file_zip.seek(0)

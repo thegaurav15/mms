@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Q, F, CheckConstraint
+from django.db.models import Q, F, CheckConstraint, UniqueConstraint
 from django.contrib.auth.models import User, AnonymousUser
 from datetime import datetime
 
@@ -85,5 +85,52 @@ class Mandate(models.Model):
     			check = Q(start_date__gte = F("date")),
     			name = "startDate_gte_date",
 				violation_error_message = '"Start Date" can not be before the "Date of Mandate"',
+			)
+		]
+
+
+class Zip(models.Model):
+	date = models.DateField()
+	seq_no = models.IntegerField()
+	npci_username = models.CharField(max_length=35, default = 'HGBX344857')
+	filename = models.CharField(max_length=35, null=True)
+
+	def __str__(self):
+		return self.filename
+	
+	class Meta:
+		ordering = ["date", "seq_no"]
+		constraints = [
+			UniqueConstraint(
+				name = 'zip_date_seq_unique',
+				fields = ["date", "seq_no"]
+			)
+		]
+
+
+class Presentation(models.Model):
+	date = models.DateField()
+	seq_no = models.IntegerField()
+	npci_username = models.CharField(max_length=35, default = 'HGBX344857')
+	npci_MsgId = models.CharField(max_length=35)
+	filename_prefix = models.CharField(max_length=35, null=True)
+	mandate = models.ForeignKey(Mandate, on_delete=models.PROTECT)
+	zip = models.ForeignKey(Zip, on_delete=models.PROTECT)
+
+	npci_upload_time = models.DateTimeField(null=True)
+	npci_umrn = models.CharField(max_length=35, null=True)
+	npci_status = models.CharField(max_length=35, null=True)
+	npci_reason_code = models.CharField(max_length=10, null=True)
+	npci_response_time = models.DateTimeField(null=True)
+
+	def __str__(self):
+		return self.filename
+	
+	class Meta:
+		ordering = ["date", "seq_no"]
+		constraints = [
+			UniqueConstraint(
+				name = 'presentation_date_seq_unique',
+				fields = ["date", "seq_no"]
 			)
 		]

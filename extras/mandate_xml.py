@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 import datetime
 import tempfile
 
-def makeXml(mandate, ref):
+def makeXml(mandate, msg_Id):
     Document = ET.Element('Document')
     MndtInitnReq = ET.SubElement(Document, 'MndtInitnReq')
     
@@ -90,8 +90,8 @@ def makeXml(mandate, ref):
     Nm_creditor_customer.text = 'SARVA HARYANA GRAMIN BANK'
     
     #variables
-    MsgId.text = ref
-    MndtReqId.text = mandate.ref
+    MsgId.text = msg_Id
+    MndtReqId.text = mandate.get_ref()
     CreDtTm.text = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30))).replace(microsecond=0).isoformat() #system time in ISO format
     ColltnAmt.text = str(mandate.amount)
     FrDt.text = mandate.date.isoformat()
