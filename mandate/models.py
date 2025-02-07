@@ -1,5 +1,7 @@
 from django.db import models
 from django.db.models import Q, F, CheckConstraint
+from django.contrib.auth.models import User, AnonymousUser
+from datetime import datetime
 
 
 class DebtorBank(models.Model):
@@ -40,8 +42,7 @@ class Mandate(models.Model):
 	]
 
 	#mandatory mandate fields
-	umrn = models.CharField(max_length=50, verbose_name='UMRN')
-	ref = models.CharField(max_length=100, null=True, verbose_name='Message Reference')
+	seq_no = models.IntegerField(default=0)
 	currency = models.CharField(max_length=5, default='INR', verbose_name='Currency')
 	debit_type = models.CharField(max_length=1, choices=debit_type_choices, verbose_name='Debit Type')
 	amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Amount')
@@ -64,18 +65,21 @@ class Mandate(models.Model):
 	credit_account = models.CharField(max_length=100, verbose_name='Credit Account', help_text="The loan/other account in SHGB in which the installment is to be credited.")
 
 	#other model fields to manage flow
+	create_time = models.DateTimeField(null=True)
+	create_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="create", null=True)
+	submit_time = models.DateTimeField(null=True)
+	submit_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="submit", null=True)
+	lm_time = models.DateTimeField(null=True)
 	is_deleted = models.BooleanField(default=False)
-	image_uploaded = models.BooleanField(default=False)
-	locked = models.BooleanField(default=False)
-	confirmation = models.BooleanField(default=False)
-	uploaded_npci = models.BooleanField(default=False)
-	status_npci = models.BooleanField(default=False)
-	response_npci = models.CharField(max_length=4, null=True)
+
+	def get_ref(self):
+		return 'HGBX' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
 
 	def __str__ (self):
 		return str(self.id)
 	
 	class Meta:
+		ordering = ["id"]
 		constraints = [
 			CheckConstraint(
     			check = Q(start_date__gte = F("date")),

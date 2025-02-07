@@ -68,13 +68,9 @@
 	</div>
 
 	<div class="mandate-details">
-		<div>
-	
-			<div class="key">{{mandate|verbose_name:'umrn'}}</div>
-			<div class="value">{{mandate.umrn}}UMRN WILL COME HERE</div>
-	
-			<div class="key">{{mandate|verbose_name:'ref'}}</div>
-			<div class="value">{{mandate.ref}}</div>
+		<div>	
+			<div class="key">Seq No/Ref.</div>
+			<div class="value">{{mandate.get_ref}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'currency'}}</div>
 			<div class="value">{{mandate.currency}}</div>
@@ -93,18 +89,16 @@
 	
 			<div class="key">{{mandate|verbose_name:'date'}}</div>
 			<div class="value">{{mandate.date}}</div>
-	
-		</div>
-
-
-		<div>
 
 			<div class="key">{{mandate|verbose_name:'start_date'}}</div>
 			<div class="value">{{mandate.start_date}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'end_date'}}</div>
 			<div class="value">{{mandate.end_date}}</div>
-	
+		</div>
+
+
+		<div>
 			<div class="key">{{mandate|verbose_name:'debtor_name'}}</div>
 			<div class="value">{{mandate.debtor_name}}</div>
 	
@@ -119,6 +113,19 @@
 	
 			<div class="key">{{mandate|verbose_name:'credit_account'}}</div>
 			<div class="value">{{mandate.credit_account}}</div>
+
+			<div class="key">create_user</div>
+			<div class="value">{{mandate.create_user}}</div>
+
+			<div class="key">create_time</div>
+			<div class="value">{{mandate.create_time}}</div>
+
+			<div class="key">submit_user</div>
+			<div class="value">{{mandate.submit_user}}</div>
+
+			<div class="key">submit_time</div>
+			<div class="value">{{mandate.submit_time}}</div>
+
 		</div>
 	</div>
 
