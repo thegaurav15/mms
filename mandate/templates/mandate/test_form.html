@@ -29,7 +29,7 @@
 <br>
 <div id="main-container">
     <div id="thumb-container">
-        <div id="overlay">
+        <div id="overlay" style="display:none;">
             <img src="{% static 'assets/images/spinner.gif' %}" style="max-width: 20%;">
         </div>
     </div>
@@ -40,8 +40,8 @@
     </div>
 </div>
 
-<script src="{% static 'pdfjs/pdf.worker.mjs' %}" type="module"></script>
-<script src="{% static 'pdfjs/pdf.mjs' %}" type="module"></script>
+<!-- <script src="{% static 'pdfjs/pdf.worker.min.mjs' %}" type="module"></script> -->
+<script src="{% static 'pdfjs/pdf.min.mjs' %}" type="module"></script>
 <script src="{% static 'mandate/mypdf.js' %}" type="module"></script>
 
 <script>

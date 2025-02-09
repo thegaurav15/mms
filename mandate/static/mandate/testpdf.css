@@ -46,6 +46,5 @@ canvas {
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: black;
-    opacity: 0.3;
+    background-color: rgba(200, 200, 200, 0.4);
 }
