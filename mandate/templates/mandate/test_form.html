@@ -3,6 +3,11 @@
 {% load extras %}
 {% load static %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'mandate/test.css' %}">
+<link rel="stylesheet" href="{% static 'mandate/testpdf.css' %}">
+{% endblock %}
+
 {% block content %}
 <form class="mandate-form" action="{% url 'mandate:test' %}" method="post">
 
@@ -10,6 +15,7 @@
 
     <input type="checkbox" value="1" name="name"><br>
     <input type="checkbox" value="2" name="name"><br>
+    <div id="div" class="tbox">Hello</div>
     <input type="checkbox" value="3" name="name"><br>
     <input type="checkbox" value="4" name="name"><br>
     <input type="checkbox" value="5" name="name"><br>
@@ -17,6 +23,29 @@
 
     <button type="submit">Submit</button>
 
-</form> 
+</form>
+
+<input id="input" type="file">
+<br>
+<div id="main-container">
+    <div id="thumb-container">
+        <div id="overlay">
+            <img src="{% static 'assets/images/spinner.gif' %}" style="max-width: 20%;">
+        </div>
+    </div>
+    <div id="buttons-container">
+        <button id="prev"><<</button>
+        <button id="sel">Select</button>
+        <button id="next">>></button>
+    </div>
+</div>
+
+<script src="{% static 'pdfjs/pdf.worker.mjs' %}" type="module"></script>
+<script src="{% static 'pdfjs/pdf.mjs' %}" type="module"></script>
+<script src="{% static 'mandate/mypdf.js' %}" type="module"></script>
+
+<script>
+
+</script>
 
 {% endblock %}

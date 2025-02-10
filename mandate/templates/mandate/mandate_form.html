@@ -4,8 +4,8 @@
 {% load static %}
 
 {% block content %}
+<h5 class="mb-4">Please enter the details of mandate</h5>
 <form id="form" style="width: 700px;" action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
-	<p style="font-weight: bold; font-size: 22px; margin: 2px;">Mandate Form</p>
 
 	{% csrf_token %}
 
@@ -34,8 +34,9 @@
 		</div>
 	</div>
 	{% endfor %}
-
-	<button class="btn btn-primary" type="submit">Submit</button>
+	<div class="buttons-container">
+		<button class="btn btn-primary" type="submit">Submit</button>
+	</div>
 </form>
 
 <script src="{% static 'mandate/form_validate.js' %}"></script>

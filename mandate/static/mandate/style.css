@@ -161,3 +161,9 @@ body {
         display: none !important;
     }
 }
+
+.buttons-container {
+	margin: 12px;
+	display: grid;
+	justify-content: center;
+}

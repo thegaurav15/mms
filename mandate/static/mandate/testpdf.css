@@ -1,0 +1,51 @@
+#main-container {
+    display: inline-grid;
+    width: max-content;
+    height: max-content;
+    justify-content: center;
+    padding: 12px;
+    margin: 24px;
+    box-shadow: 1px 1px 7px 0px #8080809c;
+    border-radius: 8px;
+}
+
+#thumb-container {
+    position: relative;
+    border: 1px dotted lightgray;
+    height: 400px;
+    width: 300px;
+    display: grid;
+    justify-content: center;
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+#buttons-container {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 2fr 3fr 2fr;
+    grid-column-gap: 12px;
+}
+
+#buttons-container > button {
+    border: 1px solid lightgray;
+}
+
+canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#overlay {
+    z-index: 1000;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.3;
+}
