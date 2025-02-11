@@ -42,8 +42,8 @@ class MandateForm(ModelForm):
 			"amount": forms.DateInput(attrs={'class': 'form-control', 'type': 'number', 'step': '0.01', 'min': '0.01', 'max': '10000000'}),
 			"debtor_name": forms.DateInput(attrs={'class': 'form-control'}),
 			"debtor_acc_no": forms.DateInput(attrs={'class': 'form-control'}),
-			"debtor_acc_ifsc": forms.DateInput(attrs={'class': 'form-control', 'pattern': '[A-Za-z]{4}\w{7}'}),
-			"credit_account": forms.DateInput(attrs={'class': 'form-control', 'maxlength': '14', 'pattern': '\d{4}\w{10}'}),
+			"debtor_acc_ifsc": forms.DateInput(attrs={'class': 'form-control', 'pattern': r'[A-Za-z]{4}\w{7}'}),
+			"credit_account": forms.DateInput(attrs={'class': 'form-control', 'maxlength': '14', 'pattern': r'\d{4}\w{10}'}),
 		}
 
 

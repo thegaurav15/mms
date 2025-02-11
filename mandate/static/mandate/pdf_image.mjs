@@ -7,7 +7,7 @@ let next = document.getElementById('next');
 let sel = document.getElementById('sel');
 
 let currentPage = 1;
-let dim = {
+let defaultDim = {
     height: 600,
     width: 792
 };
@@ -42,6 +42,7 @@ async function pageRender(page_num, dim) {
     const ctx = canvas.getContext("2d");
     canvas.height = viewport.height;
     canvas.width = viewport.width;
+    // canvas.style.border = '1px solid lightgrey';
     const renderContext = {
         canvasContext: ctx,
         viewport: viewport
@@ -50,14 +51,17 @@ async function pageRender(page_num, dim) {
     return canvas
 }
 
-async function showPage(page_num) {
+async function showPage(page_num, dim = defaultDim) {
     let canvas = await pageRender(page_num, dim);
-    if (container.hasChildNodes()) {
-        container.firstElementChild.replaceWith(canvas);
+    if (container.querySelector('#pdfThumbnail')) {
+        container.querySelector('#pdfThumbnail').replaceWith(canvas);
     } else {
         container.append(canvas);
     }
-    container.style.height = canvas.height + 'px';
+    canvas.setAttribute('id', 'pdfThumbnail');
+    sel.innerHTML = `Select (${page_num}/${doc.numPages})`;
+    let rect = canvas.getBoundingClientRect();
+    container.style.height = rect.height + 'px';
 }
 
 prev.addEventListener('click', prevPage);
@@ -79,4 +83,9 @@ function nextPage() {
     currentPage = p;
 }
 
-export {pdf_init}
+async function selectPage() {
+    let canvas = await pageRender(currentPage, {height: 1800, width: 1800});
+    return canvas;
+}
+
+export {pdf_init, selectPage, sel};

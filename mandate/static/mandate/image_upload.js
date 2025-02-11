@@ -1,48 +1,46 @@
-import {pdf_init} from './pdf_image.mjs';
+import {pdf_init, selectPage, sel} from './pdf_image.mjs';
 
-// let id = document.currentScript.getAttribute('id');
-console.log(import.meta);
 let container = document.getElementById('preview-container');
 let input = document.getElementById('id_mandate_image');
 let form = input.form;
-let img = document.createElement('img');
-img.setAttribute('id', 'previewImg');
-img.style.cssText = ("width:100%;object-fit:contain;object-position: 50% 50%");
+let uncropped;
 let cropper = null;
-let canvas = null;
+let croppedCanvas = null;
 container.style.height = '0px';
+
 input.setAttribute('accept', 'application/pdf, image/*');
 
-function changePreview(event) {
-    img.src = URL.createObjectURL(input.files[0]);
+function callCropper(uncropped, params) {
+    cropper = new Cropper(uncropped, params);
+}
 
-    if (cropper) {
-        if (cropper.ready) {
-            cropper.destroy();
-        }
-    }
-    if (document.getElementById('previewImg')) {
-        document.getElementById('previewImg').remove();
-    }
-
-    if (canvas) {
-        if (canvas.parentElement) {canvas.remove();}
-    }
-    submitBtn.style.display = 'none';
-    
-    container.append(img);
-    cropper = new Cropper(img, {viewMode: 2, responsive: false, dragMode: 'move', cropBoxMovable: false, toggleDragModeOnDblclick: false});
-
+function initCropper() {
+    container.append(uncropped);
     container.style.display = 'block';
+    container.style.height = '';
+
     resetBtn.style.display = 'inline-block';
     rotateBtn.style.display = 'inline-flex';
     cropBtn.style.display = 'inline-block';
     originalBtn.style.display = 'inline-block';
-
+    submitBtn.style.display = 'none';
     input.parentElement.style.display = 'none';
+
+    let params = {
+        viewMode: 2,
+        responsive: false,
+        dragMode: 'move',
+        cropBoxMovable: false,
+        toggleDragModeOnDblclick: false
+    }
+    requestAnimationFrame(() => setTimeout(callCropper, 0, uncropped, params));
+    // setTimeout(callCropper, 0, uncropped, params);
 }
 
 function formReset() {
+    if (document.getElementById('pdfThumbnail')) {
+        document.getElementById('pdfThumbnail').remove();
+    }
     if (cropper) {
         if (cropper.ready) {
             cropper.destroy();
@@ -51,8 +49,8 @@ function formReset() {
     if (document.getElementById('previewImg')) {
         document.getElementById('previewImg').remove();
     }
-    if (canvas) {
-        if (canvas.parentElement) {canvas.remove();}
+    if (croppedCanvas) {
+        if (croppedCanvas.parentElement) {croppedCanvas.remove();}
     }
     
     resetBtn.style.display = 'none';
@@ -61,16 +59,17 @@ function formReset() {
     originalBtn.style.display = 'none';
     submitBtn.style.display = 'none';
     container.style.display = 'none';
+    container.style.height = '0px';
     input.parentElement.style.display = '';
 }
 
 cropBtn.onclick = function() {
-    canvas = cropper.getCroppedCanvas();
-    canvas.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
+    croppedCanvas = cropper.getCroppedCanvas();
+    croppedCanvas.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
     cropper.destroy();
-    img.remove();
+    uncropped.remove();
     container.style.display = 'none';
-    form.before(canvas);
+    form.before(croppedCanvas);
     rotateBtn.style.display = 'none';
     cropBtn.style.display = 'none';
     originalBtn.style.display = 'none';
@@ -79,8 +78,8 @@ cropBtn.onclick = function() {
 
 originalBtn.onclick = function() {
     cropper.destroy();
-    form.before(img);
-    img.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
+    form.before(uncropped);
+    uncropped.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
     container.style.display = 'none';
     rotateBtn.style.display = 'none';
     cropBtn.style.display = 'none';
@@ -90,8 +89,8 @@ originalBtn.onclick = function() {
 
 function centerCanvas(cropper, ratio) {
     cropper.clear();
-    ctnrData = cropper.getContainerData();
-    cnvsData = cropper.getCanvasData();
+    let ctnrData = cropper.getContainerData();
+    let cnvsData = cropper.getCanvasData();
     if (cnvsData.height > ctnrData.height) {
         cropper.setCanvasData({height: ctnrData.height});
         cropper.setCanvasData({left: ctnrData.width/2 - cropper.getCanvasData().width/2});
@@ -101,8 +100,8 @@ function centerCanvas(cropper, ratio) {
         cropper.setCanvasData({top: ctnrData.height/2 - cropper.getCanvasData().height/2});
     }
 
-    c = cropper.getCanvasData();
-    obj = {
+    let c = cropper.getCanvasData();
+    let obj = {
         left: c.left + c.width * (1 - ratio)/2,
         top: c.top + c.height * (1 - ratio)/2,
         width: c.width * ratio,
@@ -154,14 +153,14 @@ submitBtn.onclick = async function() {
     loadingModal.style.display = 'grid';
     let formData = new FormData(form);
 
-    if (form.previousSibling == img) {
+    if (form.previousSibling == uncropped) {
         //upload original image
         uploadForm(formData);
     }
 
-    else if (form.previousSibling == canvas) {
+    else if (form.previousSibling == croppedCanvas) {
         //upload cropped image
-        canvas.toBlob(function(blob) {
+        croppedCanvas.toBlob(function(blob) {
             formData.set("mandate_image", blob, ('000000'+id).slice(-6) + "_cropped.png");
             uploadForm(formData);
         }, 'image/png');
@@ -173,11 +172,25 @@ submitBtn.onclick = async function() {
     }
 }
 
-input.addEventListener('change', startPdf);
+input.addEventListener('change', checkFile);
 form.addEventListener('reset', formReset);
 
-async function startPdf(event) {
-    let file = input.files[0];
+function checkFile(e) {
+    console.log(e.target.files[0].type);
+    if (e.target.files[0].type.startsWith('image/')) {
+        uncropped = document.createElement('img');
+        uncropped.setAttribute('id', 'previewImg');
+        uncropped.style.cssText = ("width:100%;object-fit:contain;object-position: 50% 50%");
+        uncropped.src = URL.createObjectURL(input.files[0]);
+        initCropper(uncropped);
+    } else if (e.target.files[0].type == 'application/pdf') {
+        startPdf(e.target.files[0]);
+        pdfButtons.style.display = 'inline-block';
+        resetBtn.style.display = 'inline-block';
+    }
+}
+
+async function startPdf(file) {
     file.arrayBuffer().then(
         async function(file_arrayBuffer) {
             try {
@@ -194,3 +207,11 @@ async function startPdf(event) {
         }
     );
 }
+
+sel.addEventListener('click', async function() {
+    document.getElementById('pdfThumbnail').remove();
+    uncropped = await selectPage();
+    uncropped.setAttribute('id', 'previewImg');
+    uncropped.style.cssText = ("width:100%;object-fit:contain;object-position: 50% 50%");
+    initCropper(uncropped);
+})
