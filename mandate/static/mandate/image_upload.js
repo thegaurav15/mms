@@ -1,5 +1,7 @@
-let id = document.currentScript.getAttribute('id');
-console.log(id);
+import {pdf_init} from './pdf_image.mjs';
+
+// let id = document.currentScript.getAttribute('id');
+console.log(import.meta);
 let container = document.getElementById('preview-container');
 let input = document.getElementById('id_mandate_image');
 let form = input.form;
@@ -8,6 +10,8 @@ img.setAttribute('id', 'previewImg');
 img.style.cssText = ("width:100%;object-fit:contain;object-position: 50% 50%");
 let cropper = null;
 let canvas = null;
+container.style.height = '0px';
+input.setAttribute('accept', 'application/pdf, image/*');
 
 function changePreview(event) {
     img.src = URL.createObjectURL(input.files[0]);
@@ -169,5 +173,24 @@ submitBtn.onclick = async function() {
     }
 }
 
-input.addEventListener('change', changePreview);
+input.addEventListener('change', startPdf);
 form.addEventListener('reset', formReset);
+
+async function startPdf(event) {
+    let file = input.files[0];
+    file.arrayBuffer().then(
+        async function(file_arrayBuffer) {
+            try {
+                container.style.display = 'block';
+                await pdf_init(file_arrayBuffer, container);
+            } catch (err) {
+                alert(err);
+                input.value = '';
+            }
+        },
+        function (err) {
+            alert('err');
+            input.value = '';
+        }
+    );
+}

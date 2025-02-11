@@ -3,6 +3,7 @@ console.log(pdfjsLib.GlobalWorkerOptions.workerSrc)
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/static/pdfjs/pdf.worker.min.mjs'
 console.log(pdfjsLib.GlobalWorkerOptions.workerSrc)
 
+
 let overlay = document.getElementById('overlay');
 overlay.style.display = 'none';
 
@@ -28,7 +29,8 @@ async function pdf_init(file) {
     }
     
     console.log(doc.numPages);
-    showPage(1);
+    currentPage = 1;
+    showPage(currentPage);
 }
 
 async function getDoc(pdf) {
@@ -105,13 +107,15 @@ next.addEventListener('click', nextPage);
 function prevPage() {
     if (currentPage == 1) return;
     overlay.style.display = '';
-    currentPage--;
-    setTimeout(showPage, 0, currentPage);
+    let p = currentPage - 1;
+    setTimeout(showPage, 0, p);
+    currentPage = p;
 }
 
 function nextPage() {
     if (currentPage == doc.numPages) return;
     overlay.style.display = '';
-    currentPage++;
-    setTimeout(showPage, 0, currentPage);
+    let p = currentPage + 1;
+    setTimeout(showPage, 0, p);
+    currentPage = p;
 }

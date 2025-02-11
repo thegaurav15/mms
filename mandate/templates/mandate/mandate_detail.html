@@ -39,7 +39,14 @@
 			<div id="preview-container" class="preview-container"></div>
 			
 			<div id="formButtons" class="form-buttons">
+
 				<button id="resetBtn" type="button" class="btn btn-outline-dark btn-sm" onClick="form.reset()">Reset</button>
+
+				<div id="pdf-buttons">
+					<button id="prev" type="button" class="btn btn-light"><<</button>
+					<button id="sel" type="button" class="btn btn-outline-dark">Select</button>
+					<button id="next" type="button" class="btn btn-light">>></button>
+				</div>
 
 				<div id="rotateBtn" class="btn-group" role="group" aria-label="Basic example">
 					<button id="rotateLeft" type="button" class="btn btn-warning btn-sm">
@@ -136,6 +143,6 @@
 	</div>
 
 	{% else %}
-	<script src="{% static 'mandate/image_upload.js' %}" id="{{mandate.id}}"></script>
+	<script src="{% static 'mandate/image_upload.js' %}" id="{{mandate.id}}" type="module"></script>
 	{% endif %}
 {% endblock %}

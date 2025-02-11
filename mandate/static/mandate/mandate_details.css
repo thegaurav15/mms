@@ -45,6 +45,8 @@
 	max-height: 600px;
 	width: 792px;
 	display: none;
+	transition: all 0.5s;
+	overflow: hidden;
 }
 
 .img {
