@@ -6,18 +6,14 @@ let form = input.form;
 let uncropped;
 let cropper = null;
 let croppedCanvas = null;
-container.style.height = '0px';
+// container.style.height = '0px';
 
 input.setAttribute('accept', 'application/pdf, image/*');
-
-function callCropper(uncropped, params) {
-    cropper = new Cropper(uncropped, params);
-}
 
 function initCropper() {
     container.append(uncropped);
     container.style.display = 'block';
-    container.style.height = '';
+    // container.style.height = '';
 
     resetBtn.style.display = 'inline-block';
     rotateBtn.style.display = 'inline-flex';
@@ -33,8 +29,7 @@ function initCropper() {
         cropBoxMovable: false,
         toggleDragModeOnDblclick: false
     }
-    requestAnimationFrame(() => setTimeout(callCropper, 0, uncropped, params));
-    // setTimeout(callCropper, 0, uncropped, params);
+    cropper = new Cropper(uncropped, params);
 }
 
 function formReset() {
@@ -59,7 +54,7 @@ function formReset() {
     originalBtn.style.display = 'none';
     submitBtn.style.display = 'none';
     container.style.display = 'none';
-    container.style.height = '0px';
+    // container.style.height = '0px';
     input.parentElement.style.display = '';
 }
 

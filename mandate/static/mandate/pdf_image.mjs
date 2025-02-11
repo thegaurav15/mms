@@ -47,7 +47,7 @@ async function pageRender(page_num, dim) {
         canvasContext: ctx,
         viewport: viewport
     };
-    page.render(renderContext);
+    await page.render(renderContext).promise;
     return canvas
 }
 
@@ -61,7 +61,7 @@ async function showPage(page_num, dim = defaultDim) {
     canvas.setAttribute('id', 'pdfThumbnail');
     sel.innerHTML = `Select (${page_num}/${doc.numPages})`;
     let rect = canvas.getBoundingClientRect();
-    container.style.height = rect.height + 'px';
+    // container.style.height = rect.height + 'px';
 }
 
 prev.addEventListener('click', prevPage);
