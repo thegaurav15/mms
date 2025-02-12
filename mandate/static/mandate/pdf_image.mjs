@@ -1,6 +1,7 @@
 import '../pdfjs/pdf.min.mjs';
 let { pdfjsLib } = globalThis;
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/static/pdfjs/pdf.worker.min.mjs';
+import { container } from './image_upload.js';
 
 let prev = document.getElementById('prev');
 let next = document.getElementById('next');
@@ -12,9 +13,8 @@ let defaultDim = {
     width: 792
 };
 let doc;
-let container;
 
-async function pdf_init(file, ctnr) {
+async function pdf_init(file) {
     let doc_promise = pdfjsLib.getDocument(file).promise;
     try {
         doc = await doc_promise;
@@ -23,7 +23,7 @@ async function pdf_init(file, ctnr) {
     }
     
     console.log(doc.numPages);
-    container = ctnr;
+    // container = ctnr;
     currentPage = 1;
     showPage(currentPage);
 }
@@ -61,7 +61,8 @@ async function showPage(page_num, dim = defaultDim) {
     canvas.setAttribute('id', 'pdfThumbnail');
     sel.innerHTML = `Select (${page_num}/${doc.numPages})`;
     let rect = canvas.getBoundingClientRect();
-    // container.style.height = rect.height + 'px';
+    container.style.height = rect.height + 'px';
+    loadingModal.style.display = 'none';
 }
 
 prev.addEventListener('click', prevPage);
@@ -70,6 +71,7 @@ next.addEventListener('click', nextPage);
 function prevPage() {
     if (!doc) return;
     if (currentPage == 1) return;
+    loadingModal.style.display = 'grid';
     let p = currentPage - 1;
     setTimeout(showPage, 0, p);
     currentPage = p;
@@ -78,6 +80,7 @@ function prevPage() {
 function nextPage() {
     if (!doc) return;
     if (currentPage == doc.numPages) return;
+    loadingModal.style.display = 'grid';
     let p = currentPage + 1;
     setTimeout(showPage, 0, p);
     currentPage = p;

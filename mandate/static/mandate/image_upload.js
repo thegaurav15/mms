@@ -1,4 +1,5 @@
 import {pdf_init, selectPage, sel} from './pdf_image.mjs';
+export {container};
 
 let container = document.getElementById('preview-container');
 let input = document.getElementById('id_mandate_image');
@@ -6,21 +7,28 @@ let form = input.form;
 let uncropped;
 let cropper = null;
 let croppedCanvas = null;
-// container.style.height = '0px';
+container.style.height = '0px';
+
+let message = {
+    initial: "Mandate image is not uploaded, upload it here:",
+    pdf: "The PDF contains multiple pages. To proceed further, please select the page that contains the mandate image.",
+    crop: "Crop the image properly such that <b>only the mandate</b> is present in the final image.",
+    final: "This is the final image that will be uploaded to NPCI and sent to the Debtor Bank."
+}
 
 input.setAttribute('accept', 'application/pdf, image/*');
 
 function initCropper() {
     container.append(uncropped);
     container.style.display = 'block';
-    // container.style.height = '';
+    container.style.height = '';
+    guideMessage.innerHTML = message.crop;
 
     resetBtn.style.display = 'inline-block';
     rotateBtn.style.display = 'inline-flex';
     cropBtn.style.display = 'inline-block';
     originalBtn.style.display = 'inline-block';
     submitBtn.style.display = 'none';
-    input.parentElement.style.display = 'none';
 
     let params = {
         viewMode: 2,
@@ -30,6 +38,7 @@ function initCropper() {
         toggleDragModeOnDblclick: false
     }
     cropper = new Cropper(uncropped, params);
+    loadingModal.style.display = 'none';
 }
 
 function formReset() {
@@ -48,13 +57,16 @@ function formReset() {
         if (croppedCanvas.parentElement) {croppedCanvas.remove();}
     }
     
+    guideMessage.innerHTML = message.initial
+
+    pdfButtons.style.display = 'none';
     resetBtn.style.display = 'none';
     rotateBtn.style.display = 'none';
     cropBtn.style.display = 'none';
     originalBtn.style.display = 'none';
     submitBtn.style.display = 'none';
     container.style.display = 'none';
-    // container.style.height = '0px';
+    container.style.height = '0px';
     input.parentElement.style.display = '';
 }
 
@@ -63,6 +75,8 @@ cropBtn.onclick = function() {
     croppedCanvas.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
     cropper.destroy();
     uncropped.remove();
+
+    guideMessage.innerHTML = message.final;
     container.style.display = 'none';
     form.before(croppedCanvas);
     rotateBtn.style.display = 'none';
@@ -74,6 +88,8 @@ cropBtn.onclick = function() {
 originalBtn.onclick = function() {
     cropper.destroy();
     form.before(uncropped);
+    
+    guideMessage.innerHTML = message.final;
     uncropped.style.cssText = "width:100%;object-fit:contain;object-position: 50% 50%;border: solid lightgrey 4px";
     container.style.display = 'none';
     rotateBtn.style.display = 'none';
@@ -171,7 +187,9 @@ input.addEventListener('change', checkFile);
 form.addEventListener('reset', formReset);
 
 function checkFile(e) {
+    loadingModal.style.display = 'grid';
     console.log(e.target.files[0].type);
+    input.parentElement.style.display = 'none';
     if (e.target.files[0].type.startsWith('image/')) {
         uncropped = document.createElement('img');
         uncropped.setAttribute('id', 'previewImg');
@@ -190,7 +208,8 @@ async function startPdf(file) {
         async function(file_arrayBuffer) {
             try {
                 container.style.display = 'block';
-                await pdf_init(file_arrayBuffer, container);
+                await pdf_init(file_arrayBuffer);
+                guideMessage.innerHTML = message.pdf;
             } catch (err) {
                 alert(err);
                 input.value = '';
@@ -204,6 +223,8 @@ async function startPdf(file) {
 }
 
 sel.addEventListener('click', async function() {
+    loadingModal.style.display = 'grid';
+    pdfButtons.style.display = 'none';
     document.getElementById('pdfThumbnail').remove();
     uncropped = await selectPage();
     uncropped.setAttribute('id', 'previewImg');

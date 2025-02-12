@@ -56,7 +56,8 @@
 }
 
 .form-buttons > .btn,
-.form-buttons > .btn-group {
+.form-buttons > .btn-group,
+.form-buttons > #pdfButtons {
 	display: none;
 }
 
@@ -81,4 +82,8 @@
 
 #fitWidth {
 	display: none;
+}
+
+#guideMessage {
+	font-style: italic;
 }
