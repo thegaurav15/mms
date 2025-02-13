@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q, F, CheckConstraint, UniqueConstraint
 from django.contrib.auth.models import User, AnonymousUser
 from datetime import datetime
+from django.core.exceptions import ValidationError
 
 
 class DebtorBank(models.Model):
@@ -52,6 +53,9 @@ class Mandate(models.Model):
 	start_date = models.DateField(verbose_name='Start Date', help_text="The start date should be on or after the date of mandate.")
 	end_date = models.DateField(verbose_name='End Date', help_text="The end date can not be beyond 40 years after start date ")
 	debtor_name = models.CharField(max_length=300, verbose_name='Name of Debor Account Holder', help_text="The name as per the debit account.")
+	debtor_joint = models.BooleanField(default=False, verbose_name='Is the Debtor Account jointly held?', help_text="Select this if the debtor account requires signatures of multiple persons")
+	debtor_name_2 = models.CharField(blank=True, null=True, max_length=300, verbose_name='Name of Debor Account Holder 2', help_text='Mandatory. At least one additional name required for joint account.')
+	debtor_name_3 = models.CharField(blank=True, null=True, max_length=300, verbose_name='Name of Debor Account Holder 3', help_text='Optional')
 	debtor_bank = models.ForeignKey(DebtorBank, on_delete=models.PROTECT, verbose_name='Debtor Bank')
 	debtor_acc_type = models.CharField(max_length=10, choices=acc_type_choices, verbose_name='Debtor Account Type')
 	debtor_acc_no = models.CharField(max_length=100, verbose_name='Debtor Legal Account Number')
@@ -71,6 +75,10 @@ class Mandate(models.Model):
 	submit_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="submit", null=True)
 	lm_time = models.DateTimeField(null=True)
 	is_deleted = models.BooleanField(default=False)
+
+	def clean(self):
+		if self.debtor_joint == True and self.debtor_name_2 is None:
+			raise ValidationError("At lease one additional account holder name required for joint account.")
 
 	def get_ref(self):
 		return 'HGBX' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)

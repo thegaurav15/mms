@@ -3,6 +3,10 @@
 {% load extras %}
 {% load static %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'mandate/mandate_form.css' %}">
+{% endblock %}
+
 {% block content %}
 <h5 class="mb-4">Please enter the details of mandate</h5>
 <form id="form" style="width: 700px;" action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
@@ -12,14 +16,33 @@
 	{{ form.non_field_errors }}
 	{% for field in form %}
     <div class="form-group row no-gutters">
-		
+				
+		<!-- If blocks for field specific layout -->
+		{% if field.name == 'debtor_joint' %}
 		<label for="id_{{ field.name }}" class="col-sm-5 col-form-label">
 			{{ field.label }}
 			{% if field.errors %}
 			<small class="form-text text-danger m-0 p-0">{{ field.errors.as_text }}</small>
 			{% endif %}			
 		</label>
+
+		<div class="col-sm-6 col-form-label">
+			<div class="joint-container">
+				<div>{{ field }}</div>	
+				<small class="text-muted">{{ field.help_text }}</small>
+			</div>
+		</div>
 		
+		
+		<!-- Block for general fields -->
+		{% else %} 
+		<label for="id_{{ field.name }}" class="col-sm-5 col-form-label">
+			{{ field.label }}
+			{% if field.errors %}
+			<small class="form-text text-danger m-0 p-0">{{ field.errors.as_text }}</small>
+			{% endif %}
+		</label>
+
 		<div class="col-sm-6">
 			{{ field }}
 			
@@ -28,6 +51,8 @@
 			{% endif %}
 
 		</div>
+		{% endif %}
+
 		<div class="col-sm-1 col-form-label font-weight-bold px-2">
 			<span id="id_{{ field.name }}_y" class="text-success d-none">✓</span>
 			<span id="id_{{ field.name }}_n" class="text-danger d-none">X</span>

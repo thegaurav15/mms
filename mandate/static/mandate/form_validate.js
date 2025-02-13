@@ -1,5 +1,16 @@
 id_start_date.setAttribute('disabled', '');
 id_end_date.setAttribute('disabled', '');
+let d2 = document.getElementById('id_debtor_name_2');
+let d3 = document.getElementById('id_debtor_name_3');
+let ct_d2 = d2.parentElement.parentElement;
+let ct_d3 = d3.parentElement.parentElement;
+
+// initially hide account name 2, 3
+d2.setAttribute('disabled', true);
+ct_d2.style.display = 'none';
+d3.setAttribute('disabled', true);
+ct_d3.style.display = 'none';
+d2.setAttribute('required', 'true');
 
 function validIcon(elem) {
     if (elem.value == '') {
@@ -40,8 +51,9 @@ function resetValidIcon(elem) {
 }
 
 form.addEventListener('change', function(e) {
-    console.log(e.target.id);
-    if (e.target.type == 'radio') {
+    // console.log(e.target.id);
+    if (e.target.name == 'debtor_joint') {
+        jointToggle(e.target.checked);
         return;
     }
     validIcon(e.target);
@@ -93,3 +105,22 @@ id_debtor_acc_ifsc.addEventListener('change', function() {
 id_credit_account.addEventListener('change', function() {
     this.value = this.value.toUpperCase();
 });
+
+function jointToggle(checked) {
+    if(checked) {
+        d2.removeAttribute('disabled');
+        ct_d2.style.display = '';
+        d3.removeAttribute('disabled');
+        ct_d3.style.display = '';
+    } else {
+        d2.setAttribute('disabled', true);
+        d2.value = '';
+        d2.dispatchEvent(new Event('change', {bubbles: true}));
+        ct_d2.style.display = 'none';
+
+        d3.setAttribute('disabled', true);
+        d3.value = '';
+        ct_d3.style.display = 'none';
+        d3.dispatchEvent(new Event('change', {bubbles: true}));
+    };
+}

@@ -216,32 +216,21 @@
 		</div>
 
 		<div class="signature-container">
-			<div class="signature-area">
-				<div class="sign"></div>
-				<hr class="sign-line">
-				<p class="sign-sub">Signature of Account Holder</p>
-				<p class="sign-name">{{mandate.debtor_name|upper}}</p>
-				<hr class="sign-line">
-				<p class="sign-sub">Name as per bank record</p>
-			</div>
+			<div class="sign"></div><div class="sign"></div><div class="sign"></div>
+			<hr class="sign-line"><hr class="sign-line"><hr class="sign-line">
+			<p class="sign-sub">Signature of Account Holder</p><p class="sign-sub">Signature of Account Holder</p><p class="sign-sub">Signature of Account Holder</p>
+			
+			<p class="sign-name">{{mandate.debtor_name|upper}}</p>
 
-			<div class="signature-area">
-				<div class="sign"></div>
-				<hr class="sign-line">
-				<p class="sign-sub">Signature of Account Holder</p>
-				<p class="sign-name">{{mandate.debtor_name|upper}}</p>
-				<hr class="sign-line">
-				<p class="sign-sub">Name as per bank record</p>
-			</div>
-
-			<div class="signature-area">
-				<div class="sign"></div>
-				<hr class="sign-line">
-				<p class="sign-sub">Signature of Account Holder</p>
-				<p class="sign-name">{{mandate.debtor_name|upper}}</p>
-				<hr class="sign-line">
-				<p class="sign-sub">Name as per bank record</p>
-			</div>
+			{% if mandate.debtor_joint %}
+			<p class="sign-name">{% if mandate.debtor_name_2 %}{{mandate.debtor_name_2|upper}}{% endif %}</p>
+			<p class="sign-name">{% if mandate.debtor_name_3 %}{{mandate.debtor_name_3|upper}}{% endif %}</p>
+			{% else %}
+			<p class="sign-name">{{mandate.debtor_name|upper}}</p>
+			<p class="sign-name">{{mandate.debtor_name|upper}}</p>
+			{% endif %}
+			<hr class="sign-line"><hr class="sign-line"><hr class="sign-line">
+			<p class="sign-sub">Name as per bank record</p><p class="sign-sub">Name as per bank record</p><p class="sign-sub">Name as per bank record</p>
 		</div>
 	</div>
 

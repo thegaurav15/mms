@@ -1,0 +1,5 @@
+.joint-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 12px;
+}
