@@ -1,5 +1,10 @@
-id_start_date.setAttribute('disabled', '');
-id_end_date.setAttribute('disabled', '');
+if (id_start_date.value == '') {
+    id_start_date.setAttribute('readonly', '');
+}
+if (id_end_date.value == '') {
+    id_end_date.setAttribute('readonly', '');
+}
+
 let d2 = document.getElementById('id_debtor_name_2');
 let d3 = document.getElementById('id_debtor_name_3');
 let ct_d2 = d2.parentElement.parentElement;
@@ -10,7 +15,13 @@ d2.setAttribute('disabled', true);
 ct_d2.style.display = 'none';
 d3.setAttribute('disabled', true);
 ct_d3.style.display = 'none';
+
+//making d2 required
 d2.setAttribute('required', 'true');
+span = document.createElement('span');
+span.classList.add('text-danger');
+span.innerHTML = ' *';
+d2.parentElement.parentElement.querySelector('label').append(span);
 
 function validIcon(elem) {
     if (elem.value == '') {
@@ -64,12 +75,12 @@ function dateChange(e) {
     if (id_date.value == '') {
         id_start_date.value = '';
         id_start_date.dispatchEvent(new Event('change', {bubbles: true}));
-        id_start_date.setAttribute('disabled', '');
+        id_start_date.setAttribute('readonly', '');
         return;
     }
     if (e.target.checkValidity()) {
         id_start_date.setAttribute('min', id_date.value);
-        id_start_date.removeAttribute('disabled');
+        id_start_date.removeAttribute('readonly');
         validIcon(id_start_date);
     }
 }
@@ -80,7 +91,7 @@ function startDateChange(e) {
         console.log('inside if (start date value is null)');
         id_end_date.value = '';
         id_end_date.dispatchEvent(new Event('change', {bubbles: true}));
-        id_end_date.setAttribute('disabled', '');
+        id_end_date.setAttribute('readonly', '');
         return
     }
     
@@ -93,7 +104,7 @@ function startDateChange(e) {
         // console.log(d.toISOString().split('T')[0]);
         id_end_date.setAttribute('max', d.toISOString().split('T')[0]);
 
-        id_end_date.removeAttribute('disabled');
+        id_end_date.removeAttribute('readonly');
         validIcon(id_end_date);
     }
 }
@@ -114,13 +125,9 @@ function jointToggle(checked) {
         ct_d3.style.display = '';
     } else {
         d2.setAttribute('disabled', true);
-        d2.value = '';
-        d2.dispatchEvent(new Event('change', {bubbles: true}));
         ct_d2.style.display = 'none';
 
         d3.setAttribute('disabled', true);
-        d3.value = '';
         ct_d3.style.display = 'none';
-        d3.dispatchEvent(new Event('change', {bubbles: true}));
     };
 }

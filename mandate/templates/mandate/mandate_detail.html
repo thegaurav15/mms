@@ -78,7 +78,7 @@
 	<div class="mandate-details">
 		<div>	
 			<div class="key">Seq No/Ref.</div>
-			<div class="value">{% if mandate.seq_no %}{{mandate.get_ref}}{% endif %}</div>
+			<div class="value" id="ref">{% if mandate.ref %}{{mandate.ref}}{% endif %}</div>
 	
 			<div class="key">{{mandate|verbose_name:'currency'}}</div>
 			<div class="value">{{mandate.currency}}</div>

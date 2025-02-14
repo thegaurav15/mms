@@ -146,7 +146,7 @@ fitCanvas.onclick = function() {
 }
 
 async function uploadForm(formData) {
-    let response = await fetch('/mandates/mandate/' + id + '/', {
+    let response = await fetch(form.getAttribute('action'), {
         method: 'POST',
         body: formData
     });
@@ -172,7 +172,7 @@ submitBtn.onclick = async function() {
     else if (form.previousSibling == croppedCanvas) {
         //upload cropped image
         croppedCanvas.toBlob(function(blob) {
-            formData.set("mandate_image", blob, ('000000'+id).slice(-6) + "_cropped.png");
+            formData.set("mandate_image", blob, ref.innerText + "_cropped.png");
             uploadForm(formData);
         }, 'image/png');
     }

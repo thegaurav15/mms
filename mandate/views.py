@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from .forms import MandateForm, MandateImageForm
-from .models import Mandate
+from .forms import *
+from .models import *
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db.models import Q
 import tempfile, zipfile
 from datetime import datetime, date
 from extras.mandate_image import makeJpg, makeTif
 from extras.mandate_xml import makeXml
+from extras.xml2csv import zip2dict
 from django.views.decorators.cache import never_cache
 from djangoproject.settings import MEDIA_URL
 from django.core.paginator import Paginator
@@ -53,6 +54,7 @@ def mandate_create(request):
 				mandate.seq_no = Mandate.objects.filter(create_time__gte=to_midnight(date.today())).latest("seq_no").seq_no + 1
 			except Mandate.DoesNotExist:
 				mandate.seq_no = 1
+			mandate.set_ref()
 			mandate.save()
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 	else:
@@ -79,12 +81,6 @@ def mandate_detail(request, id):
 def mandate_print(request, id):
 	mandate = Mandate.objects.get(id=id)
 	return render(request, "mandate/mandate_print.html", {"mandate": mandate})
-
-def test_form(request):
-	if request.method == 'POST':
-		for item in request.POST.getlist('name'):
-			print(item)
-	return render(request, "mandate/test_form.html")
 
 def mandate_download(request):
 	if request.method == 'POST':
@@ -131,3 +127,27 @@ def mandate_download(request):
 	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
 	context = {"mandates": mandates}
 	return render(request, "mandate/mandate_download.html", context)
+
+
+# def test_form(request):
+# 	if request.method == 'POST':
+# 		for item in request.POST.getlist('name'):
+# 			print(item)
+# 		print(request.FILES)
+# 		for file in request.FILES:
+# 			print(file, request.FILES[file])
+# 	return render(request, "mandate/test_form.html")
+
+def test_form(request):
+	if request.method == "POST":
+		print('inside request.POST')
+		form = NpciAck(request.POST, request.FILES)
+		if form.is_valid():
+			file = request.FILES['file']
+			ack_files = zip2dict(file)
+			for f in ack_files:
+				print(f)
+		
+	else:
+		form = NpciAck()
+	return render(request, "mandate/test_form.html", {"form": form})

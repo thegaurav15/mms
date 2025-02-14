@@ -4,7 +4,7 @@ import zipfile
 import csv
 from datetime import datetime
 
-os.chdir(r'D:\Out mandates\2025-01-17')
+# os.chdir(r'D:\Out mandates\2025-01-17')
 
 def xml2dict(f):
     tree = ET.parse(f)
@@ -116,11 +116,11 @@ fieldnames = [
     'Error',
 ]
 
-with open('output.csv', 'w', newline='') as outfile:
-    writer = csv.DictWriter(outfile, fieldnames = fieldnames, extrasaction='ignore')
-    writer.writeheader()
-
-    with zipfile.ZipFile('MMS-CREATE-HGBX-HGBX344857-17012025-000001-INP-ACK.zip') as zip:
+def zip2dict(zip_file):
+    with zipfile.ZipFile(zip_file) as zip:
+        ack_files = []
         for file in zip.infolist():
-            if not file.is_dir():
-                writer.writerow(xml2dict(zip.open(file)))
+            dict = xml2dict(zip.open(file))
+            ack_files.append(dict)
+        print('zip2dict returning a list of ' + str(len(ack_files)) + ' dicts.')
+        return ack_files

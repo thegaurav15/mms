@@ -8,7 +8,8 @@
 {% endblock %}
 
 {% block content %}
-<h5 class="mb-4">Please enter the details of mandate</h5>
+<h5>Please enter the details of mandate</h5>
+<small class="text-muted mb-4">Fields marked with <span class="text-danger">*</span> are mandatory.</small>
 <form id="form" style="width: 700px;" action="{% url 'mandate:mandate_create' %}" method="post" enctype="multipart/form-data">
 
 	{% csrf_token %}
@@ -38,6 +39,9 @@
 		{% else %} 
 		<label for="id_{{ field.name }}" class="col-sm-5 col-form-label">
 			{{ field.label }}
+			{% if field.field.required %}
+			<span class="text-danger"> *</span>
+			{% endif %}
 			{% if field.errors %}
 			<small class="form-text text-danger m-0 p-0">{{ field.errors.as_text }}</small>
 			{% endif %}

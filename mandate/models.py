@@ -3,7 +3,13 @@ from django.db.models import Q, F, CheckConstraint, UniqueConstraint
 from django.contrib.auth.models import User, AnonymousUser
 from datetime import datetime
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 
+phone_validator = RegexValidator(
+	regex = '^\d{10}$',
+	code = 'invalid_phone',
+	message = 'The phone number is invalid'
+)
 
 class DebtorBank(models.Model):
 	name = models.CharField(max_length=400)
@@ -11,7 +17,6 @@ class DebtorBank(models.Model):
 
 	def __str__(self):
 		return self.name
-
 
 class Mandate(models.Model):
 	debit_type_choices = [
@@ -31,7 +36,6 @@ class Mandate(models.Model):
 		('QURT', 'Quaterly'),
 		('MIAN', 'Semi annually'),
 		('YEAR', 'Yearly'),
-		('BIMN', 'Bi-Monthly'),
 	]
 
 	acc_type_choices = [
@@ -44,18 +48,19 @@ class Mandate(models.Model):
 
 	#mandatory mandate fields
 	seq_no = models.IntegerField(default=0)
+	ref = models.CharField(max_length=35, null=False)
 	currency = models.CharField(max_length=5, default='INR', verbose_name='Currency')
-	debit_type = models.CharField(max_length=1, choices=debit_type_choices, verbose_name='Debit Type')
-	amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Amount')
+	debit_type = models.CharField(max_length=1, choices=debit_type_choices, default='F', verbose_name='Debit Type')
+	amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Installment Amount')
 	category = models.CharField(max_length=4, default='L001', verbose_name='Category')
-	frequency = models.CharField(max_length=4, choices=frequency_choices, verbose_name='Frequency')
+	frequency = models.CharField(max_length=4, choices=frequency_choices, default='MNTH', verbose_name='Frequency')
 	date = models.DateField(verbose_name='Date of Mandate')
 	start_date = models.DateField(verbose_name='Start Date', help_text="The start date should be on or after the date of mandate.")
 	end_date = models.DateField(verbose_name='End Date', help_text="The end date can not be beyond 40 years after start date ")
 	debtor_name = models.CharField(max_length=300, verbose_name='Name of Debor Account Holder', help_text="The name as per the debit account.")
 	debtor_joint = models.BooleanField(default=False, verbose_name='Is the Debtor Account jointly held?', help_text="Select this if the debtor account requires signatures of multiple persons")
-	debtor_name_2 = models.CharField(blank=True, null=True, max_length=300, verbose_name='Name of Debor Account Holder 2', help_text='Mandatory. At least one additional name required for joint account.')
-	debtor_name_3 = models.CharField(blank=True, null=True, max_length=300, verbose_name='Name of Debor Account Holder 3', help_text='Optional')
+	debtor_name_2 = models.CharField(blank=True, null=True, max_length=300, verbose_name='Name of Debor Account Holder 2', help_text='At least one additional name required for joint account.')
+	debtor_name_3 = models.CharField(blank=True, null=True, max_length=300, verbose_name='Name of Debor Account Holder 3')
 	debtor_bank = models.ForeignKey(DebtorBank, on_delete=models.PROTECT, verbose_name='Debtor Bank')
 	debtor_acc_type = models.CharField(max_length=10, choices=acc_type_choices, verbose_name='Debtor Account Type')
 	debtor_acc_no = models.CharField(max_length=100, verbose_name='Debtor Legal Account Number')
@@ -65,6 +70,8 @@ class Mandate(models.Model):
 	creditor_utility_code = models.CharField(max_length=100, default="HGBX00002000017848", verbose_name='Creditor Utility Code')
 	mandate_image = models.ImageField(upload_to="mandate/images/mandate/", null=True, verbose_name='Mandate Image')
 	mandate_file = models.FileField(null=True, blank=True, verbose_name='Mandate File')
+	phone = models.CharField(max_length=10, null=True, blank=True, validators=[phone_validator], verbose_name='Customer Mobile No.')
+	email = models.EmailField(null=True, blank=True, verbose_name='Customer EMail ID')
 
 	credit_account = models.CharField(max_length=100, verbose_name='Credit Account', help_text="The loan/other account in SHGB in which the installment is to be credited.")
 
@@ -81,7 +88,10 @@ class Mandate(models.Model):
 			raise ValidationError("At lease one additional account holder name required for joint account.")
 
 	def get_ref(self):
-		return 'HGBX' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
+		return 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
+	
+	def set_ref(self):
+		self.ref = 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
 
 	def __str__ (self):
 		return str(self.id)
@@ -122,17 +132,18 @@ class Presentation(models.Model):
 	npci_username = models.CharField(max_length=35, default = 'HGBX344857')
 	npci_MsgId = models.CharField(max_length=35)
 	filename_prefix = models.CharField(max_length=35, null=True)
-	mandate = models.ForeignKey(Mandate, on_delete=models.PROTECT)
-	zip = models.ForeignKey(Zip, on_delete=models.PROTECT)
+	mandate = models.ForeignKey(Mandate, on_delete=models.CASCADE)
+	zip = models.ForeignKey(Zip, on_delete=models.CASCADE)
 
 	npci_upload_time = models.DateTimeField(null=True)
 	npci_umrn = models.CharField(max_length=35, null=True)
+	npci_upload_error = models.CharField(max_length=1000, null=True)
 	npci_status = models.CharField(max_length=35, null=True)
 	npci_reason_code = models.CharField(max_length=10, null=True)
 	npci_response_time = models.DateTimeField(null=True)
 
 	def __str__(self):
-		return self.filename
+		return self.filename_prefix
 	
 	class Meta:
 		ordering = ["date", "seq_no"]

@@ -91,7 +91,7 @@ def makeXml(mandate, msg_Id):
     
     #variables
     MsgId.text = msg_Id
-    MndtReqId.text = mandate.get_ref()
+    MndtReqId.text = mandate.ref
     CreDtTm.text = datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=5, minutes=30))).replace(microsecond=0).isoformat() #system time in ISO format
     ColltnAmt.text = str(mandate.amount)
     FrDt.text = mandate.date.isoformat()

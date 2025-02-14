@@ -169,14 +169,14 @@
 		<div class="text">Reference 1</div>
 		<div class="box">{{mandate.credit_account}}<div class="box-subset">LOAN A/C NO.</div></div>
 		<div class="text">Mobile Number</div>
-		<div class="box"></div>
+		<div class="box">{% if mandate.phone %}+91-{{mandate.phone}}{% endif %}</div>
 	</div>
 
 	<div class="line-67">
 		<div class="text">Reference 2</div>
 		<div class="box"><div class="box-subset">PAN OR AADHAAR NO.</div></div>
 		<div class="text">Email ID</div>
-		<div class="box"></div>
+		<div class="box">{% if mandate.email %}{{mandate.email}}{% endif %}</div>
 	</div>
 
 	<div class="line-8">I agree for the debit of mandate processing charges by the Bank whom I am authorizing to debit my account as per latest schedule of charges of the Bank.</div>
