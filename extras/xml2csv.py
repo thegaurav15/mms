@@ -2,7 +2,8 @@ import os
 import xml.etree.ElementTree as ET
 import zipfile
 import csv
-from datetime import datetime
+from datetime import datetime, date
+from decimal import Decimal
 
 # os.chdir(r'D:\Out mandates\2025-01-17')
 
@@ -19,7 +20,7 @@ def xml2dict(f):
         pass
     
     try:
-        dict['AcqCreDtTm'] = datetime.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:GrpHdr/ns:CreDtTm', ns).text).strftime('%d-%m-%Y %H:%M:%S')
+        dict['AcqCreDtTm'] = datetime.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:GrpHdr/ns:CreDtTm', ns).text)
     except AttributeError:
         pass
     
@@ -29,7 +30,7 @@ def xml2dict(f):
         pass
     
     try:
-        dict['OriginalCreDtTm'] = datetime.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMsgInf/ns:CreDtTm', ns).text).strftime('%d-%m-%Y %H:%M:%S')
+        dict['OriginalCreDtTm'] = datetime.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMsgInf/ns:CreDtTm', ns).text)
     except AttributeError:
         pass
     
@@ -54,22 +55,22 @@ def xml2dict(f):
         pass
     
     try:
-        dict['Dt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:Drtn/ns:FrDt', ns).text
+        dict['Dt'] =  date.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:Drtn/ns:FrDt', ns).text)
     except AttributeError:
         pass
     
     try:
-        dict['FrstColltnDt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:FrstColltnDt', ns).text
+        dict['FrstColltnDt'] =  date.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:FrstColltnDt', ns).text)
     except AttributeError:
         pass
     
     try:
-        dict['FnlColltnDt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:FnlColltnDt', ns).text
+        dict['FnlColltnDt'] =  date.fromisoformat(root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:Ocrncs/ns:FnlColltnDt', ns).text)
     except AttributeError:
         pass
     
     try:
-        dict['Amt'] =  root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:ColltnAmt', ns).text
+        dict['Amt'] =  Decimal(root.find('./ns:MndtAccptncRpt/ns:UndrlygAccptncDtls/ns:OrgnlMndt/ns:OrgnlMndt/ns:ColltnAmt', ns).text)
     except AttributeError:
         pass
     
@@ -121,6 +122,7 @@ def zip2dict(zip_file):
         ack_files = []
         for file in zip.infolist():
             dict = xml2dict(zip.open(file))
+            dict['filename'] = file.filename
             ack_files.append(dict)
         print('zip2dict returning a list of ' + str(len(ack_files)) + ' dicts.')
         return ack_files

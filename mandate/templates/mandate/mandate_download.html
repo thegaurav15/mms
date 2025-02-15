@@ -16,7 +16,6 @@
           <th scope="col">Debtor Name</th>
           <th scope="col">Debtor Bank</th>
           <th scope="col">Debtor Acc No.</th>
-          <th scope="col">UMRN</th>
           <th scope="col">Amount</th>
           <th scope="col">D/L</th>
         </tr>
@@ -25,10 +24,9 @@
           {% for m in mandates %}
           <tr>
               <td scope="row"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-              <td>{{m.name_of_debtor_account_holder}}</td>
+              <td>{{m.debtor_name}}</td>
               <td>{{m.debtor_bank}}</td>
-              <td>{{m.debtor_legal_account_number}}</td>
-              <td>{{m.umrn}}</td>
+              <td>{{m.debtor_acc_no}}</td>
               <td>{{m.amount|intcomma}}</td>
               <td><input type="checkbox" value="{{m.id}}" name="download"></td>
           </tr>

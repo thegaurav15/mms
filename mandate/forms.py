@@ -18,6 +18,7 @@ class MandateForm(ModelForm):
 	# frequency = forms.ChoiceField(choices=Mandate.frequency_choices, widget = forms.Select(attrs=attrs_bs))
 	debtor_bank = forms.ModelChoiceField(DebtorBank.objects.all(), empty_label="", widget = forms.Select(attrs=attrs_bs_search))
 	debtor_acc_type = forms.ChoiceField(choices=Mandate.acc_type_choices, widget = forms.Select(attrs=attrs_bs))
+	debit_date = forms.ChoiceField(choices=Mandate.debit_date_choices, widget = forms.Select(attrs=attrs_bs), label='Date of EMI Collection')
 
 	class Meta:
 		model = Mandate
@@ -28,6 +29,7 @@ class MandateForm(ModelForm):
 			"start_date",
 			"end_date",
 			"amount",
+			"debit_date",
 			"debtor_name",
 			"debtor_joint",
 			"debtor_name_2",
@@ -65,4 +67,4 @@ class MandateImageForm(ModelForm):
 		]
 
 class NpciAck(Form):
-    file = forms.FileField()
+    file = forms.FileField(widget=forms.FileInput(attrs={'accept': 'application/zip'}))

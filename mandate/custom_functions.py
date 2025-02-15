@@ -42,3 +42,35 @@ def presentation_object_factory(npci_username):
     )
 
     return presentation_obj
+
+def process_ack(file):
+    print('Processing NPCI ACK File inside function', file['filename'])
+    try:
+        p = Presentation.objects.get(npci_MsgId = file['OriginalMsgId'])
+    except Presentation.DoesNotExist:
+        print('Not found', file['OriginalMsgId'])
+        return
+
+    # print(p.mandate.date == file['Dt'])
+    # print(p.mandate.start_date == file['FrstColltnDt'])
+    # print(p.mandate.end_date == file['FnlColltnDt'])
+    # print(p.mandate.amount == file['Amt'])
+    # print(p.mandate.debtor_name == file['DbtrName'])
+    # print(p.mandate.debtor_acc_no == file['DbtrAcct'])
+    # print(p.mandate.debtor_acc_type == file['DbtrAcctType'])
+    # print(p.mandate.debtor_acc_ifsc == file['DbtrAcctIFSC'])
+
+    if p.npci_upload_time:
+        print('already updated')
+        return
+    p.npci_upload_time = file['AcqCreDtTm']
+    if file['Accptd'] == 'true':
+        p.npci_umrn = file['UMRN']
+        print('UMRN updated', file['UMRN'])
+    elif file['Accptd'] == 'false':
+        p.npci_upload_error = file['Error']
+        print('Error updated', file['Error'])
+    else:
+        print('Accpd other than true/false')
+    p.save()
+    print('Presentation object saved.')

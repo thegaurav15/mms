@@ -46,6 +46,14 @@ class Mandate(models.Model):
 		('Other', 'Other'),
 	]
 
+	debit_date_choices = [
+		(None, ''),
+		('3', '3rd day of month'),
+		('11', '11th day of month'),
+		('19', '19th day of month'),
+		('26', '26th day of month'),
+	]
+
 	#mandatory mandate fields
 	seq_no = models.IntegerField(default=0)
 	ref = models.CharField(max_length=35, null=False)
@@ -72,6 +80,7 @@ class Mandate(models.Model):
 	mandate_file = models.FileField(null=True, blank=True, verbose_name='Mandate File')
 	phone = models.CharField(max_length=10, null=True, blank=True, validators=[phone_validator], verbose_name='Customer Mobile No.')
 	email = models.EmailField(null=True, blank=True, verbose_name='Customer EMail ID')
+	debit_date = models.CharField(max_length=2, choices=debit_date_choices, verbose_name='Date of EMI Collection')
 
 	credit_account = models.CharField(max_length=100, verbose_name='Credit Account', help_text="The loan/other account in SHGB in which the installment is to be credited.")
 

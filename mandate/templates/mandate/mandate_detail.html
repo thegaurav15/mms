@@ -75,6 +75,33 @@
 		{% endif %}
 	</div>
 
+	<!-- List of presentations -->
+	{% if presentation %}
+	<h6>Mandate presentations on NPCI portal</h6>
+	<table class="table table-sm">
+		<thead>
+		  <tr>
+			<th scope="col">UMRN</th>
+			<th scope="col">Presentation Time</th>
+			<th scope="col">Status</th>
+			<th scope="col">Reason</th>
+			<th scope="col">Error</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  {% for p in mandate.presentation_set.all %}
+		  <tr>
+			<th scope="row">{{p.npci_umrn}}</th>
+			<td>{{p.npci_upload_time|date:"d-m-Y g:i:s A"}}</td>
+			<td>{{p.npci_status}}</td>
+			<td>{{p.npci_reason_code}}</td>
+			<td>{{p.npci_upload_error}}</td>
+		  </tr>
+		  {% endfor %}
+		</tbody>
+	  </table>
+	{% endif %}
+
 	<div class="mandate-details">
 		<div>	
 			<div class="key">Seq No/Ref.</div>
@@ -96,13 +123,16 @@
 			<div class="value">{{mandate.frequency}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'date'}}</div>
-			<div class="value">{{mandate.date}}</div>
+			<div class="value">{{mandate.date|date:"d-m-Y"}}</div>
 
 			<div class="key">{{mandate|verbose_name:'start_date'}}</div>
-			<div class="value">{{mandate.start_date}}</div>
+			<div class="value">{{mandate.start_date|date:"d-m-Y"}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'end_date'}}</div>
-			<div class="value">{{mandate.end_date}}</div>
+			<div class="value">{{mandate.end_date|date:"d-m-Y"}}</div>
+
+			<div class="key">{{mandate|verbose_name:'debit_date'}}</div>
+			<div class="value">{{mandate.get_debit_date_display}}</div>
 		</div>
 
 
@@ -118,6 +148,9 @@
 	
 			<div class="key">{{mandate|verbose_name:'debtor_acc_no'}}</div>
 			<div class="value">{{mandate.debtor_acc_no}}</div>
+
+			<div class="key">{{mandate|verbose_name:'debtor_acc_ifsc'}}</div>
+			<div class="value">{{mandate.debtor_acc_ifsc}}</div>
 	
 			<div class="key">{{mandate|verbose_name:'credit_account'}}</div>
 			<div class="value">{{mandate.credit_account}}</div>
@@ -126,13 +159,13 @@
 			<div class="value">{{mandate.create_user}}</div>
 
 			<div class="key">create_time</div>
-			<div class="value">{{mandate.create_time}}</div>
+			<div class="value">{{mandate.create_time|date:"d-m-Y g:i:s A"}}</div>
 
 			<div class="key">submit_user</div>
 			<div class="value">{{mandate.submit_user}}</div>
 
 			<div class="key">submit_time</div>
-			<div class="value">{{mandate.submit_time}}</div>
+			<div class="value">{{mandate.submit_time|date:"d-m-Y g:i:s A"}}</div>
 
 		</div>
 	</div>

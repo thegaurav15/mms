@@ -19,8 +19,8 @@ from .custom_functions import *
 # Create your views here.
 
 def index(request):
-	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
-	mandates_pending_image = Mandate.objects.filter(Q(mandate_image__isnull=True) | Q(mandate_image__exact = ''))
+	mandates = Mandate.objects.exclude(mandate_image__exact = '')
+	mandates_pending_image = Mandate.objects.filter(mandate_image__exact = '')
 	context = {"mandates": mandates, "mandates_pending_image": mandates_pending_image}
 	return render(request, "mandate/index.html", context)
 
@@ -75,7 +75,14 @@ def mandate_detail(request, id):
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 	else:
 		form = MandateImageForm(instance=mandate)
-	return render(request, "mandate/mandate_detail.html", {"mandate": mandate, "form": form})
+
+	context = {"mandate": mandate, "form": form}
+	
+	if mandate.mandate_image:
+		presentation = mandate.presentation_set.exclude(npci_upload_time__exact = None)
+		context['presentation'] = presentation
+	
+	return render(request, "mandate/mandate_detail.html", context)
 
 
 def mandate_print(request, id):
@@ -124,19 +131,10 @@ def mandate_download(request):
 			)
 			return response
 
-	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
+	mandates = Mandate.objects.filter(Q(presentation__npci_upload_time=None)^Q(mandate_image=''))
 	context = {"mandates": mandates}
 	return render(request, "mandate/mandate_download.html", context)
 
-
-# def test_form(request):
-# 	if request.method == 'POST':
-# 		for item in request.POST.getlist('name'):
-# 			print(item)
-# 		print(request.FILES)
-# 		for file in request.FILES:
-# 			print(file, request.FILES[file])
-# 	return render(request, "mandate/test_form.html")
 
 def test_form(request):
 	if request.method == "POST":
@@ -146,7 +144,7 @@ def test_form(request):
 			file = request.FILES['file']
 			ack_files = zip2dict(file)
 			for f in ack_files:
-				print(f)
+				process_ack(f)
 		
 	else:
 		form = NpciAck()

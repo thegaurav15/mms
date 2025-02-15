@@ -23,6 +23,16 @@ span.classList.add('text-danger');
 span.innerHTML = ' *';
 d2.parentElement.parentElement.querySelector('label').append(span);
 
+//creating amount subtext
+let amtCont = document.createElement('div');
+let amtSub = document.createElement('small');
+amtSub.classList.add('form-text', 'text-muted');
+amtCont.append(amtSub);
+id_amount.after(amtCont);
+amtCont.style.cssText = 'overflow:hidden;transition:all 0.3s';
+amtCont.style.height = '0px';
+
+
 function validIcon(elem) {
     if (elem.value == '') {
         resetValidIcon(elem);
@@ -131,3 +141,14 @@ function jointToggle(checked) {
         ct_d3.style.display = 'none';
     };
 }
+
+id_amount.addEventListener('change', function(e) {
+    if (e.target.value == '') {
+        amtCont.style.height = 0;
+        return;
+    } 
+    amtSub.innerText = e.target.value;
+    let rect = amtSub.getBoundingClientRect();
+    let compStyle = getComputedStyle(amtSub);
+    amtCont.style.height = Number(compStyle.marginTop.slice(0, compStyle.marginTop.indexOf('px'))) + Number(compStyle.marginBottom.slice(0, compStyle.marginTop.indexOf('px'))) + rect.height + 'px';
+});
