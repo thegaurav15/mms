@@ -142,12 +142,27 @@ function jointToggle(checked) {
     };
 }
 
+function currency(str) {
+	function comma(str) {
+		if (str.length <= 2) return str;
+		else return comma(str.slice(0, -2)) + ',' + str.slice(-2)
+	}
+
+	p = str.indexOf('.');
+	if (p == -1) {
+		return comma(str.slice(0, -1)) + str.slice(-1) + '.00';
+	} else {
+		return comma(str.slice(0, p-1)) + str.slice(p-1, p+1) + str.slice(p+1).padEnd(2, '0');
+	}
+}
+
 id_amount.addEventListener('change', function(e) {
-    if (e.target.value == '') {
+    if (e.target.value == '' || !e.target.checkValidity()) {
+        amtSub.innerText = '';
         amtCont.style.height = 0;
         return;
     } 
-    amtSub.innerText = e.target.value;
+    amtSub.innerText = '₹ ' + currency(e.target.value);
     let rect = amtSub.getBoundingClientRect();
     let compStyle = getComputedStyle(amtSub);
     amtCont.style.height = Number(compStyle.marginTop.slice(0, compStyle.marginTop.indexOf('px'))) + Number(compStyle.marginBottom.slice(0, compStyle.marginTop.indexOf('px'))) + rect.height + 'px';

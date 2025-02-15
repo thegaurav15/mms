@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 phone_validator = RegexValidator(
-	regex = '^\d{10}$',
+	regex = r'^\d{10}$',
 	code = 'invalid_phone',
 	message = 'The phone number is invalid'
 )
