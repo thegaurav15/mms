@@ -11,6 +11,49 @@ phone_validator = RegexValidator(
 	message = 'The phone number is invalid'
 )
 
+class Office(models.Model):
+	type_choices = [
+		('BO', 'Branch'),
+		('RO', 'Regional Office'),
+		('HO', 'Head Office'),
+	]
+
+	region_choices = (
+		('AMB', 'Ambala'),
+		('BHI', 'Bhiwani'),
+		('FTH', 'Fatehbad'),
+		('GGN', 'Gurgaon'),
+		('HIS', 'Hisar'),
+		('KTL', 'Kaithal'),
+		('MDG', 'Mahendergarh'),
+		('NUH', 'Nuh'),
+		('PPT', 'Panipat'),
+		('RWR', 'Rewari'),
+		('RTK', 'Rohtak'),
+	)
+
+	type = models.CharField(max_length=2, choices=type_choices)
+	region = models.CharField(max_length=50, null=True, blank=True, choices=region_choices)
+	sol_id = models.CharField(max_length=4)
+	name = models.CharField(max_length=350)
+
+	def __str__(self):
+		return self.sol_id + ': ' + self.name
+
+	class Meta:
+		constraints = [
+			UniqueConstraint(
+				name = 'office_sol_unique',
+				fields = ["sol_id"]
+			),
+			CheckConstraint(
+				check = (Q(type__exact = 'HO') | Q(region__isnull = False)),
+				name = 'region_mandatory',
+				violation_error_message='Please select a region name.'
+			)
+		]
+
+
 class DebtorBank(models.Model):
 	name = models.CharField(max_length=400)
 	is_deleted = models.BooleanField(default=False)
@@ -77,13 +120,12 @@ class Mandate(models.Model):
 	creditor_bank = models.CharField(max_length=300, default="SARVA HARYANA GRAMIN BANK", verbose_name='Creditor Bank')
 	creditor_utility_code = models.CharField(max_length=100, default="HGBX00002000017848", verbose_name='Creditor Utility Code')
 	mandate_image = models.ImageField(upload_to="mandate/images/mandate/", null=True, verbose_name='Mandate Image')
-	mandate_file = models.FileField(null=True, blank=True, verbose_name='Mandate File')
-	phone = models.CharField(max_length=10, null=True, blank=True, validators=[phone_validator], verbose_name='Customer Mobile No.')
-	email = models.EmailField(null=True, blank=True, verbose_name='Customer EMail ID')
 	debit_date = models.CharField(max_length=2, choices=debit_date_choices, verbose_name='Date of EMI Collection')
-
 	credit_account = models.CharField(max_length=100, verbose_name='Credit Account', help_text="The loan/other account in SHGB in which the installment is to be credited.")
 
+	phone = models.CharField(max_length=10, null=True, blank=True, validators=[phone_validator], verbose_name='Customer Mobile No.')
+	email = models.EmailField(null=True, blank=True, verbose_name='Customer EMail ID')
+	
 	#other model fields to manage flow
 	create_time = models.DateTimeField(null=True)
 	create_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="create", null=True)
@@ -112,6 +154,10 @@ class Mandate(models.Model):
     			check = Q(start_date__gte = F("date")),
     			name = "startDate_gte_date",
 				violation_error_message = '"Start Date" can not be before the "Date of Mandate"',
+			),
+			UniqueConstraint(
+				name = 'mandate_ref_unique',
+				fields = ["ref"]
 			)
 		]
 

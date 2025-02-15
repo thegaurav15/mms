@@ -27,11 +27,14 @@
 <body>
 	<div class="topbar no-print">
 		{% block topbar %}
-		
-		<a class="topbar-item" href="/mandates/">Home</a>
-		<a class="topbar-item" href="/mandates/create/">New Mandate</a>
-		<a class="topbar-item" href="/mandates/download/">Download Mandate</a>
-		
+		<div class="topbar-left">
+			<a class="topbar-item" href="/mandates/">Home</a>
+			<a class="topbar-item" href="/mandates/create/">New Mandate</a>
+			<a class="topbar-item" href="/mandates/download/">Download Mandate</a>
+		</div>
+		<div class="topbar-right">
+			<div class="topbar-item">{{request.user}}</div>
+		</div>
 		{% endblock %}
 	</div>
 	

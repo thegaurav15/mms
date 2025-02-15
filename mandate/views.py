@@ -15,10 +15,8 @@ from django.core import serializers
 from .custom_functions import *
 
 
-
-# Create your views here.
-
 def index(request):
+	print(request.user.userextended.office)
 	mandates = Mandate.objects.exclude(mandate_image__exact = '')
 	mandates_pending_image = Mandate.objects.filter(mandate_image__exact = '')
 	context = {"mandates": mandates, "mandates_pending_image": mandates_pending_image}
