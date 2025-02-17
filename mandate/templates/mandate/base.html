@@ -34,6 +34,10 @@
 		</div>
 		<div class="topbar-right">
 			<div class="topbar-item">{{request.user}}</div>
+			<form id="logout-form" style="display:inline-grid;" method="post" action="{% url 'authentication:logout' %}">
+				{% csrf_token %}
+				<button class="topbar-item" type="submit">Logout</button>
+			</form>
 		</div>
 		{% endblock %}
 	</div>
