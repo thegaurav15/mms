@@ -1,12 +1,13 @@
 from django.forms import ModelForm, Form
 from django import forms
-from .models import Mandate, DebtorBank
+from .models import Mandate, DebtorBank, Office
 from django.contrib.admin.widgets import AdminDateWidget
 
 attrs_bs = {
 	'class': 'selectpicker',
 	'data-width':'100%',
 	'data-style':'',
+	'data-size': "8",
 	'data-style-base': 'form-control'
 }
 
@@ -19,12 +20,14 @@ class MandateForm(ModelForm):
 	debtor_bank = forms.ModelChoiceField(DebtorBank.objects.all(), empty_label="", widget = forms.Select(attrs=attrs_bs_search))
 	debtor_acc_type = forms.ChoiceField(choices=Mandate.acc_type_choices, widget = forms.Select(attrs=attrs_bs))
 	debit_date = forms.ChoiceField(choices=Mandate.debit_date_choices, widget = forms.Select(attrs=attrs_bs), label='Date of EMI Collection')
+	office = forms.ModelChoiceField(None, empty_label="", widget = forms.Select(attrs=attrs_bs_search), label="Branch")
 
 	class Meta:
 		model = Mandate
 		fields = [
 			# "debit_type",
 			# "frequency",
+			"office",
 			"date",
 			"start_date",
 			"end_date",
@@ -56,7 +59,10 @@ class MandateForm(ModelForm):
 			"phone": forms.TextInput(attrs={'class': 'form-control', 'pattern': r'\d{10}'}),
 			"email": forms.TextInput(attrs={'class': 'form-control', 'type': 'email'}),
 		}
-
+	
+	def __init__(self, queryset, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields["office"].queryset = queryset
 
 class MandateImageForm(ModelForm):
 

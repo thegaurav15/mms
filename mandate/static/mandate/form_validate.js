@@ -72,7 +72,7 @@ function resetValidIcon(elem) {
 }
 
 form.addEventListener('change', function(e) {
-    // console.log(e.target.id);
+    console.log('(change) Target: ' + e.target.id);
     if (e.target.name == 'debtor_joint') {
         jointToggle(e.target.checked);
         return;

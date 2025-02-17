@@ -60,6 +60,9 @@ class DebtorBank(models.Model):
 
 	def __str__(self):
 		return self.name
+	
+	class Meta:
+		ordering = ["name"]
 
 class Mandate(models.Model):
 	debit_type_choices = [
@@ -100,6 +103,7 @@ class Mandate(models.Model):
 	#mandatory mandate fields
 	seq_no = models.IntegerField(default=0)
 	ref = models.CharField(max_length=35, null=False)
+	office = models.ForeignKey(Office, on_delete=models.PROTECT)
 	currency = models.CharField(max_length=5, default='INR', verbose_name='Currency')
 	debit_type = models.CharField(max_length=1, choices=debit_type_choices, default='F', verbose_name='Debit Type')
 	amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Installment Amount')
