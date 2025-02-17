@@ -74,3 +74,12 @@ def process_ack(file):
         print('Accpd other than true/false')
     p.save()
     print('Presentation object saved.')
+
+def get_queryset(office):
+    queryset = Office.objects.filter(type='BO')
+    if office.type == 'RO':
+        return queryset.filter(region = office.region)
+    elif office.type == 'BO':
+        return queryset.filter(sol_id = office.sol_id)
+    else:
+        return queryset

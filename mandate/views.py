@@ -41,8 +41,9 @@ def paginate_api(request, page):
 	return JsonResponse(items, safe=False)
 
 def mandate_create(request):
+	office = request.user.userextended.office
 	if request.method == 'POST':
-		form = MandateForm(request.POST, queryset = Office.objects.all())
+		form = MandateForm(request.POST, office = office)
 		if form.is_valid():
 			#save form
 			mandate = form.save()
@@ -56,7 +57,7 @@ def mandate_create(request):
 			mandate.save()
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 	else:
-		form = MandateForm(queryset = Office.objects.filter(type='BO'))
+		form = MandateForm(office = office)
 	return render(request, "mandate/mandate_form.html", {"form": form})
 
 def mandate_detail(request, id):
