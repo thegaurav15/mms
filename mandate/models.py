@@ -148,6 +148,9 @@ class Mandate(models.Model):
 	def set_ref(self):
 		self.ref = 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
 
+	def get_st(self):
+		return self.presentation_set.latest().get_st()
+
 	def __str__ (self):
 		return str(self.id)
 	
@@ -176,6 +179,7 @@ class Zip(models.Model):
 		return self.filename
 	
 	class Meta:
+		get_latest_by = ["date", "seq_no"]
 		ordering = ["date", "seq_no"]
 		constraints = [
 			UniqueConstraint(
@@ -303,7 +307,18 @@ class Presentation(models.Model):
 		
 		return status
 	
+	def get_st(self):
+		if self.npci_upload_time == None:
+			return 'New'
+		elif self.npci_upload_error != None:
+			return 'Error'
+		elif self.npci_status == None:
+			return 'NPCI'
+		else:
+			return self.npci_status
+
 	class Meta:
+		get_latest_by = ["date", "seq_no"]
 		ordering = ["date", "seq_no"]
 		constraints = [
 			UniqueConstraint(
