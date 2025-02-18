@@ -148,8 +148,8 @@ class Mandate(models.Model):
 	def set_ref(self):
 		self.ref = 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
 
-	def get_st(self):
-		return self.presentation_set.latest().get_st()
+	def get_status(self):
+		return self.presentation_set.latest().get_status()
 
 	def __str__ (self):
 		return str(self.id)
@@ -279,29 +279,35 @@ class Presentation(models.Model):
 	def __str__(self):
 		return self.filename_prefix
 	
-	@property
 	def get_status(self):
 		status = {}
 		if self.npci_upload_time == None:
+			status['short'] = 'New'
 			status['message'] = "The mandate has been submitted and pending at HO:DBD"
 			status['class'] = "secondary"
 		
 		elif self.npci_upload_error != None:
+			status['short'] = 'Error'
 			status['message'] = "Error: " + self.npci_upload_error
 			status['class'] = "danger"
 		
 		elif self.npci_status == None:
+			status['short'] = 'NPCI'
 			status['message'] = "Mandate uploaded at NPCI portal"
-			status['class'] = "info"
+			status['class'] = "secondary"
 		
 		elif self.npci_status == 'Active':
+			status['short'] = 'Active'
 			status['message'] = "Mandate has been accepted by the debtor bank"
 			status['class'] = "success"
+		
 		elif self.npci_status == 'Rejected':
+			status['short'] = 'Rejected'
 			status['message'] = "Rejected - " + self.npci_reason_code + ' - ' + self.npci_codes[self.npci_reason_code]
 			status['class'] = "danger"
 		
 		else:
+			status['short'] = 'Unknown'
 			status['message'] = "Status unknown. Contact HO:DBD"
 			status['class'] = "dark"
 		

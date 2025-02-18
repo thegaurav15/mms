@@ -56,7 +56,7 @@
             <td>{{m.debtor_bank}}</td>
             <td>{{m.debtor_acc_no}}</td>
             <td>{{m.credit_account}}</td>
-            <td>{{m.get_st}}</td>
+            <td class="text-{{m.get_status.class}}">{{m.get_status.short}}</td>
             <td class="text-right">{{m.amount|intcomma}}</td>
         </tr>
         {% endfor %}
