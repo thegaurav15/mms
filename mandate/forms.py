@@ -61,11 +61,10 @@ class MandateForm(ModelForm):
 			"email": forms.TextInput(attrs={'class': 'form-control', 'type': 'email'}),
 		}
 	
-	def __init__(self, office, *args, **kwargs):
+	def __init__(self, branch, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.fields["office"].queryset = get_queryset(office)
-		# if office.type == 'BO':
-		# 	self.fields["office"].widget = forms.Select(attrs={'default': '7', 'readonly': 'true'})
+		print(branch)
+		self.fields["office"].queryset = get_queryset(branch)
 
 class MandateImageForm(ModelForm):
 

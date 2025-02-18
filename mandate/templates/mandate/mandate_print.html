@@ -28,7 +28,7 @@
 		<div class="dates" style="justify-self: right;">
 			<div class="text" style="justify-self: right;">Date</div>
 			<div class="date-container">
-				{% for char in mandate.start_date|date:"dmY" %}
+				{% for char in mandate.date|date:"dmY" %}
 				<div class="date-char">{{char}}</div>
 				{% endfor %}
 			</div>
