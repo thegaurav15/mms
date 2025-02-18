@@ -1,0 +1,23 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'mandate/test.css' %}">
+<link rel="stylesheet" href="{% static 'mandate/testpdf.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>NPCI Status upload</h1>
+<form action="{% url 'mandate:npcistatus' %}" method="post" enctype="multipart/form-data">
+
+	{% csrf_token %}
+
+    {{form}}
+
+    <button type="submit">Submit</button>
+
+</form>
+
+{% endblock %}

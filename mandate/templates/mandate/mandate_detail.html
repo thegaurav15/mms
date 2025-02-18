@@ -79,23 +79,19 @@
 	{% if presentation %}
 	<h6>Mandate presentations on NPCI portal</h6>
 	<table class="table table-sm">
-		<thead>
+		<thead class="thead-light">
 		  <tr>
 			<th scope="col">UMRN</th>
 			<th scope="col">Presentation Time</th>
-			<th scope="col">Status</th>
-			<th scope="col">Reason</th>
-			<th scope="col">Error</th>
+			<th scope="col">Current status</th>
 		  </tr>
 		</thead>
 		<tbody>
 		  {% for p in mandate.presentation_set.all %}
-		  <tr>
+		  <tr class="alert alert-{{p.get_status.class}}">
 			<th scope="row">{{p.npci_umrn}}</th>
 			<td>{{p.npci_upload_time|date:"d-m-Y g:i:s A"}}</td>
-			<td>{{p.npci_status}}</td>
-			<td>{{p.npci_reason_code}}</td>
-			<td>{{p.npci_upload_error}}</td>
+			<td>{{p.get_status.message}}</td>
 		  </tr>
 		  {% endfor %}
 		</tbody>

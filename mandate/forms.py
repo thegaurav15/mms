@@ -75,5 +75,8 @@ class MandateImageForm(ModelForm):
 			"mandate_image"
 		]
 
-class NpciAck(Form):
+class NpciAckForm(Form):
     file = forms.FileField(widget=forms.FileInput(attrs={'accept': 'application/zip'}))
+
+class NpciStatusForm(Form):
+    file = forms.FileField(widget=forms.FileInput(attrs={'accept': 'text/csv'}))

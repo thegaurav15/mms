@@ -9,7 +9,8 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'mandate:test' %}" method="post" enctype="multipart/form-data">
+<h1>NPCI Ack upload</h1>
+<form action="{% url 'mandate:npciack' %}" method="post" enctype="multipart/form-data">
 
 	{% csrf_token %}
 

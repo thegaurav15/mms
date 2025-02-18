@@ -1,5 +1,6 @@
 from datetime import datetime, date
 from .models import *
+import csv, io
 
 def to_midnight(d):
     return datetime(d.year, d.month, d.day)
@@ -74,6 +75,25 @@ def process_ack(file):
         print('Accpd other than true/false')
     p.save()
     print('Presentation object saved.')
+
+def process_status(file):
+    str = io.StringIO(file.read().decode('utf-8'))
+    print(str)
+    dictreader = csv.DictReader(str)
+    for res in dictreader:
+        try:
+            p = Presentation.objects.get(npci_umrn = res['UMRN'])
+            p.npci_status = res['Status']
+            try:
+                p.npci_reason_code = res['Code']
+            except KeyError:
+                print('Reason code not found')
+            p.save()
+            print('Saved', p.npci_umrn, p.npci_status, p.npci_reason_code)
+        except Presentation.DoesNotExist:
+            print('Not found: ' + res['UMRN'])
+
+
 
 def get_queryset(office):
     queryset = Office.objects.filter(type='BO')

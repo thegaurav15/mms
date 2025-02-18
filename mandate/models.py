@@ -186,6 +186,77 @@ class Zip(models.Model):
 
 
 class Presentation(models.Model):
+	npci_codes = {
+		'M093': 'Aadhaar not mapped to account number',
+		'M090': 'Aadhaar Number mismatch in X509cert and bank CBS',
+		'M089': 'Aadhaar Number mismatch in X509certfic and mandate',
+		'M037': 'Account closed',
+		'C003': 'Account closed',
+		'C004': 'Account frozen',
+		'M026': 'Account frozen or Blocked',
+		'M057': 'Account Holder Name Mismatch with CBS',
+		'C005': 'Account inoperative',
+		'M055': 'Account Inoperative',
+		'ac01': 'ACK Default Accept Reason',
+		'M007': 'Alterations require drawers authentication',
+		'M024': 'Amount in words and figures differ',
+		'M034': 'Amount of EMI more than limit allowed for the acct',
+		'M088': 'API Data mismatch with cust info and data mandate',
+		'M094': 'Appropriate NACH Mandate not uploaded',
+		'sack': 'Automatic cancel request acceptance',
+		'C002': 'Cancellation on corporate request',
+		'C001': 'Cancellation on customer request',
+		'M008': 'Company for stamp required or Wrong',
+		'M074': 'Data mismatch with image_account number',
+		'M075': 'Data mismatch with image_account type',
+		'M080': 'Data mismatch with image_amount',
+		'M035': 'Data mismatch with image_Corporate name mismatch',
+		'M079': 'Data mismatch with image_debit type',
+		'M084': 'Data mismatch with image_debtor bank name',
+		'M082': 'Data mismatch with image_end date',
+		'M077': 'Data mismatch with image_frequency',
+		'M085': 'Data mismatch with image_more than one field',
+		'M083': 'Data mismatch with image_payer name',
+		'M078': 'Data mismatch with image_period',
+		'M081': 'Data mismatch with image_start date',
+		'ncfe': 'Default forced not acknowledge acceptance reason',
+		'pc01': 'Default PreCancel reason',
+		'rv01': 'Default Revoke Reason',
+		'sp01': 'Default Suspend Reason',
+		'M006': 'Drawers authority to operate account not received',
+		'M003': 'Drawers signature differs',
+		'M050': 'Drawers signature illegible in mandate form',
+		'M049': 'Drawers signature not updated in Bank CBS',
+		'M004': 'Drawers signature required',
+		'M021': 'Duplicate mandate_first presented mandate already ',
+		'M091': 'eSign Signature is tampered or corrupt',
+		'M027': 'Image not clear',
+		'M096': 'Instrument out dated and stale',
+		'M060': 'Invalid frequency',
+		'M066': 'Joint signature required',
+		'M009': 'Mandate not in standard format',
+		'M052': 'Mandate Not Registered_Minor Account',
+		'M056': 'Mandate Not Registered_ not maintaining req balanc',
+		'M051': 'Mandate Not Registered_NRE Account',
+		'M095': 'Mandate Presented with thumb Impression',
+		'M030': 'Mandate registration not allowed for CC account',
+		'M054': 'Mandate registration not allowed for PPF account',
+		'M038': 'No such account',
+		'M036': 'Not a CBS act no.or old act no.representwithCBS no',
+		'A001': 'On customer request',
+		'M011': 'Payment stopped by attachment order',
+		'M012': 'Payment stopped by court order',
+		'M025': 'Present under proper mandate category',
+		'M023': 'Refer to the branch_KYC not completed',
+		'M032': 'Rejected as per customer confirmation',
+		'M092': 'signed Content doesnot tally with data mandate',
+		'ncex': 'TAT expired',
+		'M067': 'Thumb Impression in CBS but cust sign in mandate',
+		'M013': 'Withdrawal stopped owing to death of account holde',
+		'M015': 'Withdrawal stopped owing to insolvency of account ',
+		'M014': 'Withdrawal stopped owing to lunacy of account hold',
+	}
+
 	date = models.DateField()
 	seq_no = models.IntegerField()
 	npci_username = models.CharField(max_length=35, default = 'HGBX344857')
@@ -197,12 +268,40 @@ class Presentation(models.Model):
 	npci_upload_time = models.DateTimeField(null=True)
 	npci_umrn = models.CharField(max_length=35, null=True)
 	npci_upload_error = models.CharField(max_length=1000, null=True)
-	npci_status = models.CharField(max_length=35, null=True)
+	npci_status = models.CharField(max_length=35, null=True, choices=npci_codes)
 	npci_reason_code = models.CharField(max_length=10, null=True)
 	npci_response_time = models.DateTimeField(null=True)
 
 	def __str__(self):
 		return self.filename_prefix
+	
+	@property
+	def get_status(self):
+		status = {}
+		if self.npci_upload_time == None:
+			status['message'] = "The mandate has been submitted and pending at HO:DBD"
+			status['class'] = "secondary"
+		
+		elif self.npci_upload_error != None:
+			status['message'] = "Error: " + self.npci_upload_error
+			status['class'] = "danger"
+		
+		elif self.npci_status == None:
+			status['message'] = "Mandate uploaded at NPCI portal"
+			status['class'] = "info"
+		
+		elif self.npci_status == 'Active':
+			status['message'] = "Mandate has been accepted by the debtor bank"
+			status['class'] = "success"
+		elif self.npci_status == 'Rejected':
+			status['message'] = "Rejected - " + self.npci_reason_code + ' - ' + self.npci_codes[self.npci_reason_code]
+			status['class'] = "danger"
+		
+		else:
+			status['message'] = "Status unknown. Contact HO:DBD"
+			status['class'] = "dark"
+		
+		return status
 	
 	class Meta:
 		ordering = ["date", "seq_no"]

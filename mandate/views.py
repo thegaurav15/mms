@@ -135,10 +135,10 @@ def mandate_download(request):
 	return render(request, "mandate/mandate_download.html", context)
 
 
-def test_form(request):
+def npciAck(request):
 	if request.method == "POST":
 		print('inside request.POST')
-		form = NpciAck(request.POST, request.FILES)
+		form = NpciAckForm(request.POST, request.FILES)
 		if form.is_valid():
 			file = request.FILES['file']
 			ack_files = zip2dict(file)
@@ -146,5 +146,16 @@ def test_form(request):
 				process_ack(f)
 		
 	else:
-		form = NpciAck()
-	return render(request, "mandate/test_form.html", {"form": form})
+		form = NpciAckForm()
+	return render(request, "mandate/npci_ack.html", {"form": form})
+
+def npciStatus(request):
+	if request.method == "POST":
+		print('inside request.POST')
+		form = NpciStatusForm(request.POST, request.FILES)
+		if form.is_valid():
+			process_status(request.FILES['file'])
+		
+	else:
+		form = NpciStatusForm()
+	return render(request, "mandate/npci_status.html", {"form": form})

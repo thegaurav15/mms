@@ -14,6 +14,7 @@ urlpatterns = [
 	path("create/", views.mandate_create, name="mandate_create"),
 	path("mandate/<int:id>/", views.mandate_detail, name="mandate_detail"),
 	path("mandate/<int:id>/print/", views.mandate_print, name="mandate_print"),
-	path("test/", views.test_form, name="test"),
+	path("ack/", views.npciAck, name="npciack"),
+    path("status/", views.npciStatus, name="npcistatus"),
     path("download/", views.mandate_download, name="mandate_download"),
 ]
