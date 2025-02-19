@@ -126,7 +126,7 @@ def mandate_download(request):
 				file_zip,
 				headers={
 					"Content-Type": "application/zip",
-					"Content-Disposition": 'attachment; filename="TestZip.zip"',
+					"Content-Disposition": 'attachment; filename="' + zip_object.filename + '"',
 				},
 			)
 			return response

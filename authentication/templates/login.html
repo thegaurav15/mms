@@ -1,13 +1,35 @@
-<html>
 
-<head></head>
+<html>
+<head>
+    <style>
+        body {
+            display: grid;
+            justify-items: center;
+            justify-content: center;
+        }
+        .form-container {
+            padding: 24px;
+            width: fit-content;
+            height: fit-content;
+            border: 1px solid lightgrey;
+            border-radius: 6px;
+            display: grid;
+            justify-content: center;
+            justify-items: center;
+        }
+    </style>
+</head>
 
 <body>
+    
+    <div class="form-container">
+    <h4>SHGB NACH Outward Mandates Portal</h4>
     <form action="{% url 'authentication:login' %}" method="post">
         {% csrf_token %}
         {{form}}
         <button type="submit">Login</button>
     </form>
+</div>
 </body>
 
 </html>
