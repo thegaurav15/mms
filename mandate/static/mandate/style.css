@@ -44,7 +44,6 @@ body {
 .content {
 	display: grid;
 	justify-content: center;
-	margin-top: 72px;
 }
 
 .mandates-list {
@@ -170,4 +169,29 @@ body {
 	margin: 12px;
 	display: grid;
 	justify-content: center;
+}
+
+.topbar-form {
+	display: grid;
+	align-items: center;
+}
+
+.topbar-input {
+	border: none;
+	border-radius: 4px;
+	height: fit-content;
+	padding: 4px 6px;
+}
+
+.topbar-input:focus {
+    color: #495057;
+    background-color: #fff;
+	box-shadow: 0 0 0 .2rem rgb(249 188 188 / 58%);
+    outline: 0;
+}
+
+.topbar-input:hover {
+	border: 2px;
+	border-radius: 4px;
+	height: fit-content;
 }

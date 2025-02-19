@@ -79,3 +79,6 @@ class NpciAckForm(Form):
 
 class NpciStatusForm(Form):
     file = forms.FileField(widget=forms.FileInput(attrs={'accept': 'text/csv'}))
+
+class SearchAcc(Form):
+	account = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '14'}))

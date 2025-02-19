@@ -13,6 +13,7 @@ from djangoproject.settings import MEDIA_URL
 from django.core.paginator import Paginator
 from django.core import serializers
 from .custom_functions import *
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 def index(request):
@@ -24,13 +25,13 @@ def index(request):
 
 def paginate(request, page):
 	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
-	p = Paginator(mandates, 2)
+	p = Paginator(mandates, 50)
 	context = {"cur_page": p.page(page), "range": p.page_range}
 	return render(request, "mandate/paginate.html", context)
 
 def paginate_api(request, page):
 	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
-	p = Paginator(mandates, 2)
+	p = Paginator(mandates, 30)
 	items = serializers.serialize("json", p.page(page), fields=[
 		'name_of_debtor_account_holder',
 		'debtor_bank',
@@ -159,3 +160,15 @@ def npciStatus(request):
 	else:
 		form = NpciStatusForm()
 	return render(request, "mandate/npci_status.html", {"form": form})
+
+def searchAcc(request):
+	ctx = {}
+
+	try:
+		ctx['queryset'] = Mandate.objects.filter(credit_account__icontains = request.GET['account'])
+		form = SearchAcc(request.GET)
+	except MultiValueDictKeyError:
+		form = SearchAcc()
+
+	ctx['form'] = form
+	return render(request, "mandate/search_acc.html", ctx)

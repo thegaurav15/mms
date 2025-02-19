@@ -1,0 +1,56 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+{% load humanize %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'mandate/test.css' %}">
+<link rel="stylesheet" href="{% static 'mandate/testpdf.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Search Mandate</h1>
+<h3>By Credit Account No.</h3>
+<form action="{% url 'mandate:search_acc' %}" method="get" enctype="multipart/form-data">
+
+    {{form.account}}
+
+</form>
+
+{% if queryset.count == 0 %}
+<p>No records exist</p>
+{% endif %}
+
+{% if queryset %}
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">ID</th>
+            <th scope="col">Debtor Name</th>
+            <th scope="col">Debtor Bank</th>
+            <th scope="col">Debtor Acc No.</th>
+            <th scope="col">Credit Acc</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="text-right">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in queryset %}
+        <tr>
+            <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
+            <td>{{m.debtor_name}}</td>
+            <td>{{m.debtor_bank}}</td>
+            <td>{{m.debtor_acc_no}}</td>
+            <td>{{m.credit_account}}</td>
+            <td class="text-{{m.get_status.class}}">{{m.get_status.short}}</td>
+            <td class="text-right">{{m.amount|intcomma}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{%endif%}
+
+{% endblock %}

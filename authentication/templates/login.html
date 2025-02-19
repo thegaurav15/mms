@@ -1,5 +1,13 @@
-<form action="{% url 'authentication:login' %}" method="post">
-    {% csrf_token %}
-    {{form}}
-    <button type="submit">Login</button>
-</form>
+<html>
+
+<head></head>
+
+<body>
+    <form action="{% url 'authentication:login' %}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit">Login</button>
+    </form>
+</body>
+
+</html>

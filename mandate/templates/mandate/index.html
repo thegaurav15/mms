@@ -6,10 +6,10 @@
 
 <!-- main container start -->
 <div style="width: 1000px;">
-<!-- image upload pending -->
-<h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
-<p class="text-muted">Image is mandatory. Please upload image for final submission.</p>
-<table class="table table-sm table-hover">
+  <!-- image upload pending -->
+  <h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
+  <p class="text-muted">Image is mandatory. Please upload image for final submission.</p>
+  <table class="table table-sm">
     <thead>
       <tr>
         <th scope="col" class="text-center">ID</th>
@@ -21,22 +21,22 @@
       </tr>
     </thead>
     <tbody>
-        {% for m in mandates_pending_image %}
-        <tr>
-            <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-            <td>{{m.debtor_name}}</td>
-            <td>{{m.debtor_bank}}</td>
-            <td>{{m.debtor_acc_no}}</td>
-            <td>{{m.credit_account}}</td>
-            <td class="text-right">{{m.amount|intcomma}}</td>
-        </tr>
-        {% endfor %}
+      {% for m in mandates_pending_image %}
+      <tr>
+        <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
+        <td>{{m.debtor_name}}</td>
+        <td>{{m.debtor_bank}}</td>
+        <td>{{m.debtor_acc_no}}</td>
+        <td>{{m.credit_account}}</td>
+        <td class="text-right">{{m.amount|intcomma}}</td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
 
-<!-- image uploaded -->
-<h4><a href="1/" class="text-dark">Image uploaded and submitted ({{ mandates.count }})</a></h4>
-<table class="table table-sm table-hover">
+  <!-- image uploaded -->
+  <h4><a href="1/" class="text-dark">Image uploaded and submitted ({{ mandates.count }})</a></h4>
+  <table class="table table-sm">
     <thead>
       <tr>
         <th scope="col" class="text-center">ID</th>
@@ -49,20 +49,20 @@
       </tr>
     </thead>
     <tbody>
-        {% for m in mandates %}
-        <tr>
-            <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-            <td>{{m.debtor_name}}</td>
-            <td>{{m.debtor_bank}}</td>
-            <td>{{m.debtor_acc_no}}</td>
-            <td>{{m.credit_account}}</td>
-            <td class="text-{{m.get_status.class}}">{{m.get_status.short}}</td>
-            <td class="text-right">{{m.amount|intcomma}}</td>
-        </tr>
-        {% endfor %}
+      {% for m in mandates %}
+      <tr>
+        <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
+        <td>{{m.debtor_name}}</td>
+        <td>{{m.debtor_bank}}</td>
+        <td>{{m.debtor_acc_no}}</td>
+        <td>{{m.credit_account}}</td>
+        <td class="text-{{m.get_status.class}}">{{m.get_status.short}}</td>
+        <td class="text-right">{{m.amount|intcomma}}</td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
-</div> 
+</div>
 <!-- main container end -->
 
 {% endblock %}

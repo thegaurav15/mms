@@ -149,7 +149,14 @@ class Mandate(models.Model):
 		self.ref = 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
 
 	def get_status(self):
-		return self.presentation_set.latest().get_status()
+		try:
+			return self.presentation_set.latest().get_status()
+		except Presentation.DoesNotExist:
+			return {
+				'short': 'New',
+				'message': 'The mandate has been submitted and pending at HO:DBD',
+				'class': 'primary'
+			}
 
 	def __str__ (self):
 		return str(self.id)
@@ -282,9 +289,7 @@ class Presentation(models.Model):
 	def get_status(self):
 		status = {}
 		if self.npci_upload_time == None:
-			status['short'] = 'New'
-			status['message'] = "The mandate has been submitted and pending at HO:DBD"
-			status['class'] = "secondary"
+			raise Presentation.DoesNotExist
 		
 		elif self.npci_upload_error != None:
 			status['short'] = 'Error'
@@ -303,9 +308,11 @@ class Presentation(models.Model):
 		
 		elif self.npci_status == 'Rejected':
 			status['short'] = 'Rejected'
-			status['message'] = "Rejected - " + self.npci_reason_code + ' - ' + self.npci_codes[self.npci_reason_code]
+			status['message'] = "Rejected - " 
 			status['class'] = "danger"
-		
+			if self.npci_reason_code != None:
+				status['message'] = status['message'] + self.npci_reason_code + ' - ' + self.npci_codes[self.npci_reason_code]
+	
 		else:
 			status['short'] = 'Unknown'
 			status['message'] = "Status unknown. Contact HO:DBD"

@@ -11,30 +11,32 @@
 <!-- image uploaded -->
 <h4>Image uploaded and submitted</h4>
 <p class="text-right">Showing {{ cur_page.start_index }} - {{ cur_page.end_index }}</p>
-<table class="table table-sm table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col" class="text-center">#</th>
-        <th scope="col">Debtor Name</th>
-        <th scope="col">Debtor Bank</th>
-        <th scope="col">Debtor Acc No.</th>
-        <th scope="col">UMRN</th>
-        <th scope="col" class="text-right">Amount</th>
-      </tr>
-    </thead>
-    <tbody>
-        {% for m in cur_page %}
-        <tr>
-            <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-            <td>{{m.name_of_debtor_account_holder}}</td>
-            <td>{{m.debtor_bank}}</td>
-            <td>{{m.debtor_legal_account_number}}</td>
-            <td>{{m.umrn}}</td>
-            <td class="text-right">{{m.amount|intcomma}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-  </table>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col" class="text-center">ID</th>
+      <th scope="col">Debtor Name</th>
+      <th scope="col">Debtor Bank</th>
+      <th scope="col">Debtor Acc No.</th>
+      <th scope="col">Credit Acc</th>
+      <th scope="col">Status</th>
+      <th scope="col" class="text-right">Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for m in cur_page %}
+    <tr>
+      <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
+      <td>{{m.debtor_name}}</td>
+      <td>{{m.debtor_bank}}</td>
+      <td>{{m.debtor_acc_no}}</td>
+      <td>{{m.credit_account}}</td>
+      <td class="text-{{m.get_status.class}}">{{m.get_status.short}}</td>
+      <td class="text-right">{{m.amount|intcomma}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
       <li class="page-item {% if not cur_page.has_previous %} disabled{% endif %}">
