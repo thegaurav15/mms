@@ -312,6 +312,8 @@ class Presentation(models.Model):
 			status['class'] = "danger"
 			if self.npci_reason_code != None:
 				status['message'] = status['message'] + self.npci_reason_code + ' - ' + self.npci_codes[self.npci_reason_code]
+				status['short'] = self.npci_reason_code
+				status['title'] = self.npci_codes[self.npci_reason_code]
 	
 		else:
 			status['short'] = 'Unknown'
@@ -319,16 +321,6 @@ class Presentation(models.Model):
 			status['class'] = "dark"
 		
 		return status
-	
-	def get_st(self):
-		if self.npci_upload_time == None:
-			return 'New'
-		elif self.npci_upload_error != None:
-			return 'Error'
-		elif self.npci_status == None:
-			return 'NPCI'
-		else:
-			return self.npci_status
 
 	class Meta:
 		get_latest_by = ["date", "seq_no"]
