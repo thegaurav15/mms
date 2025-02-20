@@ -3,6 +3,8 @@
 <head>
     <style>
         body {
+            font-family: monospace;
+            grid-auto-rows: auto 1fr;
             display: grid;
             justify-items: center;
             justify-content: center;
@@ -17,14 +19,29 @@
             justify-content: center;
             justify-items: center;
         }
+        #form {
+            margin: 0;
+            display: grid;
+            grid-gap: 12px;
+        }
+        #form > div {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            font-family: monospace;
+            grid-gap: 12px;
+        }
+        #form > div > input,
+        #form > button {
+            font-family: monospace;
+        }
+
     </style>
 </head>
 
 <body>
-    
+    <h2>SHGB NACH Outward Mandates Portal</h2>
     <div class="form-container">
-    <h4>SHGB NACH Outward Mandates Portal</h4>
-    <form action="{% url 'authentication:login' %}" method="post">
+    <form id="form" action="{% url 'authentication:login' %}" method="post">
         {% csrf_token %}
         {{form}}
         <button type="submit">Login</button>

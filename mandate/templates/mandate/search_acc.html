@@ -11,12 +11,8 @@
 
 {% block content %}
 <h1>Search Mandate</h1>
-<h3>By Credit Account No.</h3>
-<form action="{% url 'mandate:search_acc' %}" method="get" enctype="multipart/form-data">
+<h5>By Credit Account No.</h5>
 
-    {{form.account}}
-
-</form>
 
 {% if queryset.count == 0 %}
 <p>No records exist</p>
