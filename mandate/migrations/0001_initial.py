@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('code', models.CharField(max_length=10)),
                 ('name', models.CharField(max_length=200)),
-                ('is_deleted', models.BinaryField(default=False)),
+                ('is_deleted', models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
-                ('is_deleted', models.BinaryField(default=False)),
+                ('is_deleted', models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=400)),
-                ('is_deleted', models.BinaryField(default=False)),
+                ('is_deleted', models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('code', models.CharField(max_length=10)),
                 ('name', models.CharField(max_length=200)),
-                ('is_deleted', models.BinaryField(default=False)),
+                ('is_deleted', models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('type', models.CharField(max_length=20)),
-                ('is_deleted', models.BinaryField(default=False)),
+                ('is_deleted', models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
-                ('is_deleted', models.BinaryField(default=False)),
+                ('is_deleted', models.BooleanField(default=False)),
             ],
         ),
     ]

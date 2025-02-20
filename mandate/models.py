@@ -180,7 +180,7 @@ class Zip(models.Model):
 	date = models.DateField()
 	seq_no = models.IntegerField()
 	npci_username = models.CharField(max_length=35, default = 'HGBX344857')
-	filename = models.CharField(max_length=35, null=True)
+	filename = models.CharField(max_length=100, null=True)
 
 	def __str__(self):
 		return self.filename
@@ -272,7 +272,7 @@ class Presentation(models.Model):
 	seq_no = models.IntegerField()
 	npci_username = models.CharField(max_length=35, default = 'HGBX344857')
 	npci_MsgId = models.CharField(max_length=35)
-	filename_prefix = models.CharField(max_length=35, null=True)
+	filename_prefix = models.CharField(max_length=100, null=True)
 	mandate = models.ForeignKey(Mandate, on_delete=models.CASCADE)
 	zip = models.ForeignKey(Zip, on_delete=models.CASCADE)
 
