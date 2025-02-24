@@ -88,10 +88,10 @@
 		</thead>
 		<tbody>
 		  {% for p in mandate.presentation_set.all %}
-		  <tr class="alert alert-{{p.get_status.class}}">
+		  <tr class="alert">
 			<th scope="row">{{p.npci_umrn}}</th>
 			<td>{{p.npci_upload_time|date:"d-m-Y g:i:s A"}}</td>
-			<td>{{p.get_status.message}}</td>
+			<td class="text-{{p.get_status.class}}">{{p.get_status.message}}</td>
 		  </tr>
 		  {% endfor %}
 		</tbody>
