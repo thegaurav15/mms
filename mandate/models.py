@@ -123,7 +123,7 @@ class Mandate(models.Model):
 	creditor_name = models.CharField(max_length=300, verbose_name='Creditor Name')
 	creditor_bank = models.CharField(max_length=300, default="SARVA HARYANA GRAMIN BANK", verbose_name='Creditor Bank')
 	creditor_utility_code = models.CharField(max_length=100, default="HGBX00002000017848", verbose_name='Creditor Utility Code')
-	mandate_image = models.ImageField(upload_to="mandate/images/mandate/", null=True, verbose_name='Mandate Image')
+	mandate_image = models.ImageField(upload_to=r"mandate/images/mandate/%Y/%m/%d/", null=True, verbose_name='Mandate Image')
 	debit_date = models.CharField(max_length=2, choices=debit_date_choices, verbose_name='Date of EMI Collection')
 	credit_account = models.CharField(max_length=100, verbose_name='Credit Account', help_text="The loan/other account in SHGB in which the installment is to be credited.")
 
