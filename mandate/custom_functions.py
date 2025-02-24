@@ -94,8 +94,8 @@ def process_status(file):
             print('Not found: ' + res['UMRN'])
 
 
-
-def get_queryset(office):
+# Getting the OFFICE queryset based on the user
+def get_office_queryset(office):
     queryset = Office.objects.filter(type='BO')
     if office.type == 'RO':
         return queryset.filter(region = office.region)
@@ -103,3 +103,13 @@ def get_queryset(office):
         return queryset.filter(sol_id = office.sol_id)
     else:
         return queryset
+    
+# Getting the MANDATE queryset based on the user
+def get_mandate_queryset(user_office):
+    queryset = Mandate.objects.filter(is_deleted = False)
+    if user_office.type == 'HO':
+        return queryset
+    if user_office.type == 'RO':
+        return queryset.filter(office__region = user_office.region)
+    elif user_office.type == 'BO':
+        return queryset.filter(office = user_office)

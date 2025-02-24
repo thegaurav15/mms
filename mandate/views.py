@@ -17,14 +17,15 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 
 def index(request):
-	# print(request.user.userextended.office)
-	mandates = Mandate.objects.exclude(mandate_image__exact = '')
-	mandates_pending_image = Mandate.objects.filter(mandate_image__exact = '')
+	base_queryset = get_mandate_queryset(request.user.userextended.office)
+	mandates = base_queryset.exclude(mandate_image__exact = '')
+	mandates_pending_image = base_queryset.filter(mandate_image__exact = '').order_by('id')
 	context = {"mandates": mandates, "mandates_pending_image": mandates_pending_image}
 	return render(request, "mandate/index.html", context)
 
 def paginate(request, page):
-	mandates = Mandate.objects.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
+	base_queryset = get_mandate_queryset(request.user.userextended.office)
+	mandates = base_queryset.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
 	p = Paginator(mandates, 50)
 	context = {"cur_page": p.page(page), "range": p.page_range}
 	return render(request, "mandate/paginate.html", context)
@@ -131,7 +132,7 @@ def mandate_download(request):
 			)
 			return response
 
-	mandates = Mandate.objects.filter(Q(presentation__npci_upload_time=None)^Q(mandate_image=''))
+	mandates = Mandate.objects.filter(Q(presentation__npci_upload_time=None)^Q(mandate_image='')).order_by('id')
 	context = {"mandates": mandates}
 	return render(request, "mandate/mandate_download.html", context)
 
@@ -162,10 +163,11 @@ def npciStatus(request):
 	return render(request, "mandate/npci_status.html", {"form": form})
 
 def searchAcc(request):
+	base_queryset = get_mandate_queryset(request.user.userextended.office)
 	ctx = {}
 
 	try:
-		ctx['queryset'] = Mandate.objects.filter(credit_account__icontains = request.GET['account'])
+		ctx['queryset'] = base_queryset.filter(credit_account__icontains = request.GET['account'])
 		form = SearchAcc(request.GET)
 	except MultiValueDictKeyError:
 		form = SearchAcc()

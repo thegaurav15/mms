@@ -162,7 +162,7 @@ class Mandate(models.Model):
 		return str(self.id)
 	
 	class Meta:
-		ordering = ["id"]
+		ordering = ["-id"]
 		constraints = [
 			CheckConstraint(
     			check = Q(start_date__gte = F("date")),

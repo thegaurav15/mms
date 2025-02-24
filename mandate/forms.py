@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Form
 from django import forms
 from .models import Mandate, DebtorBank, Office
-from .custom_functions import get_queryset
+from .custom_functions import get_office_queryset
 from django.contrib.admin.widgets import AdminDateWidget
 
 attrs_bs = {
@@ -64,7 +64,7 @@ class MandateForm(ModelForm):
 	def __init__(self, branch, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		print(branch)
-		self.fields["office"].queryset = get_queryset(branch)
+		self.fields["office"].queryset = get_office_queryset(branch)
 
 class MandateImageForm(ModelForm):
 
