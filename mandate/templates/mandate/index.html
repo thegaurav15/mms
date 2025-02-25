@@ -6,6 +6,8 @@
 
 <!-- main container start -->
 <div style="width: 1000px;">
+
+  {% if mandates_pending_image %}
   <!-- image upload pending -->
   <h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
   <p class="text-muted">Image is mandatory. Please upload image for final submission.</p>
@@ -33,6 +35,7 @@
       {% endfor %}
     </tbody>
   </table>
+  {% endif %}
 
   <!-- image uploaded -->
   <h4><a href="1/" class="text-dark">Image uploaded and submitted ({{ mandates.count }})</a></h4>
