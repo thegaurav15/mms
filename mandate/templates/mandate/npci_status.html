@@ -20,4 +20,25 @@
 
 </form>
 
+{% if messages %}
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">UMRN</th>
+            <th scope="col">Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for message in messages %}
+        <tr>
+            <td>{{message}}</td>
+            <td>{{messages|dict_value:message}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
 {% endblock %}

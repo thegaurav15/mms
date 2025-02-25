@@ -78,20 +78,42 @@ def process_ack(file):
 
 def process_status(file):
     str = io.StringIO(file.read().decode('utf-8'))
-    print(str)
     dictreader = csv.DictReader(str)
-    for res in dictreader:
+    messages = {}
+    for row in dictreader:
+        require_save = False
+        message = ''
         try:
-            p = Presentation.objects.get(npci_umrn = res['UMRN'])
-            p.npci_status = res['Status']
-            try:
-                p.npci_reason_code = res['Code']
-            except KeyError:
-                print('Reason code not found')
-            p.save()
-            print('Saved', p.npci_umrn, p.npci_status, p.npci_reason_code)
+            p = Presentation.objects.get(npci_umrn = row['UMRN'])
+            
+            if p.npci_status == None:
+                p.npci_status = row['Status']
+                require_save = True
+                message = "New status: " + p.npci_status
+            else:
+                # status already updated
+                message = "Status already updated."
+            
+            if p.npci_reason_code == None:
+                try:
+                    p.npci_reason_code = row['Code']
+                    require_save = True
+                    message = message + " New response code:" + p.npci_reason_code
+                except KeyError:
+                    message = message + " 'Code' not found in response file."
+            else:
+                message = message + " Code already updated."
+
+            if require_save:
+                p.save()
+                print('Saved', p.npci_umrn, p.npci_status, p.npci_reason_code)
+
         except Presentation.DoesNotExist:
-            print('Not found: ' + res['UMRN'])
+            message = "UMRN not found in Presentation table"
+        
+        messages[row['UMRN']] = message
+    
+    return messages
 
 
 # Getting the OFFICE queryset based on the user

@@ -152,15 +152,20 @@ def npciAck(request):
 	return render(request, "mandate/npci_ack.html", {"form": form})
 
 def npciStatus(request):
+	ctx = {}
+
 	if request.method == "POST":
 		print('inside request.POST')
 		form = NpciStatusForm(request.POST, request.FILES)
 		if form.is_valid():
-			process_status(request.FILES['file'])
-		
+			messages = process_status(request.FILES['file'])
+			ctx['messages'] = messages
+
 	else:
 		form = NpciStatusForm()
-	return render(request, "mandate/npci_status.html", {"form": form})
+
+	ctx['form'] = form	
+	return render(request, "mandate/npci_status.html", ctx)
 
 def searchAcc(request):
 	base_queryset = get_mandate_queryset(request.user.userextended.office)

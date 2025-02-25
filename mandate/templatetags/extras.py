@@ -4,12 +4,19 @@ import decimal
 register = template.Library()
 
 @register.filter()
+def dict_value(dict, key):
+    return dict[key]
+
+
+@register.filter()
 def verbose_name(object_name, field_name):
     return object_name._meta.get_field(field_name).verbose_name
+
 
 @register.filter()
 def rs_in_words(amount):
     return num2words(amount)
+
 
 def num2words(num):
     num = decimal.Decimal(num)
