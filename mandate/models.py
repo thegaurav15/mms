@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Q, F, CheckConstraint, UniqueConstraint
 from django.contrib.auth.models import User, AnonymousUser
-from datetime import datetime
+from datetime import datetime, date
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
@@ -10,6 +10,7 @@ phone_validator = RegexValidator(
 	code = 'invalid_phone',
 	message = 'The phone number is invalid'
 )
+
 
 class Office(models.Model):
 	type_choices = [
@@ -63,6 +64,7 @@ class DebtorBank(models.Model):
 	
 	class Meta:
 		ordering = ["name"]
+
 
 class Mandate(models.Model):
 	debit_type_choices = [
@@ -138,15 +140,23 @@ class Mandate(models.Model):
 	lm_time = models.DateTimeField(null=True)
 	is_deleted = models.BooleanField(default=False)
 
+	#for multiple init
+	last_init_req_time = models.DateTimeField(null=True)
+	init_count = models.IntegerField(default=0)
+
+
 	def clean(self):
 		if self.debtor_joint == True and self.debtor_name_2 is None:
 			raise ValidationError("At lease one additional account holder name required for joint account.")
 
+
 	def get_ref(self):
 		return 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
-	
+
+
 	def set_ref(self):
 		self.ref = 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
+
 
 	def get_status(self):
 		try:
@@ -158,9 +168,24 @@ class Mandate(models.Model):
 				'class': 'primary'
 			}
 
+	@property
+	def can_re_init(self):
+		if (date.today() - self.date).days > 120:
+			return False
+		if self.init_count >= 3:
+			return False
+		if self.presentation_set.filter(npci_status = 'Active').count():
+			return False
+		if self.presentation_set.filter(npci_status = 'Error').count():
+			return False
+		if self.self.presentation_set.latest().npci_status == 'Rejected':
+			return True
+
+
 	def __str__ (self):
 		return str(self.id)
-	
+
+
 	class Meta:
 		ordering = ["-id"]
 		constraints = [

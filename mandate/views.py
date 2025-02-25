@@ -8,7 +8,6 @@ from datetime import datetime, date
 from extras.mandate_image import makeJpg, makeTif
 from extras.mandate_xml import makeXml
 from extras.xml2csv import zip2dict
-from django.views.decorators.cache import never_cache
 from djangoproject.settings import MEDIA_URL
 from django.core.paginator import Paginator
 from django.core import serializers
@@ -71,6 +70,7 @@ def mandate_detail(request, id):
 			form.save()
 			mandate.submit_user = request.user
 			mandate.submit_time = datetime.now()
+			mandate.last_init_req_time = mandate.submit_time
 			mandate.save()
 			return HttpResponse(MEDIA_URL + mandate.mandate_image.name)
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
