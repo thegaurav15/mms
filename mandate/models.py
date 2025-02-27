@@ -141,17 +141,14 @@ class Mandate(models.Model):
 	is_deleted = models.BooleanField(default=False)
 
 	#for multiple init
+	init_req_flag = models.BooleanField(default = False)
 	last_init_req_time = models.DateTimeField(null=True)
-	init_count = models.IntegerField(default=0)
+	last_init_req_user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
 
 
 	def clean(self):
 		if self.debtor_joint == True and self.debtor_name_2 is None:
 			raise ValidationError("At lease one additional account holder name required for joint account.")
-
-
-	def get_ref(self):
-		return 'SHGB' + self.create_time.strftime(r'%Y%m%d') + str(self.seq_no).zfill(6)
 
 
 	def set_ref(self):
@@ -167,19 +164,35 @@ class Mandate(models.Model):
 				'message': 'The mandate has been submitted and pending at HO:DBD',
 				'class': 'primary'
 			}
+	
+	@property
+	def init_count(self):
+		return self.presentation_set.exclude(npci_upload_time__exact=None).count()
 
 	@property
-	def can_re_init(self):
+	def can_init(self):
+		if self.init_req_flag:
+			return False
+		if self.mandate_image == None:
+			return False
 		if (date.today() - self.date).days > 120:
 			return False
 		if self.init_count >= 3:
 			return False
+
 		if self.presentation_set.filter(npci_status = 'Active').count():
 			return False
 		if self.presentation_set.filter(npci_status = 'Error').count():
 			return False
-		if self.self.presentation_set.latest().npci_status == 'Rejected':
-			return True
+
+		try:
+			latest_pres = self.presentation_set.latest()
+			if latest_pres.npci_status == 'Rejected':
+				return True
+			else:
+				return False
+		except Presentation.DoesNotExist:
+			return False
 
 
 	def __str__ (self):
@@ -296,6 +309,8 @@ class Presentation(models.Model):
 	date = models.DateField()
 	seq_no = models.IntegerField()
 	init_req_time = models.DateTimeField(null=True)
+	init_req_user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+
 	npci_username = models.CharField(max_length=35, default = 'HGBX344857')
 	npci_MsgId = models.CharField(max_length=35)
 	filename_prefix = models.CharField(max_length=100, null=True)

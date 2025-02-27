@@ -64,7 +64,13 @@ def process_ack(file):
     if p.npci_upload_time:
         print('already updated')
         return
+    
     p.npci_upload_time = file['AcqCreDtTm']
+    
+    p.mandate.init_req_flag = False
+    p.mandate.save()
+    print('Init req flag updated, mandate saved.')
+
     if file['Accptd'] == 'true':
         p.npci_umrn = file['UMRN']
         print('UMRN updated', file['UMRN'])

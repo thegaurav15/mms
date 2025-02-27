@@ -7,20 +7,20 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static 'mandate/mandate_details.css' %}">{% endblock %}
 
 {% block content %}
+	<p class="mb-0">init_req_flag - {{mandate.init_req_flag}}</p>
+	<p class="mb-0">last_init_req_time - {{mandate.last_init_req_time}}</p>
+	<p class="mb-0">last_init_req_user - {{mandate.last_init_req_user}}</p>
+	<p class="mb-0">init_count - {{mandate.init_count}}</p>
 
 	{% if not mandate.mandate_image %}
 	<div class="alert alert-info text-center mb-0" role="alert">
 		You can take a printout of the pre-filled mandate form
 		<a style="font-weight: bold;" href="print">here</a>.
 	</div>
-	{% endif %}
+
 
 	<div class="status-container" id="status-container">
-		{% if mandate.mandate_image %}
-		
-		<p style="margin:0;">Image uploaded and mandate submitted successfully.</p>
-		
-		{% else %}
+
 		
 		<div id="loadingModal" style="display: none;position: absolute;left:0;top:0;bottom:0;right:0;background-color: white;opacity: 0.75;z-index: 1000;">
 			<img src="/media/mandate/static/assets/images/spinner.gif" style="
@@ -72,8 +72,9 @@
 				<button id="submitBtn" type="button" class="btn btn-primary btn-sm">Submit Image</button>
 			</div>
 		</form>
-		{% endif %}
+		
 	</div>
+	{% endif %}
 
 	<!-- List of presentations -->
 	{% if presentation %}
@@ -96,6 +97,17 @@
 		  {% endfor %}
 		</tbody>
 	  </table>
+	{% endif %}
+
+	{% if mandate.can_init %}
+	<div class="container mb-4 text-center">
+		<form class="reinit-form mb-2" action="/mandates/mandate/{{mandate.id}}/reinit_request/" method="post">
+			{% csrf_token %}
+			<button type="submit" class="btn btn-danger">Request Re-initialization</button>
+		</form>
+		<small class="text-muted row">You can request re-initialization of the rejected mandate. Maximum 3 initializations allowed as per NPCI policy.</small>
+		<small class="text-muted font-weight-bold row">Note: If you want to make ANY changes to the mandate details, please create a new mandate request instead.</small>
+	</div>
 	{% endif %}
 
 	<div class="mandate-details">

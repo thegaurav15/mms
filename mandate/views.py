@@ -70,7 +70,11 @@ def mandate_detail(request, id):
 			form.save()
 			mandate.submit_user = request.user
 			mandate.submit_time = datetime.now()
+
 			mandate.last_init_req_time = mandate.submit_time
+			mandate.last_init_req_user = mandate.submit_user
+			mandate.init_req_flag = True
+			
 			mandate.save()
 			return HttpResponse(MEDIA_URL + mandate.mandate_image.name)
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
@@ -132,7 +136,7 @@ def mandate_download(request):
 			)
 			return response
 
-	mandates = Mandate.objects.filter(Q(presentation__npci_upload_time=None)^Q(mandate_image='')).order_by('id')
+	mandates = Mandate.objects.filter(init_req_flag = True).order_by('id')
 	context = {"mandates": mandates}
 	return render(request, "mandate/mandate_download.html", context)
 
@@ -179,3 +183,12 @@ def searchAcc(request):
 
 	ctx['form'] = form
 	return render(request, "mandate/search_acc.html", ctx)
+
+def reinit_request(request, id):
+	if request.method == "POST":
+		mandate = Mandate.objects.get(id=id)
+		mandate.init_req_flag = True
+		mandate.last_init_req_time = datetime.now()
+		mandate.last_init_req_user = request.user
+		mandate.save()
+		return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
