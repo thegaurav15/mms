@@ -7,10 +7,12 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static 'mandate/mandate_details.css' %}">{% endblock %}
 
 {% block content %}
-	<p class="mb-0">init_req_flag - {{mandate.init_req_flag}}</p>
-	<p class="mb-0">last_init_req_time - {{mandate.last_init_req_time}}</p>
-	<p class="mb-0">last_init_req_user - {{mandate.last_init_req_user}}</p>
-	<p class="mb-0">init_count - {{mandate.init_count}}</p>
+	<code class="mb-0">
+		init_req_flag - {{mandate.init_req_flag}}<br>
+		last_init_req_time - {{mandate.last_init_req_time}}<br>
+		last_init_req_user - {{mandate.last_init_req_user}}<br>
+		last_init_req_user - {{mandate.last_init_req_user}}
+	</code>
 
 	{% if not mandate.mandate_image %}
 	<div class="alert alert-info text-center mb-0" role="alert">

@@ -153,7 +153,7 @@ async function uploadForm(formData) {
     
     if (response.ok) {
         let result = await response.text();
-        alert('Image uploaded successfully.\n' + result);
+        // alert('Image uploaded successfully.\n' + result);
         window.location.reload();
     } else {
         alert("HTTP-Error: " + response.status);
@@ -161,6 +161,10 @@ async function uploadForm(formData) {
 }
 
 submitBtn.onclick = async function() {
+    if (!confirm('This mandate will be submitted. Click OK to proceed.')) {
+        return;
+    }
+    
     loadingModal.style.display = 'grid';
     let formData = new FormData(form);
 
