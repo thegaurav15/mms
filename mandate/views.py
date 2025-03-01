@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import *
 from .models import *
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from django.db.models import Q
 import tempfile, zipfile
 from datetime import datetime, date
@@ -192,3 +192,11 @@ def reinit_request(request, id):
 		mandate.last_init_req_user = request.user
 		mandate.save()
 		return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
+	
+def check_mandate_by_acc_api(request):
+	acc = request.GET['account']
+	try:
+		m = Mandate.objects.get(credit_account__exact = acc)
+		return HttpResponse(m.credit_account)
+	except Mandate.DoesNotExist:
+		return HttpResponseNotFound('Not found: ' + acc)

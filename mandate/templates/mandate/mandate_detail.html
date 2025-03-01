@@ -7,12 +7,12 @@
 {% block stylesheet %}<link rel="stylesheet" href="{% static 'mandate/mandate_details.css' %}">{% endblock %}
 
 {% block content %}
-	<code class="mb-0">
-		init_req_flag - {{mandate.init_req_flag}}<br>
-		last_init_req_time - {{mandate.last_init_req_time}}<br>
-		last_init_req_user - {{mandate.last_init_req_user}}<br>
-		last_init_req_user - {{mandate.last_init_req_user}}
-	</code>
+
+	{% if mandate.init_req_flag %}
+	<div class="alert alert-warning text-center" role="alert">
+		Request submitted, pending for upload on NPCI portal.
+	</div>
+	{% endif %}
 
 	{% if not mandate.mandate_image %}
 	<div class="alert alert-info text-center mb-0" role="alert">
@@ -105,7 +105,7 @@
 	<div class="container mb-4 text-center">
 		<form class="reinit-form mb-2" action="/mandates/mandate/{{mandate.id}}/reinit_request/" method="post">
 			{% csrf_token %}
-			<button type="submit" class="btn btn-danger">Request Re-initialization</button>
+			<button type="submit" class="btn btn-danger btn-sm">Request Re-initialization</button>
 		</form>
 		<small class="text-muted row">You can request re-initialization of the rejected mandate. Maximum 3 initializations allowed as per NPCI policy.</small>
 		<small class="text-muted font-weight-bold row">Note: If you want to make ANY changes to the mandate details, please create a new mandate request instead.</small>

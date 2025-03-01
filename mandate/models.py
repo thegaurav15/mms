@@ -156,6 +156,12 @@ class Mandate(models.Model):
 
 
 	def get_status(self):
+		if self.init_req_flag:
+			return {
+				'short': 'New',
+				'message': 'The mandate has been submitted and pending at HO:DBD',
+				'class': 'primary'
+			}
 		try:
 			return self.presentation_set.latest().get_status()
 		except Presentation.DoesNotExist:

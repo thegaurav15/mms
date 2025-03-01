@@ -19,4 +19,5 @@ urlpatterns = [
     path("status/", views.npciStatus, name="npcistatus"),
     path("download/", views.mandate_download, name="mandate_download"),
     path("searchacc/", views.searchAcc, name="search_acc"),
+    path("create/checkacc/", views.check_mandate_by_acc_api, name="checkacc"),
 ]

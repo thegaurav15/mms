@@ -169,8 +169,15 @@ submitBtn.onclick = async function() {
     let formData = new FormData(form);
 
     if (form.previousSibling == uncropped) {
-        //upload original image
-        uploadForm(formData);
+        
+        if (uncropped.tagName == 'IMG') {
+            uploadForm(formData);
+        } else if (uncropped.tagName == 'CANVAS') {
+            uncropped.toBlob(function(blob) {
+                formData.set("mandate_image", blob, ref.innerText + "_pdf_uncropped.png");
+                uploadForm(formData);
+            }, 'image/png');
+        }
     }
 
     else if (form.previousSibling == croppedCanvas) {

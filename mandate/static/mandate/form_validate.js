@@ -168,3 +168,20 @@ id_amount.addEventListener('change', function(e) {
     let compStyle = getComputedStyle(amtSub);
     amtCont.style.height = Number(compStyle.marginTop.slice(0, compStyle.marginTop.indexOf('px'))) + Number(compStyle.marginBottom.slice(0, compStyle.marginTop.indexOf('px'))) + rect.height + 'px';
 });
+
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (!confirm('The details will not be changed after submission. Are you sure you want to submit the mandate details?')) {
+        return;
+    }
+    acc = id_credit_account.value;
+	let req = await fetch(`http://127.0.0.1:8001/mandates/create/checkacc/?account=${acc}`);
+	if (req.ok) {
+		if (confirm(`A mandate is already submitted for this account: ${acc}.\nDo you want to create another mandate?`)) {
+			e.target.submit();
+		}
+	} else {
+		e.target.submit();
+	}
+
+});
