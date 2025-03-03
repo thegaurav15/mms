@@ -1,5 +1,31 @@
+body {
+    position: relative;
+}
+
 .joint-container {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-gap: 12px;
+}
+
+.modal-main {
+    background-color: rgba(150,150,150,0.4);
+    display: grid;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    justify-items: center;
+    align-items: center;
+    backdrop-filter: blur(1px);
+}
+
+.modal-container {
+    background-color: white;
+    display: grid;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 6px;
+    box-shadow: rgba(100, 100, 100, 0.3) 1px 1px 12px 2px;
 }

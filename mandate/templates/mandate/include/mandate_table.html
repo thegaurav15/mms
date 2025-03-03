@@ -1,17 +1,11 @@
-{% extends "mandate/base.html" %}
+<!--
+This template takes the following context: 
+Queryset named 'mandates' that contains the mandates for which the data is to be displayed
+-->
 
 {% load humanize %}
 
-{% block content %}
-
-<!-- main container start -->
-<div style="width: 1000px;">
-
-  {% if mandates_pending_image %}
-  <!-- image upload pending -->
-  <h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
-  <p class="text-muted">Image is mandatory. Please upload image for final submission.</p>
-  <table class="table table-sm">
+<table class="table table-sm">
     <thead>
       <tr>
         <th scope="col" class="text-center">ID</th>
@@ -19,28 +13,21 @@
         <th scope="col">Debtor Bank</th>
         <th scope="col">Debtor Acc No.</th>
         <th scope="col">Credit Acc</th>
+        <th scope="col">Status</th>
         <th scope="col" class="text-right">Amount</th>
       </tr>
     </thead>
     <tbody>
-      {% for m in mandates_pending_image %}
+      {% for m in mandates %}
       <tr>
         <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
         <td>{{m.debtor_name}}</td>
         <td>{{m.debtor_bank}}</td>
         <td>{{m.debtor_acc_no}}</td>
         <td>{{m.credit_account}}</td>
+        <td class="text-{{m.get_status.class}}"{% if m.get_status.title %} title="{{m.get_status.title}}"{% endif %}>{{m.get_status.short}}</td>
         <td class="text-right">{{m.amount|intcomma}}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-  {% endif %}
-
-  <!-- image uploaded -->
-  <h4><a href="1/" class="text-dark">Image uploaded and submitted ({{ mandates.count }})</a></h4>
-  {% include './include/mandate_table.html' %}
-</div>
-<!-- main container end -->
-
-{% endblock %}

@@ -10,47 +10,24 @@
 
 <!-- image uploaded -->
 <h4>Image uploaded and submitted</h4>
-<p class="text-right">Showing {{ cur_page.start_index }} - {{ cur_page.end_index }}</p>
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th scope="col" class="text-center">ID</th>
-      <th scope="col">Debtor Name</th>
-      <th scope="col">Debtor Bank</th>
-      <th scope="col">Debtor Acc No.</th>
-      <th scope="col">Credit Acc</th>
-      <th scope="col">Status</th>
-      <th scope="col" class="text-right">Amount</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for m in cur_page %}
-    <tr>
-      <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-      <td>{{m.debtor_name}}</td>
-      <td>{{m.debtor_bank}}</td>
-      <td>{{m.debtor_acc_no}}</td>
-      <td>{{m.credit_account}}</td>
-      <td class="text-{{m.get_status.class}}">{{m.get_status.short}}</td>
-      <td class="text-right">{{m.amount|intcomma}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<p class="text-right">Showing {{ mandates.start_index }} - {{ mandates.end_index }}</p>
+
+{% include './include/mandate_table.html' %}
+
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-      <li class="page-item {% if not cur_page.has_previous %} disabled{% endif %}">
-        {% if cur_page.has_previous %}<a class="page-link" href="../{{cur_page.previous_page_number}}/">
+      <li class="page-item {% if not mandates.has_previous %} disabled{% endif %}">
+        {% if mandates.has_previous %}<a class="page-link" href="../{{mandates.previous_page_number}}/">
         {% else %} <a class="page-link" href="#">
         {% endif %}Previous</a>
       </li>
       
       {% for i in range %}
-      <li class="page-item {% if i == cur_page.number %} disabled font-weight-bold{% endif %}"><a class="page-link" href="../{{i}}/">{{i}}</a></li>
+      <li class="page-item {% if i == mandates.number %} disabled font-weight-bold{% endif %}"><a class="page-link" href="../{{i}}/">{{i}}</a></li>
       {% endfor %}
       
-      <li class="page-item {% if not cur_page.has_next %} disabled{% endif %}">
-        {% if cur_page.has_next %}<a class="page-link" href="../{{cur_page.next_page_number}}/">
+      <li class="page-item {% if not mandates.has_next %} disabled{% endif %}">
+        {% if mandates.has_next %}<a class="page-link" href="../{{mandates.next_page_number}}/">
         {% else %}<a class="page-link" href="#">
         {% endif %}Next</a>
       </li>

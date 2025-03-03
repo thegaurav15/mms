@@ -26,7 +26,7 @@ def paginate(request, page):
 	base_queryset = get_mandate_queryset(request.user.userextended.office)
 	mandates = base_queryset.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
 	p = Paginator(mandates, 50)
-	context = {"cur_page": p.page(page), "range": p.page_range}
+	context = {"mandates": p.page(page), "range": p.page_range}
 	return render(request, "mandate/paginate.html", context)
 
 def paginate_api(request, page):
@@ -195,8 +195,11 @@ def reinit_request(request, id):
 	
 def check_mandate_by_acc_api(request):
 	acc = request.GET['account']
-	try:
-		m = Mandate.objects.get(credit_account__exact = acc)
-		return HttpResponse(m.credit_account)
-	except Mandate.DoesNotExist:
+	mandates = Mandate.objects.filter(credit_account__exact = acc)
+	
+	if mandates.count() == 0:
 		return HttpResponseNotFound('Not found: ' + acc)
+	
+	elif mandates.count() >= 0:
+		ctx = {'mandates': mandates}
+		return render(request, "mandate/include/mandate_table.html", ctx)
