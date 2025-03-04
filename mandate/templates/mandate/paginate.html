@@ -1,24 +1,30 @@
 {% extends "mandate/base.html" %}
 
 {% load humanize %}
+{% load static %}
 
 {% block content %}
 
 <!-- main container start -->
 <div style="width: 1000px;">
 
-<h3>Form</h3>
-<form>
-  {{form}}
-  <button type="submit">Filter</button>
+<h3>All submitted mandates</h3>
+
+<form class="form-inline" action="/mandates/1/">
+
+  {% for field in form %}
+  <label class="mr-sm-2 col-form-label">{{ field.label }}</label>
+  {{ field }}
+  {% endfor %}
+
+  <button type="submit" class="btn btn-sm btn-primary">Filter</button>
 </form>
 
-<h4>Image uploaded and submitted</h4>
 <p class="text-right">Showing {{ mandates.start_index }} - {{ mandates.end_index }}</p>
 
 {% include './include/mandate_table.html' %}
 
-  <nav aria-label="Page navigation">
+  <nav aria-label="Page navigation" id="nav">
     <ul class="pagination justify-content-center">
       <li class="page-item {% if not mandates.has_previous %} disabled{% endif %}">
         {% if mandates.has_previous %}<a class="page-link" href="../{{mandates.previous_page_number}}/">
@@ -39,5 +45,7 @@
   </nav>
 </div> 
 <!-- main container end -->
+
+<script src="{% static 'mandate/paginate.js' %}"></script>
 
 {% endblock %}

@@ -31,17 +31,29 @@ def index(request):
 
 def paginate(request, page):
 	print(request.GET)
-	form = FilterMandates()
+	form = FilterMandates(request.GET)
 
 	base_queryset = get_mandate_queryset(request.user.userextended.office)
 	mandates = base_queryset.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
 
-	if 'status' in request.GET.keys():
-		mandates = mandates.filter(presentation__npci_status__exact = request.GET['status'])
+	if 'status' in request.GET.keys() and request.GET['status']:
+		status = request.GET['status']
+		if status == 'Active' or status == 'Rejected':
+			mandates = mandates.filter(presentation__npci_status__exact = request.GET['status'])
+		elif status == 'new':
+			mandates = mandates.filter(init_req_flag = True)
+		elif status == 'npci':
+			mandates = mandates.exclude(presentation__npci_upload_time = None).filter(presentation__npci_status = None, presentation__npci_upload_error = None)
+		elif status == 'error':
+			mandates = mandates.exclude(presentation__npci_upload_error = None)
 
-	p = Paginator(mandates, 50)
+	if 'pages' in request.GET.keys() and request.GET['pages']:
+		num_pages = request.GET['pages']
+	else:
+		num_pages = 10
+
+	p = Paginator(mandates, num_pages)
 	context = {"mandates": p.page(page), "range": p.page_range}
-
 	context['form'] = form
 
 	return render(request, "mandate/paginate.html", context)

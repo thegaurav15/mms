@@ -63,7 +63,6 @@ class MandateForm(ModelForm):
 	
 	def __init__(self, branch, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		print(branch)
 		self.fields["office"].queryset = get_office_queryset(branch)
 
 class MandateImageForm(ModelForm):
@@ -86,10 +85,19 @@ class SearchAcc(Form):
 
 class FilterMandates(Form):
 	status_choices = (
+		(None, 'All'),
 		('new', 'New'),
 		('npci', 'Pending at NPCI'),
 		('Rejected', 'Rejected'),
 		('Active', 'Active'),
+		('error', 'Error'),
 	)
 
-	status = forms.ChoiceField(choices=status_choices)
+	pages_choices = (
+		(10, '10'),
+		(25, '25'),
+		(50, '50'),
+	)
+
+	status = forms.ChoiceField(choices=status_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}))
+	pages = forms.ChoiceField(choices=pages_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}))
