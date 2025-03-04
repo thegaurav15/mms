@@ -88,9 +88,8 @@ class FilterMandates(Form):
 	status_choices = (
 		('new', 'New'),
 		('npci', 'Pending at NPCI'),
-		('rejected', 'Rejected'),
-		('active', 'Active'),
+		('Rejected', 'Rejected'),
+		('Active', 'Active'),
 	)
 
 	status = forms.ChoiceField(choices=status_choices)
-	

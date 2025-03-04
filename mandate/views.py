@@ -30,10 +30,20 @@ def index(request):
 	return render(request, "mandate/index.html", context)
 
 def paginate(request, page):
+	print(request.GET)
+	form = FilterMandates()
+
 	base_queryset = get_mandate_queryset(request.user.userextended.office)
 	mandates = base_queryset.exclude(mandate_image__isnull=True).exclude(mandate_image__exact = '')
+
+	if 'status' in request.GET.keys():
+		mandates = mandates.filter(presentation__npci_status__exact = request.GET['status'])
+
 	p = Paginator(mandates, 50)
 	context = {"mandates": p.page(page), "range": p.page_range}
+
+	context['form'] = form
+
 	return render(request, "mandate/paginate.html", context)
 
 def paginate_api(request, page):
