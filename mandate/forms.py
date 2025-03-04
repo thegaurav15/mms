@@ -82,3 +82,15 @@ class NpciStatusForm(Form):
 
 class SearchAcc(Form):
 	account = forms.CharField(widget=forms.TextInput(attrs={'maxlength': '14'}))
+
+
+class FilterMandates(Form):
+	status_choices = (
+		('new', 'New'),
+		('npci', 'Pending at NPCI'),
+		('rejected', 'Rejected'),
+		('active', 'Active'),
+	)
+
+	status = forms.ChoiceField(choices=status_choices)
+	

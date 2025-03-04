@@ -7,6 +7,45 @@
 <!-- main container start -->
 <div style="width: 1000px;">
 
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <p class="text-primary mb-0">New</p>
+        <h1 class="text-muted">{{ new }}</h1>
+      </div>
+      <div class="col-sm">
+        <div class="col-sm">
+          <p class="text-secondary mb-0">Pending at NPCI</p>
+          <h1 class="text-muted">{{ npci }}</h1>
+        </div>
+      </div>
+      <div class="col-sm">
+        <div class="col-sm">
+          <p class="text-danger mb-0">Rejected</p>
+          <h1 class="text-muted">{{ rejected }}</h1>
+        </div>
+      </div>
+
+      {% if rejected_no_response %}
+      <div class="col-sm">
+        <div class="col-sm">
+          <p class="text-danger mb-0">Resaon Pending</p>
+          <h1 class="text-muted">{{ rejected_no_response }}</h1>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="col-sm">
+        <div class="col-sm">
+          <p class="text-success mb-0">Active</p>
+          <h1 class="text-muted">{{ active }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
   {% if mandates_pending_image %}
   <!-- image upload pending -->
   <h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
@@ -38,8 +77,10 @@
   {% endif %}
 
   <!-- image uploaded -->
-  <h4><a href="1/" class="text-dark">Image uploaded and submitted ({{ mandates.count }})</a></h4>
+  <h4><a href="1/" class="text-dark">View all submitted mandates ({{ mandates.count }})</a></h4>
+  {% comment %}
   {% include './include/mandate_table.html' %}
+  {% endcomment %}
 </div>
 <!-- main container end -->
 

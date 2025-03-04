@@ -14,38 +14,13 @@
 <h5>By Credit Account No.</h5>
 
 
-{% if queryset.count == 0 %}
+{% if mandates.count == 0 %}
 <p>No records exist</p>
 {% endif %}
 
-{% if queryset %}
+{% if mandates %}
 
-<table class="table table-sm">
-    <thead>
-        <tr>
-            <th scope="col" class="text-center">ID</th>
-            <th scope="col">Debtor Name</th>
-            <th scope="col">Debtor Bank</th>
-            <th scope="col">Debtor Acc No.</th>
-            <th scope="col">Credit Acc</th>
-            <th scope="col">Status</th>
-            <th scope="col" class="text-right">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for m in queryset %}
-        <tr>
-            <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-            <td>{{m.debtor_name}}</td>
-            <td>{{m.debtor_bank}}</td>
-            <td>{{m.debtor_acc_no}}</td>
-            <td>{{m.credit_account}}</td>
-            <td class="text-{{m.get_status.class}}">{{m.get_status.short}}</td>
-            <td class="text-right">{{m.amount|intcomma}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% include './include/mandate_table.html' %}
 
 {%endif%}
 

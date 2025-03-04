@@ -138,3 +138,5 @@ MEDIA_URL = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/mandates/'
 LOGIN_URL = '/authentication/login/'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

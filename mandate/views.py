@@ -20,6 +20,13 @@ def index(request):
 	mandates = base_queryset.exclude(mandate_image__exact = '')
 	mandates_pending_image = base_queryset.filter(mandate_image__exact = '').order_by('id')
 	context = {"mandates": mandates, "mandates_pending_image": mandates_pending_image}
+	
+	context['new'] = mandates.filter(init_req_flag=True).count()
+	context['npci'] = mandates.filter(presentation__npci_status=None).exclude(presentation__npci_upload_time__exact=None).count()
+	context['rejected'] = mandates.filter(presentation__npci_status='Rejected').count()
+	context['rejected_no_response'] = mandates.filter(presentation__npci_status='Rejected', presentation__npci_reason_code__exact=None).count()
+	context['active'] = mandates.filter(presentation__npci_status='Active').count()
+
 	return render(request, "mandate/index.html", context)
 
 def paginate(request, page):
@@ -176,7 +183,7 @@ def searchAcc(request):
 	ctx = {}
 
 	try:
-		ctx['queryset'] = base_queryset.filter(credit_account__icontains = request.GET['account'])
+		ctx['mandates'] = base_queryset.filter(credit_account__icontains = request.GET['account'])
 		form = SearchAcc(request.GET)
 	except MultiValueDictKeyError:
 		form = SearchAcc()
