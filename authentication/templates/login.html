@@ -1,52 +1,54 @@
+{% load static %}
 
 <html>
 <head>
+    <link rel="stylesheet" href="{% static 'bootstrap-4/css/bootstrap.min.css' %}">
+	<script src="{% static 'bootstrap-4/js/bootstrap.bundle.min.js' %}"></script>
     <style>
         body {
-            font-family: monospace;
-            grid-auto-rows: auto 1fr;
             display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
             justify-items: center;
-            justify-content: center;
-        }
-        .form-container {
-            padding: 24px;
-            width: fit-content;
-            height: fit-content;
-            border: 1px solid lightgrey;
-            border-radius: 6px;
-            display: grid;
-            justify-content: center;
-            justify-items: center;
-        }
-        #form {
-            margin: 0;
-            display: grid;
-            grid-gap: 12px;
-        }
-        #form > div {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            font-family: monospace;
-            grid-gap: 12px;
-        }
-        #form > div > input,
-        #form > button {
-            font-family: monospace;
+            grid-gap: 48px;
         }
 
+        img {
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            width: 100%;
+            text-align: center;
+        }
+
+        .form-container {
+            border: 2px solid rgb(230, 230, 230);
+            border-radius: 12px;
+            padding: 36px;
+        }
     </style>
 </head>
 
 <body>
-    <h2>SHGB NACH Outward Mandates Portal</h2>
+    <div>
+        <img src="{% static 'assets/images/shgb_logo.png' %}">
+        <h1>SHGB NACH Outward Mandates Portal</h1>
+    </div>
+
     <div class="form-container">
-    <form id="form" action="{% url 'authentication:login' %}" method="post">
-        {% csrf_token %}
-        {{form}}
-        <button type="submit">Login</button>
-    </form>
-</div>
+        <form id="form" action="{% url 'authentication:login' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">{{ field.label }}</label>
+                <input name="{{ field.name }}" type="{{ field.name }}" class="form-control" id="id_{{ field.name }}" placeholder="{{ field.name }}">
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+
 </body>
 
 </html>
