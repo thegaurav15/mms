@@ -100,4 +100,4 @@ class FilterMandates(Form):
 	)
 
 	status = forms.ChoiceField(choices=status_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}))
-	pages = forms.ChoiceField(choices=pages_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}))
+	records = forms.ChoiceField(choices=pages_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}))

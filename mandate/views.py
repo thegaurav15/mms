@@ -47,12 +47,12 @@ def paginate(request, page):
 		elif status == 'error':
 			mandates = mandates.exclude(presentation__npci_upload_error = None)
 
-	if 'pages' in request.GET.keys() and request.GET['pages']:
-		num_pages = request.GET['pages']
+	if 'records' in request.GET.keys() and request.GET['records']:
+		num_records = request.GET['records']
 	else:
-		num_pages = 10
+		num_records = 10
 
-	p = Paginator(mandates, num_pages)
+	p = Paginator(mandates, num_records)
 	context = {"mandates": p.page(page), "range": p.page_range}
 	context['form'] = form
 

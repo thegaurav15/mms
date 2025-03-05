@@ -7,10 +7,10 @@
     <style>
         body {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr auto auto 1fr;
             align-items: center;
             justify-items: center;
-            grid-gap: 48px;
+            grid-gap: 128px;
         }
 
         img {
@@ -22,21 +22,17 @@
             text-align: center;
         }
 
-        .form-container {
-            border: 2px solid rgb(230, 230, 230);
-            border-radius: 12px;
-            padding: 36px;
-        }
     </style>
 </head>
 
 <body>
-    <div>
-        <img src="{% static 'assets/images/shgb_logo.png' %}">
-        <h1>SHGB NACH Outward Mandates Portal</h1>
+    <div></div>
+    <div class="text-center">
+        <img src="{% static 'assets/images/shgb_logo.png' %}" style="height: 192px;">
+        <h1>NACH Outward Mandates Portal</h1>
     </div>
 
-    <div class="form-container">
+    <div class="form-container bg-light p-5 border">
         <form id="form" action="{% url 'authentication:login' %}" method="post">
             {% csrf_token %}
             {% for field in form %}
@@ -45,9 +41,12 @@
                 <input name="{{ field.name }}" type="{{ field.name }}" class="form-control" id="id_{{ field.name }}" placeholder="{{ field.name }}">
             </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
         </form>
     </div>
+    <div></div>
 
 </body>
 
