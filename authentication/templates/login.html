@@ -10,7 +10,7 @@
             grid-template-columns: 1fr auto auto 1fr;
             align-items: center;
             justify-items: center;
-            grid-gap: 128px;
+            grid-gap: 96px;
         }
 
         img {
@@ -32,7 +32,7 @@
         <h1>NACH Outward Mandates Portal</h1>
     </div>
 
-    <div class="form-container bg-light px-5 py-3 border rounded">
+    <div class="form-container bg-light px-5 py-3 border rounded" style="width: 296px;">
         <form id="form" action="{% url 'authentication:login' %}" method="post">
             {% csrf_token %}
             {% for field in form %}
