@@ -128,8 +128,10 @@ FORMAT_MODULE_PATH = [
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
 MEDIA_URL = 'media/'
+
+STATIC_ROOT = BASE_DIR / "static"
+MEDIA_ROOT = BASE_DIR / "media"
 
 
 # Default primary key field type
@@ -140,3 +142,4 @@ LOGIN_REDIRECT_URL = '/mandates/'
 LOGIN_URL = '/authentication/login/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+

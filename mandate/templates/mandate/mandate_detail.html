@@ -25,7 +25,7 @@
 
 		
 		<div id="loadingModal" style="display: none;position: absolute;left:0;top:0;bottom:0;right:0;background-color: white;opacity: 0.75;z-index: 1000;">
-			<img src="/media/mandate/static/assets/images/spinner.gif" style="
+			<img src="{% static 'assets/images/spinner.gif' %}" style="
 			margin: auto;
 			object-fit: contain;
 			width: 72px;
@@ -53,19 +53,19 @@
 
 				<div id="rotateBtn" class="btn-group" role="group" aria-label="Basic example">
 					<button id="rotateLeft" type="button" class="btn btn-warning btn-sm">
-						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrow-counterclockwise.svg"></div>
+						<div class="icon-container"><img src="{% static 'assets/images/arrow-counterclockwise.svg' %}"></div>
 					</button>
 
 					<button id="fitWidth" type="button" class="btn btn-warning btn-sm">
-						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrows.svg"></div>
+						<div class="icon-container"><img src="{% static 'assets/images/arrows.svg' %}"></div>
 					</button>
 					
 					<button id="fitCanvas" type="button" class="btn btn-warning btn-sm">
-						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrows-angle-contract.svg"></div>
+						<div class="icon-container"><img src="{% static 'assets/images/arrows-angle-contract.svg' %}"></div>
 					</button>
 					
 					<button id="rotateRight" type="button" class="btn btn-warning btn-sm">
-						<div class="icon-container"><img src="/media/mandate/static/assets/images/arrow-clockwise.svg"></div>
+						<div class="icon-container"><img src="{% static 'assets/images/arrow-clockwise.svg' %}"></div>
 					</button>
 				</div>
 

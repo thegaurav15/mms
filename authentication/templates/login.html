@@ -32,15 +32,19 @@
         <h1>NACH Outward Mandates Portal</h1>
     </div>
 
-    <div class="form-container bg-light p-5 border">
+    <div class="form-container bg-light px-5 py-3 border rounded">
         <form id="form" action="{% url 'authentication:login' %}" method="post">
             {% csrf_token %}
             {% for field in form %}
-            <div class="form-group">
+            <div class="form-group mb-0 mt-3">
                 <label for="exampleInputEmail1">{{ field.label }}</label>
                 <input name="{{ field.name }}" type="{{ field.name }}" class="form-control" id="id_{{ field.name }}" placeholder="{{ field.name }}">
             </div>
             {% endfor %}
+            <div class="text-right mb-4">
+                <input type="checkbox" id="showPassword" class="align-middle">
+                <small class="text-muted">Show Password</small>
+            </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
@@ -49,5 +53,15 @@
     <div></div>
 
 </body>
+
+<script>
+        showPassword.addEventListener('change', function () {
+            if (this.checked) {
+                id_password.setAttribute('type', 'text');
+            } else {
+                id_password.setAttribute('type', 'password');
+            }
+        });
+</script>
 
 </html>
