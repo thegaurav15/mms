@@ -25,8 +25,14 @@ Queryset named 'mandates' that contains the mandates for which the data is to be
         <td>{{m.debtor_bank}}</td>
         <td>{{m.debtor_acc_no}}</td>
         <td>{{m.credit_account}}</td>
+
+        <!-- <td class="text-center" {% if m.get_status.title %} title="{{m.get_status.title}}"{% endif %}>
+          <span class="badge badge-{{m.get_status.class}}">{{m.get_status.short}}</span>
+        </td> -->
+
         <td class="text-{{m.get_status.class}}"{% if m.get_status.title %} title="{{m.get_status.title}}"{% endif %}>{{m.get_status.short}}</td>
         <td class="text-right">{{m.amount|intcomma}}</td>
+        
       </tr>
       {% endfor %}
     </tbody>
