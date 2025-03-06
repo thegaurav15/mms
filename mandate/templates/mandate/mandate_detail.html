@@ -102,86 +102,58 @@
 	{% endif %}
 
 	{% if mandate.can_init %}
-	<div class="container mb-4 text-center">
-		<form class="reinit-form mb-2" action="/mandates/mandate/{{mandate.id}}/reinit_request/" method="post">
+	<div class="container px-4 py-3 my-4 border">
+		<form class="mb-2 text-center" action="/mandates/mandate/{{mandate.id}}/reinit_request/" method="post">
 			{% csrf_token %}
 			<button type="submit" class="btn btn-danger btn-sm">Request Re-initialization</button>
 		</form>
-		<small class="text-muted row">You can request re-initialization of the rejected mandate. Maximum 3 initializations allowed as per NPCI policy.</small>
-		<small class="text-muted font-weight-bold row">Note: If you want to make ANY changes to the mandate details, please create a new mandate request instead.</small>
+		<p class="m-0"><small class="text-muted">You can request re-initialization of the rejected mandate. Maximum 3 initializations allowed as per NPCI policy.</small></p>
+		<p class="m-0"><small class="text-muted font-weight-bold">Note: If you want to make ANY changes to the mandate details, please create a new mandate request instead.</small></p>
 	</div>
 	{% endif %}
 
-	<div class="mandate-details">
-		<div>	
-			<div class="key">Seq No/Ref.</div>
-			<div class="value" id="ref">{% if mandate.ref %}{{mandate.ref}}{% endif %}</div>
-	
-			<div class="key">{{mandate|verbose_name:'currency'}}</div>
-			<div class="value">{{mandate.currency}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'debit_type'}}</div>
-			<div class="value">{{mandate.get_debit_type_display}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'amount'}}</div>
-			<div class="value">{{mandate.amount|intcomma}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'category'}}</div>
-			<div class="value">{{mandate.category}}</div>
-
-			<div class="key">{{mandate|verbose_name:'frequency'}}</div>
-			<div class="value">{{mandate.frequency}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'date'}}</div>
-			<div class="value">{{mandate.date|date:"d-m-Y"}}</div>
-
-			<div class="key">{{mandate|verbose_name:'start_date'}}</div>
-			<div class="value">{{mandate.start_date|date:"d-m-Y"}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'end_date'}}</div>
-			<div class="value">{{mandate.end_date|date:"d-m-Y"}}</div>
-
-			<div class="key">{{mandate|verbose_name:'debit_date'}}</div>
-			<div class="value">{{mandate.get_debit_date_display}}</div>
+	<div class="container px-4 py-3 my-4 border">
+		<div class="row">
+			<div class="col-sm">
+				<p class="mb-1"><span class="font-weight-bold">Ref.</span> {% if mandate.ref %}{{mandate.ref}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'office'}}</span> {% if mandate.office %}{{mandate.office}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'frequency'}}</span> {% if mandate.frequency %}{{mandate.frequency}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'date'}}</span> {% if mandate.date %}{{mandate.date}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'start_date'}}</span> {% if mandate.start_date %}{{mandate.start_date}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'end_date'}}</span> {% if mandate.end_date %}{{mandate.end_date}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'debtor_name'}}</span> {% if mandate.debtor_name %}{{mandate.debtor_name}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'credit_account'}}</span> {% if mandate.credit_account %}{{mandate.credit_account}}{% endif %}</p>
+			</div>
+			<div class="col-sm">
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'debtor_bank'}}</span> {% if mandate.debtor_bank %}{{mandate.debtor_bank}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'debtor_acc_type'}}</span> {% if mandate.debtor_acc_type %}{{mandate.debtor_acc_type}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'debtor_acc_no'}}</span> {% if mandate.debtor_acc_no %}{{mandate.debtor_acc_no}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'debtor_acc_ifsc'}}</span> {% if mandate.debtor_acc_ifsc %}{{mandate.debtor_acc_ifsc}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'amount'}}</span> {% if mandate.amount %}{{mandate.amount}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'phone'}}</span> {% if mandate.phone %}{{mandate.phone}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'email'}}</span> {% if mandate.email %}{{mandate.email}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'debit_date'}}</span> {% if mandate.debit_date %}{{mandate.debit_date}}{% endif %}</p>
+			</div>
 		</div>
 
+		<hr>
 
-		<div>
-			<div class="key">{{mandate|verbose_name:'debtor_name'}}</div>
-			<div class="value">{{mandate.debtor_name}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'debtor_bank'}}</div>
-			<div class="value">{{mandate.debtor_bank}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'debtor_acc_type'}}</div>
-			<div class="value">{{mandate.debtor_acc_type}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'debtor_acc_no'}}</div>
-			<div class="value">{{mandate.debtor_acc_no}}</div>
-
-			<div class="key">{{mandate|verbose_name:'debtor_acc_ifsc'}}</div>
-			<div class="value">{{mandate.debtor_acc_ifsc}}</div>
-	
-			<div class="key">{{mandate|verbose_name:'credit_account'}}</div>
-			<div class="value">{{mandate.credit_account}}</div>
-
-			<div class="key">create_user</div>
-			<div class="value">{{mandate.create_user}}</div>
-
-			<div class="key">create_time</div>
-			<div class="value">{{mandate.create_time|date:"d-m-Y g:i:s A"}}</div>
-
-			<div class="key">submit_user</div>
-			<div class="value">{{mandate.submit_user}}</div>
-
-			<div class="key">submit_time</div>
-			<div class="value">{{mandate.submit_time|date:"d-m-Y g:i:s A"}}</div>
-
+		<div class="row">
+			<div class="col-sm">
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'create_time'}}</span> {% if mandate.create_time %}{{mandate.create_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'submit_time'}}</span> {% if mandate.submit_time %}{{mandate.submit_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'last_init_req_time'}}</span> {% if mandate.last_init_req_time %}{{mandate.last_init_req_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
+			</div>
+			<div class="col-sm">
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'create_user'}}</span> {% if mandate.create_user %}{{mandate.create_user}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'submit_user'}}</span> {% if mandate.submit_user %}{{mandate.submit_user}}{% endif %}</p>
+				<p class="mb-1"><span class="font-weight-bold">{{mandate|verbose_name:'last_init_req_user'}}</span> {% if mandate.last_init_req_user %}{{mandate.last_init_req_user}}{% endif %}</p>
+			</div>
 		</div>
-	</div>
 
+		<hr>
 
-	{% if mandate.mandate_image %}
+		{% if mandate.mandate_image %}
 	<div class="mandate-image-container">
 		<img class="img" src="/media/{{mandate.mandate_image}}">
 	</div>
@@ -189,4 +161,10 @@
 	{% else %}
 	<script src="{% static 'mandate/image_upload.js' %}" id="{{mandate.id}}" type="module"></script>
 	{% endif %}
+		
+		
+		</div>
+
+
+	
 {% endblock %}
