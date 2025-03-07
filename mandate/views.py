@@ -47,6 +47,9 @@ def paginate(request, page):
 		elif status == 'error':
 			mandates = mandates.exclude(presentation__npci_upload_error = None)
 
+	if 'debit_date' in request.GET.keys() and request.GET['debit_date']:
+		mandates = mandates.filter(debit_date = request.GET['debit_date'])
+	
 	if 'records' in request.GET.keys() and request.GET['records']:
 		num_records = request.GET['records']
 	else:

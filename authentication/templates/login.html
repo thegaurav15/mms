@@ -2,6 +2,7 @@
 
 <html>
 <head>
+    <title>Login</title>
     <link rel="stylesheet" href="{% static 'bootstrap-4/css/bootstrap.min.css' %}">
 	<script src="{% static 'bootstrap-4/js/bootstrap.bundle.min.js' %}"></script>
     <style>
@@ -30,25 +31,39 @@
     <div class="text-center">
         <img src="{% static 'assets/images/shgb_logo.png' %}" style="height: 192px;">
         <h1>NACH Outward Mandates Portal</h1>
+        <small class="text-muted">
+            Digital Banking Division, Head Office, Sarva Haryana Gramin Bank<br>
+            Email: mandate@shgbank.co.in
+        </small>
     </div>
 
-    <div class="form-container bg-light px-5 py-3 border rounded" style="width: 296px;">
+    <div class="form-container bg-light p-5 border rounded" style="min-width: 256px;">
+        <h6 class="mb-4">Enter your credentials:</h6>
+
         <form id="form" action="{% url 'authentication:login' %}" method="post">
             {% csrf_token %}
-            {% for field in form %}
+
             <div class="form-group mb-0 mt-3">
-                <label for="exampleInputEmail1">{{ field.label }}</label>
-                <input name="{{ field.name }}" type="{{ field.name }}" class="form-control" id="id_{{ field.name }}" placeholder="{{ field.name }}">
+                <!-- <label for="username">Username</label> -->
+                <input name="username" type="text" class="form-control" id="id_username" placeholder="Username">
             </div>
-            {% endfor %}
+
+            <div class="form-group mb-0 mt-3">
+                <!-- <label for="password">Password</label> -->
+                <input name="password" type="password" class="form-control" id="id_password" placeholder="Password">
+            </div>
+
+            
             <div class="text-right mb-4">
                 <input type="checkbox" id="showPassword" class="align-middle">
                 <small class="text-muted">Show Password</small>
             </div>
+            
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </form>
+
     </div>
     <div></div>
 

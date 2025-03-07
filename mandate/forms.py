@@ -99,5 +99,14 @@ class FilterMandates(Form):
 		(50, '50'),
 	)
 
+	debit_date_choices = (
+		(None, 'All'),
+		('3', '3rd day of month'),
+		('11', '11th day of month'),
+		('19', '19th day of month'),
+		('26', '26th day of month'),
+	)
+
 	status = forms.ChoiceField(choices=status_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}))
+	debit_date = forms.ChoiceField(choices=debit_date_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}), label="Date of EMI Collection")
 	records = forms.ChoiceField(choices=pages_choices, required=False, widget = forms.Select(attrs={'class': 'form-control mr-sm-2 form-control-sm'}))

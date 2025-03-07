@@ -6,7 +6,15 @@
 <html>
 
 <head>
+
+	<script>
+		window.onload = function() {
+			loadingCover.style.display = 'none';
+		}
+	</script>
+
 	<title>{% block title %}SHGB NACH Mandates Portal{% endblock %}</title>
+
 	<link rel="stylesheet" href="{% static 'mandate/style.css' %}">
 
 	<script src="{% static 'jquery/jquery-3.7.1.min.js' %}"></script>
@@ -26,6 +34,15 @@
 </head>
 
 <body>
+	<div id="loadingCover" style="position: fixed;left: 0;right: 0;top: 0;bottom: 0; background-color: rgba(240,240,240,0.5); z-index: 1000; display: grid;">
+		<img src="{% static 'assets/images/spinner.gif' %}" style="
+			margin: auto;
+			object-fit: contain;
+			width: 72px;
+			height: 72px;
+			max-height: 50%;
+		">
+	</div>
 
 	<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

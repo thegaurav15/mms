@@ -8,30 +8,31 @@ Queryset named 'mandates' that contains the mandates for which the data is to be
 <table class="table table-sm">
     <thead>
       <tr>
-        <th scope="col" class="text-center">ID</th>
         <th scope="col">Debtor Name</th>
         <th scope="col">Debtor Bank</th>
         <th scope="col">Debtor Acc No.</th>
         <th scope="col">Credit Acc</th>
-        <th scope="col">Status</th>
+        <th scope="col" class="text-center">Status</th>
         <th scope="col" class="text-right">Amount</th>
+        <th scope="col" class="text-center">Link</th>
       </tr>
     </thead>
     <tbody>
       {% for m in mandates %}
       <tr>
-        <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
         <td>{{m.debtor_name}}</td>
         <td>{{m.debtor_bank}}</td>
         <td>{{m.debtor_acc_no}}</td>
         <td>{{m.credit_account}}</td>
 
-        <!-- <td class="text-center" {% if m.get_status.title %} title="{{m.get_status.title}}"{% endif %}>
-          <span class="badge badge-{{m.get_status.class}}">{{m.get_status.short}}</span>
-        </td> -->
+        <td class="text-center" {% if m.get_status.title %} title="{{m.get_status.title}}"{% endif %}>
+          <div class="alert alert-{{m.get_status.class}} p-0 px-1 m-0 m-auto" style="max-width: fit-content;">
+            {{m.get_status.short}}
+          </div>
+        </td>        
 
-        <td class="text-{{m.get_status.class}}"{% if m.get_status.title %} title="{{m.get_status.title}}"{% endif %}>{{m.get_status.short}}</td>
         <td class="text-right">{{m.amount|intcomma}}</td>
+        <td scope="row" class="text-center text-dark"><a href="/mandates/mandate/{{m.id}}/">Details</a></td>
         
       </tr>
       {% endfor %}
