@@ -141,3 +141,17 @@ def get_mandate_queryset(user_office):
         return queryset.filter(office__region = user_office.region)
     elif user_office.type == 'BO':
         return queryset.filter(office = user_office)
+    
+
+#Checking if user has permission over the mandate
+def user_mandate_allowed(user, mandate):
+    user_office = user.userextended.office
+
+    if user_office.type == 'HO':
+        return True
+    if user_office.type == 'RO' and mandate.office.region == user_office.region:
+        return True
+    elif user_office.type == 'BO' and user_office == mandate.office:
+        return True
+    
+    return False

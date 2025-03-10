@@ -95,6 +95,10 @@ def mandate_create(request):
 
 def mandate_detail(request, id):
 	mandate = Mandate.objects.get(id=id)
+	
+	if not user_mandate_allowed(request.user, mandate):
+		return HttpResponse('Unauthorized request')
+
 	if request.method == 'POST':
 		form = MandateImageForm(request.POST, request.FILES, instance=mandate)
 		if form.is_valid():
@@ -124,6 +128,10 @@ def mandate_detail(request, id):
 
 def mandate_print(request, id):
 	mandate = Mandate.objects.get(id=id)
+
+	if not user_mandate_allowed(request.user, mandate):
+		return HttpResponse('Unauthorized request')
+	
 	return render(request, "mandate/mandate_print.html", {"mandate": mandate})
 
 def mandate_download(request):

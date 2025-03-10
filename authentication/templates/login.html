@@ -37,11 +37,19 @@
         </small>
     </div>
 
-    <div class="form-container bg-light p-5 border rounded" style="min-width: 256px;">
+    <div class="form-container bg-light p-5 border rounded" style="width: 296px;">
         <h6 class="mb-4">Enter your credentials:</h6>
 
         <form id="form" action="{% url 'authentication:login' %}" method="post">
             {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="form-group mb-0 mt-3">
+                <p class="text-danger">
+                    {{ form.non_field_errors.as_text }}
+                </p>
+            </div>
+            {% endif %}
 
             <div class="form-group mb-0 mt-3">
                 <!-- <label for="username">Username</label> -->

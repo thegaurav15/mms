@@ -54,27 +54,27 @@
   {% if mandates_pending_image %}
   <!-- image upload pending -->
   <h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
-  <p class="text-muted">Image is mandatory. Please upload image for final submission.</p>
-  <table class="table table-sm">
+  <p class="text-danger">Mandate image is mandatory. Please upload image for final submission.</p>
+  <table class="table">
     <thead>
       <tr>
-        <th scope="col" class="text-center">ID</th>
         <th scope="col">Debtor Name</th>
         <th scope="col">Debtor Bank</th>
         <th scope="col">Debtor Acc No.</th>
         <th scope="col">Credit Acc</th>
         <th scope="col" class="text-right">Amount</th>
+        <th scope="col" class="text-center">Action</th>
       </tr>
     </thead>
     <tbody>
       {% for m in mandates_pending_image %}
-      <tr>
-        <td scope="row" class="text-center"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
-        <td>{{m.debtor_name}}</td>
-        <td>{{m.debtor_bank}}</td>
-        <td>{{m.debtor_acc_no}}</td>
-        <td>{{m.credit_account}}</td>
-        <td class="text-right">{{m.amount|intcomma}}</td>
+      <tr class="align-middle">
+        <td class="align-middle">{{m.debtor_name}}</td>
+        <td class="align-middle">{{m.debtor_bank}}</td>
+        <td class="align-middle">{{m.debtor_acc_no}}</td>
+        <td class="align-middle">{{m.credit_account}}</td>
+        <td class="text-right align-middle">{{m.amount|intcomma}}</td>
+        <td scope="row" class="text-center align-middle"><a class="btn btn-outline-dark btn-sm" href="/mandates/mandate/{{m.id}}/">Upload Image</a></td>
       </tr>
       {% endfor %}
     </tbody>

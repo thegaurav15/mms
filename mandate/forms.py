@@ -3,6 +3,7 @@ from django import forms
 from .models import Mandate, DebtorBank, Office
 from .custom_functions import get_office_queryset
 from django.contrib.admin.widgets import AdminDateWidget
+from datetime import date, timedelta
 
 attrs_bs = {
 	'class': 'selectpicker',
@@ -18,10 +19,10 @@ attrs_bs_search['data-live-search'] = 'true'
 class MandateForm(ModelForm):
 	# debit_type = forms.ChoiceField(choices=Mandate.debit_type_choices, widget = forms.Select(attrs=attrs_bs))
 	# frequency = forms.ChoiceField(choices=Mandate.frequency_choices, widget = forms.Select(attrs=attrs_bs))
-	debtor_bank = forms.ModelChoiceField(DebtorBank.objects.all(), empty_label="", widget = forms.Select(attrs=attrs_bs_search))
+	debtor_bank = forms.ModelChoiceField(DebtorBank.objects.all(), empty_label="Select debtor bank name", widget = forms.Select(attrs=attrs_bs_search))
 	debtor_acc_type = forms.ChoiceField(choices=Mandate.acc_type_choices, widget = forms.Select(attrs=attrs_bs))
 	debit_date = forms.ChoiceField(choices=Mandate.debit_date_choices, widget = forms.Select(attrs=attrs_bs), label='Date of EMI Collection')
-	office = forms.ModelChoiceField(None, empty_label="", widget = forms.Select(attrs=attrs_bs_search), label="Branch")
+	office = forms.ModelChoiceField(None, empty_label="Select branch", widget = forms.Select(attrs=attrs_bs_search), label="Branch")
 
 	class Meta:
 		model = Mandate
@@ -47,7 +48,7 @@ class MandateForm(ModelForm):
 			"email"
 		]
 		widgets = {
-			"date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+			"date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'min': (date.today() - timedelta(days=120)).isoformat(), 'max': (date.today() + timedelta(days=14)).isoformat()}),
 			"start_date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
 			"end_date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
 			"amount": forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': '0.01', 'min': '0.01', 'max': '10000000'}),

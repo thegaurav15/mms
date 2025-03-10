@@ -87,7 +87,7 @@ class Mandate(models.Model):
 	]
 
 	acc_type_choices = [
-		(None, ''),
+		(None, 'Select an account type'),
 		('SAVINGS', 'SAVINGS'),
 		('CURRENT', 'CURRENT'),
 		('CC', 'CC'),
@@ -95,7 +95,7 @@ class Mandate(models.Model):
 	]
 
 	debit_date_choices = [
-		(None, ''),
+		(None, 'Select EMI collection date'),
 		('3', '3rd day of month'),
 		('11', '11th day of month'),
 		('19', '19th day of month'),
