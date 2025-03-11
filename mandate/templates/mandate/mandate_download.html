@@ -5,7 +5,7 @@
 {% block content %}
 
 <!-- main container start -->
-<div style="width: 1000px;">
+<div style="min-width: 1000px;">
 <form class="mandate-form" action="{% url 'mandate:mandate_download' %}" method="post">
   {% csrf_token %}
   <h4>Download Mandate Data for uploading on NPCI:</h4>
@@ -17,10 +17,10 @@
           <th scope="col">Debtor Bank</th>
           <th scope="col">Debtor Acc No.</th>
           <th scope="col">Amount</th>
-          <th scope="col">D/L</th>
+          <th scope="col"><input type="checkbox" id="selectAll"></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="tableBody">
           {% for m in mandates %}
           <tr>
               <td scope="row"><a href="/mandates/mandate/{{m.id}}/">{{m.id}}</a></td>
@@ -37,5 +37,22 @@
 </form>
 </div> 
 <!-- main container end -->
+
+<script>
+  let selectAll = document.getElementById('selectAll');
+  let tableBody = document.getElementById('tableBody');
+  inputAll = tableBody.querySelectorAll('input');
+  selectAll.addEventListener('change', function(e) {
+    if (e.target.checked) {
+      for (elem of inputAll) {
+        elem.checked = true;
+      }
+    } else {
+      for (elem of inputAll) {
+        elem.checked = false;
+      }
+    }
+  })
+</script>
 
 {% endblock %}
