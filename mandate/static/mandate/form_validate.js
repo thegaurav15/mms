@@ -32,6 +32,12 @@ id_amount.after(amtCont);
 amtCont.style.cssText = 'overflow:hidden;transition:all 0.3s';
 amtCont.style.height = '0px';
 
+// Acc list modal
+let accListModalMain = document.getElementById('accListModalMain');
+let accListModalContents = document.getElementById('accListModalContents');
+let accListModalBack = document.getElementById('accListModalBack');
+let accListModalSubmit = document.getElementById('accListModalSubmit');
+
 
 function validIcon(elem) {
     if (elem.value == '') {
@@ -177,11 +183,35 @@ form.addEventListener('submit', async function(e) {
     acc = id_credit_account.value;
 	let req = await fetch(`/mandates/create/checkacc/?account=${acc}`);
 	if (req.ok) {
-		if (confirm(`A mandate is already submitted for this account: ${acc}.\nDo you want to create another mandate?`)) {
-			e.target.submit();
-		}
+        accListModalContents.innerHTML = await req.text();
+		showAccListModal();
 	} else {
 		e.target.submit();
 	}
 
 });
+
+// Javascript for the account list modal
+    
+function showAccListModal() {
+    scrollbar_width = (window.innerWidth - document.body.offsetWidth);
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = scrollbar_width + 'px';
+
+    for (linkElem of accListModalContents.querySelectorAll('a')) {
+        linkElem.setAttribute('target', '_blank');
+    }
+
+    accListModalMain.style.display = 'grid';
+}
+
+function hideAccListModal() {
+    document.body.style.paddingRight = '';
+    document.body.style.overflow = '';
+
+    accListModalMain.style.display = 'none';
+}
+
+accListModalBack.addEventListener('click', hideAccListModal);
+
+accListModalSubmit.addEventListener('click', () => form.submit());
