@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import *
 from .models import *
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound, Http404
 from django.db.models import Q
 import tempfile, zipfile
 from datetime import datetime, date
@@ -94,7 +94,10 @@ def mandate_create(request):
 	return render(request, "mandate/mandate_form.html", {"form": form})
 
 def mandate_detail(request, id):
-	mandate = Mandate.objects.get(id=id)
+	try:
+		mandate = Mandate.objects.get(id=id)
+	except Mandate.DoesNotExist:
+		raise Http404
 	
 	if not user_mandate_allowed(request.user, mandate):
 		return HttpResponse('Unauthorized request')
@@ -127,7 +130,10 @@ def mandate_detail(request, id):
 
 
 def mandate_print(request, id):
-	mandate = Mandate.objects.get(id=id)
+	try:
+		mandate = Mandate.objects.get(id=id)
+	except Mandate.DoesNotExist:
+		raise Http404
 
 	if not user_mandate_allowed(request.user, mandate):
 		return HttpResponse('Unauthorized request')
