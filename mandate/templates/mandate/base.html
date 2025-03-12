@@ -51,7 +51,7 @@
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
+			<ul class="navbar-nav mr-auto" id="navbarLinks">
 				<li class="nav-item">
 					<a class="nav-link" href="/mandates/">Home</a>
 				</li>
@@ -116,7 +116,12 @@
 	</div>
 
 	<script>
-		
+		let navbarLinks = document.getElementById('navbarLinks');
+		for (elem of navbarLinks.querySelectorAll('a')) {
+			if (elem.getAttribute('href') == window.location.pathname) {
+				elem.parentElement.classList.add('active');
+			}
+		}
 	</script>
 </body>
 </html>
