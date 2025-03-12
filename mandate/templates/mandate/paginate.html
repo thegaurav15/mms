@@ -10,7 +10,7 @@
 
 <h3>All submitted mandates</h3>
 
-<form class="form-inline" action="/mandates/1/">
+<form class="form-inline" action="{% url 'mandate:paginate' pagenum=1 %}">
 
   {% for field in form %}
   <label class="mr-sm-2 col-form-label">{{ field.label }}</label>
@@ -27,17 +27,17 @@
   <nav aria-label="Page navigation" id="nav">
     <ul class="pagination justify-content-center">
       <li class="page-item {% if not mandates.has_previous %} disabled{% endif %}">
-        {% if mandates.has_previous %}<a class="page-link" href="../{{mandates.previous_page_number}}/">
+        {% if mandates.has_previous %}<a class="page-link" href="{% url 'mandate:paginate' pagenum=mandates.previous_page_number %}">
         {% else %} <a class="page-link" href="#">
         {% endif %}Previous</a>
       </li>
       
       {% for i in range %}
-      <li class="page-item {% if i == mandates.number %} disabled font-weight-bold{% endif %}"><a class="page-link" href="../{{i}}/">{{i}}</a></li>
+      <li class="page-item {% if i == mandates.number %} disabled font-weight-bold{% endif %}"><a class="page-link" href="{% url 'mandate:paginate' pagenum=i %}">{{i}}</a></li>
       {% endfor %}
       
       <li class="page-item {% if not mandates.has_next %} disabled{% endif %}">
-        {% if mandates.has_next %}<a class="page-link" href="../{{mandates.next_page_number}}/">
+        {% if mandates.has_next %}<a class="page-link" href="{% url 'mandate:paginate' pagenum=mandates.next_page_number %}">
         {% else %}<a class="page-link" href="#">
         {% endif %}Next</a>
       </li>
@@ -45,6 +45,8 @@
   </nav>
 </div> 
 <!-- main container end -->
+
+
 
 <script src="{% static 'mandate/paginate.js' %}"></script>
 

@@ -29,7 +29,7 @@ def index(request):
 
 	return render(request, "mandate/index.html", context)
 
-def paginate(request, page):
+def paginate(request, pagenum):
 	print(request.GET)
 	form = FilterMandates(request.GET)
 
@@ -55,8 +55,14 @@ def paginate(request, page):
 	else:
 		num_records = 10
 
+	if 'pagenum' in request.GET.keys() and request.GET['pagenum']:
+		page = request.GET['pagenum']
+		print(page)
+	else:
+		page = 1
+
 	p = Paginator(mandates, num_records)
-	context = {"mandates": p.page(page), "range": p.page_range}
+	context = {"mandates": p.page(pagenum), "range": p.page_range}
 	context['form'] = form
 
 	return render(request, "mandate/paginate.html", context)

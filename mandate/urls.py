@@ -9,7 +9,7 @@ app_name = "mandate"
 
 urlpatterns = [
 	path("", views.index, name="index"),
-    path("<int:page>/", views.paginate, name="paginate"),
+    path("mandates-list/<int:pagenum>/", views.paginate, name="paginate"),
     path("paginate_api/<int:page>/", views.paginate_api, name="paginate_api"),
 	path("create/", views.mandate_create, name="mandate_create"),
 	path("mandate/<int:id>/", views.mandate_detail, name="mandate_detail"),
