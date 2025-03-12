@@ -11,7 +11,7 @@ container.style.height = '0px';
 
 let message = {
     initial: "Mandate image is not uploaded, upload it here:",
-    pdf: "The PDF contains multiple pages. To proceed further, please select the page that contains the mandate image.",
+    pdf: "Please select the page that contains the mandate image.",
     crop: "Crop the image properly such that <b>only the mandate</b> is present in the final image.",
     final: "This is the final image that will be uploaded to NPCI and sent to the Debtor Bank."
 }

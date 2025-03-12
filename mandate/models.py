@@ -156,6 +156,12 @@ class Mandate(models.Model):
 
 
 	def get_status(self):
+		if not self.mandate_image:
+			return {
+				'short': 'Image pending',
+				'message': 'The mandate image is not uploaded and it is pending for submission',
+				'class': 'warning'
+			}
 		if self.init_req_flag:
 			return {
 				'short': 'New',
