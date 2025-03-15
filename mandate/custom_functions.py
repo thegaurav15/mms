@@ -90,7 +90,11 @@ def process_status(file):
         require_save = False
         message = ''
         try:
-            p = Presentation.objects.get(npci_umrn = row['UMRN'])
+            try:
+                p = Presentation.objects.get(npci_umrn = row['UMRN'])
+            except KeyError:
+                messages['not found'] = 'UMRN key not found in the dict'
+                break
             
             if p.npci_status == None:
                 p.npci_status = row['Status']

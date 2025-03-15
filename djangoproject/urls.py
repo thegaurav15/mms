@@ -18,10 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse, HttpResponseRedirect
 
+def redirectDefault(request):
+    return HttpResponseRedirect('mandates/')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('mandates/', include('mandate.urls')),
     path("authentication/", include("authentication.urls")),
+    path("", redirectDefault),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
