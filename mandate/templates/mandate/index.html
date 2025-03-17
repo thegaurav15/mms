@@ -5,23 +5,22 @@
 {% block content %}
 
 <!-- main container start -->
-<div style="min-width: 1000px;">
 
   <div class="container text-center">
     <div class="row">
       <div class="col-sm">
-        <p class="text-primary mb-0">New</p>
+        <p class="text-primary mb-0 mw-mc">New</p>
         <h1 class="text-muted">{{ new }}</h1>
       </div>
       <div class="col-sm">
         <div class="col-sm">
-          <p class="text-secondary mb-0">Pending at NPCI</p>
+          <p class="text-secondary mb-0 mw-mc">Pending at NPCI</p>
           <h1 class="text-muted">{{ npci }}</h1>
         </div>
       </div>
       <div class="col-sm">
         <div class="col-sm">
-          <p class="text-danger mb-0">Rejected</p>
+          <p class="text-danger mb-0 mw-mc">Rejected</p>
           <h1 class="text-muted">{{ rejected }}</h1>
         </div>
       </div>
@@ -29,7 +28,7 @@
       {% if rejected_no_response %}
       <div class="col-sm">
         <div class="col-sm">
-          <p class="text-danger mb-0">Resaon Pending</p>
+          <p class="text-danger mb-0 mw-mc">Resaon Pending</p>
           <h1 class="text-muted">{{ rejected_no_response }}</h1>
         </div>
       </div>
@@ -37,7 +36,7 @@
 
       <div class="col-sm">
         <div class="col-sm">
-          <p class="text-success mb-0">Active</p>
+          <p class="text-success mb-0 mw-mc">Active</p>
           <h1 class="text-muted">{{ active }}</h1>
         </div>
       </div>
@@ -81,7 +80,6 @@
   </table>
   {% endif %}
 
-</div>
 <!-- main container end -->
 
 {% endblock %}

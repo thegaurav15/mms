@@ -195,3 +195,7 @@ body {
 	border-radius: 4px;
 	height: fit-content;
 }
+
+.mw-mc {
+	min-width: max-content;
+}
