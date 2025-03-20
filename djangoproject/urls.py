@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 from django.http import HttpResponse, HttpResponseRedirect
 
 def redirectDefault(request):
+    print('redirecting default')
     return HttpResponseRedirect('mandates/')
 
 urlpatterns = [

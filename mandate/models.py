@@ -176,6 +176,19 @@ class Mandate(models.Model):
 				'message': 'The mandate has been submitted and pending at HO:DBD',
 				'class': 'primary'
 			}
+		
+	def delete_image(self):
+		if self.presentation_set.count() > 0:
+			return False
+
+		self.mandate_image.delete()
+		self.submit_user = None
+		self.submit_time = None
+		self.last_init_req_time = None
+		self.last_init_req_user = None
+		self.init_req_flag = False
+		self.save()
+		return True
 	
 	@property
 	def init_count(self):

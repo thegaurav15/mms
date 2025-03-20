@@ -255,3 +255,18 @@ def check_mandate_by_acc_api(request):
 	elif mandates.count() >= 0:
 		ctx = {'mandates': mandates}
 		return render(request, "mandate/include/mandate_table.html", ctx)
+	
+def delete_image(request, id):
+	try:
+		mandate = Mandate.objects.get(id=id)
+	except Mandate.DoesNotExist:
+		raise Http404
+	
+	if not user_mandate_allowed(request.user, mandate):
+		return HttpResponse('Unauthorized request')
+	
+	if request.method == "POST":
+		if mandate.delete_image():
+			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
+		else:
+			return HttpResponse('Could not delete. There was some error.')

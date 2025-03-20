@@ -23,7 +23,7 @@
 
 	<div class="status-container" id="status-container">
 
-		
+		<!-- loader modal -->
 		<div id="loadingModal" style="display: none;position: absolute;left:0;top:0;bottom:0;right:0;background-color: white;opacity: 0.75;z-index: 1000;">
 			<img src="{% static 'assets/images/spinner.gif' %}" style="
 			margin: auto;
@@ -122,47 +122,47 @@
 	</div>
 	{% endif %}
 
-	<div class="container px-4 py-3 my-4 border">
-		<div class="row">
-			<div class="col-sm">
-				<p class="mb-1"><span class="font-weight-bold mr-2">Ref.</span>{% if mandate.ref %}<span id="ref">{{mandate.ref}}</span>{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'office'}}</span>{% if mandate.office %}{{mandate.office}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'frequency'}}</span>{% if mandate.frequency %}{{mandate.get_frequency_display}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'date'}}</span>{% if mandate.date %}{{mandate.date|date:"d-m-Y"}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'start_date'}}</span>{% if mandate.start_date %}{{mandate.start_date|date:"d-m-Y"}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'end_date'}}</span>{% if mandate.end_date %}{{mandate.end_date|date:"d-m-Y"}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'amount'}}</span>₹ {% if mandate.amount %}{{mandate.amount|intcomma}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'credit_account'}}</span>{% if mandate.credit_account %}{{mandate.credit_account}}{% endif %}</p>
-			</div>
-			<div class="col-sm">
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_bank'}}</span>{% if mandate.debtor_bank %}{{mandate.debtor_bank}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_type'}}</span>{% if mandate.debtor_acc_type %}{{mandate.debtor_acc_type}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_no'}}</span>{% if mandate.debtor_acc_no %}{{mandate.debtor_acc_no}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_ifsc'}}</span>{% if mandate.debtor_acc_ifsc %}{{mandate.debtor_acc_ifsc}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_name'}}</span>{% if mandate.debtor_name %}{{mandate.debtor_name}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'phone'}}</span>{% if mandate.phone %}{{mandate.phone}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'email'}}</span>{% if mandate.email %}{{mandate.email}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debit_date'}}</span>{% if mandate.debit_date %}{{mandate.get_debit_date_display}}{% endif %}</p>
-			</div>
+<!-- details and image container -->
+<div class="container px-4 py-3 my-4 border">
+	<div class="row">
+		<div class="col-sm">
+			<p class="mb-1"><span class="font-weight-bold mr-2">Ref.</span>{% if mandate.ref %}<span id="ref">{{mandate.ref}}</span>{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'office'}}</span>{% if mandate.office %}{{mandate.office}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'frequency'}}</span>{% if mandate.frequency %}{{mandate.get_frequency_display}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'date'}}</span>{% if mandate.date %}{{mandate.date|date:"d-m-Y"}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'start_date'}}</span>{% if mandate.start_date %}{{mandate.start_date|date:"d-m-Y"}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'end_date'}}</span>{% if mandate.end_date %}{{mandate.end_date|date:"d-m-Y"}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'amount'}}</span>₹ {% if mandate.amount %}{{mandate.amount|intcomma}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'credit_account'}}</span>{% if mandate.credit_account %}{{mandate.credit_account}}{% endif %}</p>
 		</div>
-
-		<hr>
-
-		<div class="row">
-			<div class="col-sm">
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'create_time'}}</span> {% if mandate.create_time %}{{mandate.create_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'submit_time'}}</span> {% if mandate.submit_time %}{{mandate.submit_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'last_init_req_time'}}</span> {% if mandate.last_init_req_time %}{{mandate.last_init_req_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
-			</div>
-			<div class="col-sm">
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'create_user'}}</span> {% if mandate.create_user %}{{mandate.create_user}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'submit_user'}}</span> {% if mandate.submit_user %}{{mandate.submit_user}}{% endif %}</p>
-				<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'last_init_req_user'}}</span> {% if mandate.last_init_req_user %}{{mandate.last_init_req_user}}{% endif %}</p>
-			</div>
+		<div class="col-sm">
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_bank'}}</span>{% if mandate.debtor_bank %}{{mandate.debtor_bank}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_type'}}</span>{% if mandate.debtor_acc_type %}{{mandate.debtor_acc_type}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_no'}}</span>{% if mandate.debtor_acc_no %}{{mandate.debtor_acc_no}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_ifsc'}}</span>{% if mandate.debtor_acc_ifsc %}{{mandate.debtor_acc_ifsc}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_name'}}</span>{% if mandate.debtor_name %}{{mandate.debtor_name}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'phone'}}</span>{% if mandate.phone %}{{mandate.phone}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'email'}}</span>{% if mandate.email %}{{mandate.email}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debit_date'}}</span>{% if mandate.debit_date %}{{mandate.get_debit_date_display}}{% endif %}</p>
 		</div>
-		{% if mandate.mandate_image %}
-		<hr>
+	</div>
 
+	<hr>
+
+	<div class="row">
+		<div class="col-sm">
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'create_time'}}</span> {% if mandate.create_time %}{{mandate.create_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'submit_time'}}</span> {% if mandate.submit_time %}{{mandate.submit_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'last_init_req_time'}}</span> {% if mandate.last_init_req_time %}{{mandate.last_init_req_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
+		</div>
+		<div class="col-sm">
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'create_user'}}</span> {% if mandate.create_user %}{{mandate.create_user}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'submit_user'}}</span> {% if mandate.submit_user %}{{mandate.submit_user}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'last_init_req_user'}}</span> {% if mandate.last_init_req_user %}{{mandate.last_init_req_user}}{% endif %}</p>
+		</div>
+	</div>
+	{% if mandate.mandate_image %}
+	<hr>
 		
 	<div>
 		<img class="img" src="/media/{{mandate.mandate_image}}">
@@ -170,11 +170,14 @@
 
 	{% else %}
 	<script src="{% static 'mandate/image_upload.js' %}" id="{{mandate.id}}" type="module"></script>
-	{% endif %}
-		
-		
-		</div>
+	{% endif %}	
+</div>
 
+{% if not mandate.presentation_set.count and mandate.mandate_image %}
+<form action="{% url 'mandate:delete_image' id=mandate.id %}" method="post" class="text-center">
+	{% csrf_token %}
+	<button class="btn btn-danger btn-sm" type="submit">Undo Image Upload</button>
+</form>
+{% endif %}
 
-	
 {% endblock %}
