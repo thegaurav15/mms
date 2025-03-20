@@ -13,6 +13,7 @@ from django.core.paginator import Paginator
 from django.core import serializers
 from .custom_functions import *
 from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib.auth.decorators import login_not_required
 
 
 def index(request):
@@ -270,3 +271,7 @@ def delete_image(request, id):
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 		else:
 			return HttpResponse('Could not delete. There was some error.')
+
+@login_not_required
+def sop(request):
+	return render(request, "mandate/sop.html")

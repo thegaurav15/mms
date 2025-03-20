@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="{% static 'jquery/jquery-3.7.1.min.js' %}"></script>
+        <script src="{% static 'popper/popper.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'bootstrap-4/css/bootstrap.min.css' %}">
+        <script src="{% static 'bootstrap-4/js/bootstrap.bundle.min.js' %}"></script>
+
+        <title>
+            SoP for Outward NACH Mandates Portal
+        </title>
+    </head>
+    <body class="p-5">
+        <h1>Standard Operating Procedure</h1>
+
+        <h3>General Guidelines</h3>
+        <p>This portal can be used to submit new mandates for submission to NPCI portal. These mandates are then shared with Destination Banks for taking action (Accept/Reject)</p>
+        <p>Submitting the mandates is a two-step process:</p>
+        <ol>
+            <li>Fill the form and enter all the mandatory details.</li>
+            <li>Upload a complete, duly signed, clear, properly cropped image of the mandate on the portal.</li>
+        </ol>
+        <p>
+            Once the mandate is submitted, no change is made by Head Office team and the same mandate is presented to the Destination Bank.
+            So, the branches/ROs are requested to keep the same in mind while filling in the details and uploading the mandate image.
+            Special care should be taken while uploading the image. If the image is not clear, or not properly cropped, the chances of rejection of the mandate by the Destination Bank
+            are high even if the mandate is properly filled and duly signed by the customer. 
+        </p>
+
+        
+        <h3>Filling the form/mandate details</h3>
+        <p>
+            When a user clicks on the New Mandate button on the navigation bar, a form is shown to the user. 
+            The mandatory fields are marked with asterix ( <span class="text-danger">*</span> ).
+            The form can only be submitted if all the mandatory fields have been filled.
+        </p>
+        <p>
+            In addition to the mandatory fields, there are some optional fields as well. These fields may be left blank. But if the user chooses to fill these fields, 
+            the data is validated and should be proper. For example, a phone number can only be a 10 digit number, an email should be in proper syntax etc.
+        </p>
+        <p>
+            Some notes on mandatory form fields are given below:
+        </p>
+        
+        <h6>Branch</h6>
+        <p>
+            The branch where the customer submits the mandate.
+            A mandate is visible to the user of this branch, the user of the corresponding Regional Office, and users of the Head Office on this portal. The image can also be uploaded
+             by these users only.
+        </p>
+
+        <h6>Date of Mandate</h6>
+        <p>
+            This is the date on which the mandate is signed by the customer. The mandate can only be uploaded on NPCI portal on or after this date.
+        </p>
+
+        <h6>Start Date and End Date</h6>
+        <p>
+            The debtor account can be debited after the Start Date and before the End Date. The End Date can not be more than 40 years after Start Date.
+        </p>
+
+        <h6>Date of EMI Collection</h6>
+        <p>
+            Presently, the EMI collection is done 4 times a month i.e. on dates 3, 11, 19, 26. One of these dates can be selected from the dropdown and if the mandate is accepted, 
+            the EMI will be deducted on this date every month after the Start Date till the End Date (or until cancellation of the mandate, if it is cancelled for some reason before the End Date). 
+        </p>
+
+        <h6>Debtor Name</h6>
+        <p>
+            The name of the Debtor. It should be same as the name in the Debtor Bank's records. If the name is different, the Debtor Bank can reject the mandate on the basis of this deviation.
+        </p>
+
+        <h6>Is the Debtor Account jointly held?</h6>
+        <p>
+            Select this is the debtor account is joint and requires signatures of multiple persons for authorization. For eg. the mode of operation is 'Jointly' or 'Any 2' etc.
+            When this is selected, 'Debtor Name 2' and 'Debtor Name 3' fields are shown and at least one of them should be filled. The mandate should also be signed by these persons.
+        </p>
+
+        <h6>Debtor bank</h6>
+        <p>The name of the bank where the debtor account is held.</p>
+
+        <h6>Debtor Account Number and Debtor Account IFSC</h6>
+        <p>The details should be filled carefully. The mandate is sent to the bank corresponding to the IFSC mentioned here.</p>
+
+        <h6>Credit Account</h6>
+        <p>This is the account in SHGB in which the EMI/installment is to be credited.</p>
+
+
+        <h3>Uploading Mandate Image</h3>
+
+        <p>
+            Once the details have been entered and the form is submitted, the details are saved in the database.
+            But at this stage, the mandate is not considered submitted because it doesn't have the most important component, the mandate image.
+            The image can be uploaded on the mandate page. When the details form is submitted, the user is automatically taken to the mandate page.
+            But the user can also navigate to this page later, as the link is available on the 'Home' page under 'Pending for image upload' section.
+        </p>
+        <p>
+            On the mandate page, the user can upload the image by clicking the Choose File button.
+            The user can upload <strong>PDF</strong> file or <strong>Image</strong> file in popular formats (jpg, png, gif etc.), tif/tiff format is currently not supported though.
+        </p>
+
+    </body>
+</html>
