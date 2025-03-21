@@ -1,29 +1,32 @@
-{% extends "mandate/base.html" %}
 {% load static %}
+<!DOCTYPE html>
+<html>
 
-{% block stylesheet %}
+<head>
+    <script src="{% static 'jquery/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'popper/popper.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-4/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap-4/js/bootstrap.bundle.min.js' %}"></script>
 
-<style>
-    .portal-buttons {
-        border: 1px solid lightgray;
-        border-radius: 2px;
-        padding: 1px 4px;
-    }
-    .sop-content {
-        min-width: 600px;
-        margin-left: clamp(300px, 20%, 500px);
-        margin-right: clamp(0px, 20%, 500px);
-    }
-</style>
+    <style>
+        .portal-buttons {
+            border: 1px solid lightgray;
+            border-radius: 2px;
+            padding: 1px 4px;
+        }
+        .sop-content {
+            min-width: 600px;
+            margin-left: clamp(300px, 20%, 500px);
+            margin-right: clamp(0px, 20%, 500px);
+        }
+    </style>
 
-<title>
-    SoP for Outward NACH Mandates Portal
-</title>
-{% endblock %}
+    <title>
+        SoP for Outward NACH Mandates Portal
+    </title>
+</head>
 
-
-{% block content_raw %}
-<div class="px-5">
+<body class="p-5">
     <div id="sopIndex" style="position:fixed;max-width: 300px;" class="py-2">
         <h4>
             <p>
@@ -239,7 +242,7 @@
 
     </div>
 
-</div>
+
 <script>
     let sopIndex = document.getElementById('sopIndex');
     let sopContent = document.getElementById('sopContent');
@@ -269,5 +272,6 @@
     }
 </script>
 
+</body>
 
-{% endblock %}
+</html>

@@ -63,6 +63,11 @@
 				<li class="nav-item">
 					<a class="nav-link mw-mc" href="/mandates/create/">New Mandate</a>
 				</li>
+
+				<li class="nav-item">
+					<a class="nav-link mw-mc" href="/mandates/sop/">SOP</a>
+				</li>
+
 				{% if request.user.userextended.office.type == 'HO' %}
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle mw-mc" href="#" id="navbarDropdown" role="button"
@@ -113,11 +118,14 @@
 		<div class="row justify-content-center" style="display:grid;justify-items: center;">
 			<div class="col-xl mw-mc">
 				{% block content %}
-				<p>Hello</p>
 				{% endblock %}
 			</div>
 		</div>
 	</div>
+	
+	{% block content_raw %}
+	{% endblock %}
+
 
 	<script>
 		let navbarLinks = document.getElementById('navbarLinks');

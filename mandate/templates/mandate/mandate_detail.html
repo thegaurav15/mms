@@ -125,7 +125,7 @@
 <!-- details and image container -->
 <div class="container px-4 py-3 my-4 border">
 	<div class="row">
-		<div class="col-sm">
+		<div class="col-sm mw-mc">
 			<p class="mb-1"><span class="font-weight-bold mr-2">Ref.</span>{% if mandate.ref %}<span id="ref">{{mandate.ref}}</span>{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'office'}}</span>{% if mandate.office %}{{mandate.office}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'frequency'}}</span>{% if mandate.frequency %}{{mandate.get_frequency_display}}{% endif %}</p>
@@ -135,7 +135,7 @@
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'amount'}}</span>₹ {% if mandate.amount %}{{mandate.amount|intcomma}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'credit_account'}}</span>{% if mandate.credit_account %}{{mandate.credit_account}}{% endif %}</p>
 		</div>
-		<div class="col-sm">
+		<div class="col-sm mw-mc">
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_bank'}}</span>{% if mandate.debtor_bank %}{{mandate.debtor_bank}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_type'}}</span>{% if mandate.debtor_acc_type %}{{mandate.debtor_acc_type}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_no'}}</span>{% if mandate.debtor_acc_no %}{{mandate.debtor_acc_no}}{% endif %}</p>
@@ -150,12 +150,12 @@
 	<hr>
 
 	<div class="row">
-		<div class="col-sm">
+		<div class="col-sm mw-mc">
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'create_time'}}</span> {% if mandate.create_time %}{{mandate.create_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'submit_time'}}</span> {% if mandate.submit_time %}{{mandate.submit_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'last_init_req_time'}}</span> {% if mandate.last_init_req_time %}{{mandate.last_init_req_time|date:"d-m-Y g:i:s A"}}{% endif %}</p>
 		</div>
-		<div class="col-sm">
+		<div class="col-sm mw-mc">
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'create_user'}}</span> {% if mandate.create_user %}{{mandate.create_user}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'submit_user'}}</span> {% if mandate.submit_user %}{{mandate.submit_user}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'last_init_req_user'}}</span> {% if mandate.last_init_req_user %}{{mandate.last_init_req_user}}{% endif %}</p>
@@ -174,7 +174,7 @@
 </div>
 
 {% if not mandate.presentation_set.count and mandate.mandate_image %}
-<form action="{% url 'mandate:delete_image' id=mandate.id %}" method="post" class="text-center">
+<form action="{% url 'mandate:delete_image' id=mandate.id %}" method="post" class="text-center m-4">
 	{% csrf_token %}
 	<button class="btn btn-danger btn-sm" type="submit">Undo Image Upload</button>
 </form>
