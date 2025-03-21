@@ -125,8 +125,21 @@
         <p>This is the account in SHGB in which the EMI/installment is to be credited.</p>
 
 
-        <h4>Uploading Mandate Image</h4>
+        <h4>Downloading the pre-filled mandate image</h4>
+        <p>
+            After filling and submitting the mandate details, the pre-filled mandate form in the correct format can be generated on this portal.
+            On the mandate page, there will be a link to the take a printout of the pre-filled mandate form.
+            On clicking this link, the user is taken to the print preview page and mandate can be printed here.
+            In the browser print dialog, the user may need to adjust the scale and orientation to fit the mandate on the page properly.
+            The 'Background graphics' option should be selected.
+        </p>
+        <p>
+            This is an optional feature. The branch can alternatively manually fill the blank mandate form that has been shared by DBD, Head Office.
+            In either case, the mandatory fields in the form should be filled completely and the same should be duly signed by the customer before uploading the same on the portal.
+        </p>
 
+
+        <h4>Uploading Mandate Image</h4>
         <p>
             Once the details have been entered and the form is submitted, the details are saved in the database.
             But at this stage, the mandate is not considered submitted because it doesn't have the most important
@@ -184,23 +197,23 @@
                 <table class="table" style="width:max-content; margin:auto;">
                     <tbody>
                         <tr>
-                            <td><img src="/media/sop_examples/good.png"
+                            <td><img src="{% static 'assets/images/sop_examples/good.png' %}"
                                     style="max-width: 400px;max-height: 400px;width: 100%;" class="border"></td>
                             <td class="text-success font-weight-bold align-middle">Correct ✓</td>
                         </tr>
                         <tr>
-                            <td><img src="/media/sop_examples/bad1.jpg" style="max-width: 400px;max-height: 400px;"
+                            <td><img src="{% static 'assets/images/sop_examples/bad1.jpg' %}" style="max-width: 400px;max-height: 400px;"
                                     class="border"></td>
                             <td class="text-danger font-weight-bold align-middle">Image not cropped properly</td>
                         </tr>
                         <tr>
-                            <td><img src="/media/sop_examples/bad2.jpg" style="max-width: 400px;max-height: 400px;"
+                            <td><img src="{% static 'assets/images/sop_examples/bad2.jpg' %}" style="max-width: 400px;max-height: 400px;"
                                     class="border"></td>
                             <td class="text-danger font-weight-bold align-middle">Image neither upright nor cropped
                                 properly</td>
                         </tr>
                         <tr>
-                            <td><img src="/media/sop_examples/bad3.png" style="max-width: 400px;max-height: 400px;"
+                            <td><img src="{% static 'assets/images/sop_examples/bad3.png' %}" style="max-width: 400px;max-height: 400px;"
                                     class="border"></td>
                             <td class="text-danger font-weight-bold align-middle">Image incorrectly cropped, mandate not
                                 fully visible</td>
