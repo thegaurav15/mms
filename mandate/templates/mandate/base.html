@@ -52,6 +52,8 @@
 
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto" id="navbarLinks">
+
+				{% if request.user.is_authenticated %}
 				<li class="nav-item">
 					<a class="nav-link mw-mc" href="/mandates/">Home</a>
 				</li>
@@ -63,6 +65,7 @@
 				<li class="nav-item">
 					<a class="nav-link mw-mc" href="/mandates/create/">New Mandate</a>
 				</li>
+				{% endif %}
 
 				<li class="nav-item">
 					<a class="nav-link mw-mc" href="/mandates/sop/">SOP</a>
@@ -83,13 +86,19 @@
 				{% endif %}
 			</ul>
 
+
+			{% if request.user.is_authenticated %}
 			<form class="form-inline my-2 my-lg-0" action="{% url 'mandate:search_acc' %}" method="get">
 				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
 					name="account" maxlength="14" required id="id_account">
 				<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
 			</form>
+			{% endif %}
+
 
 			<ul class="navbar-nav ml-auto">
+
+				{% if request.user.is_authenticated %}
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle mw-mc" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false">
@@ -107,6 +116,11 @@
 							onclick="if (confirm('Are you sure you want to logout?')) {logoutForm.submit();}">Logout</a>
 					</div>
 				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link mw-mc" href="{% url 'authentication:login' %}">Login</a>
+				</li>
+				{% endif %}
 			</ul>
 
 		</div>
