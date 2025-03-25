@@ -97,7 +97,7 @@ def makeXml(mandate, msg_Id):
     FrDt.text = mandate.date.isoformat()
     FrstColltnDt.text = mandate.start_date.isoformat()
     FnlColltnDt.text = mandate.end_date.isoformat()
-    Nm_debtor_customer.text = mandate.debtor_name
+    Nm_debtor_customer.text = mandate.complete_name[:40]
     Id_2_debtor.text = mandate.debtor_acc_no
     Prtry_debtor.text = str(mandate.debtor_acc_type)
     MmbId_debtor.text = MmbId2.text = mandate.debtor_acc_ifsc

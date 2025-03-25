@@ -140,7 +140,7 @@
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_type'}}</span>{% if mandate.debtor_acc_type %}{{mandate.debtor_acc_type}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_no'}}</span>{% if mandate.debtor_acc_no %}{{mandate.debtor_acc_no}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_acc_ifsc'}}</span>{% if mandate.debtor_acc_ifsc %}{{mandate.debtor_acc_ifsc}}{% endif %}</p>
-			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_name'}}</span>{% if mandate.debtor_name %}{{mandate.debtor_name}}{% endif %}</p>
+			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debtor_name'}}</span>{% if mandate.complete_name %}{{mandate.complete_name}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'phone'}}</span>{% if mandate.phone %}{{mandate.phone}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'email'}}</span>{% if mandate.email %}{{mandate.email}}{% endif %}</p>
 			<p class="mb-1"><span class="font-weight-bold mr-2">{{mandate|verbose_name:'debit_date'}}</span>{% if mandate.debit_date %}{{mandate.get_debit_date_display}}{% endif %}</p>

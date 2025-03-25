@@ -191,6 +191,15 @@ class Mandate(models.Model):
 		return True
 	
 	@property
+	def complete_name(self):
+		name = self.debtor_name
+		if self.debtor_joint:
+			name = name + ', ' + self.debtor_name_2
+			if self.debtor_name_3:
+				name = name + ', ' + self.debtor_name_3
+		return name
+
+	@property
 	def init_count(self):
 		return self.presentation_set.exclude(npci_upload_time__exact=None).count()
 
