@@ -16,6 +16,7 @@ urlpatterns = [
 	path("mandate/<int:id>/print/", views.mandate_print, name="mandate_print"),
     path("mandate/<int:id>/reinit_request/", views.reinit_request, name="reinit_request"),
     path("mandate/<int:id>/delete_image/", views.delete_image, name="delete_image"),
+    path("mandate/<int:id>/clone/", views.mandate_clone, name="mandate_clone"),
 	path("ack/", views.npciAck, name="npciack"),
     path("status/", views.npciStatus, name="npcistatus"),
     path("download/", views.mandate_download, name="mandate_download"),

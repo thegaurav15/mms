@@ -80,6 +80,7 @@ def paginate_api(request, page):
 	context = {"items": items}
 	return JsonResponse(items, safe=False)
 
+
 def mandate_create(request):
 	branch = request.user.userextended.office
 	if request.method == 'POST':
@@ -97,8 +98,36 @@ def mandate_create(request):
 			mandate.save()
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 	else:
-		form = MandateForm(branch = branch)
+		form = MandateForm(branch)
 	return render(request, "mandate/mandate_form.html", {"form": form})
+
+
+# Prefilled mandate form from another mandate
+def mandate_clone(request, id):
+	try:
+		original_mandate = Mandate.objects.get(id=id)
+	except Mandate.DoesNotExist:
+		raise Http404
+	
+	branch = request.user.userextended.office
+	if request.method == 'POST':
+		form = MandateForm(branch, request.POST)
+		if form.is_valid():
+			#save form
+			mandate = form.save()
+			mandate.create_user = request.user
+			mandate.create_time = datetime.now()
+			try:
+				mandate.seq_no = Mandate.objects.filter(create_time__gte=to_midnight(date.today())).latest("seq_no").seq_no + 1
+			except Mandate.DoesNotExist:
+				mandate.seq_no = 1
+			mandate.set_ref()
+			mandate.save()
+			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
+	else:
+		form = MandateForm(branch, instance=original_mandate)
+	return render(request, "mandate/mandate_form.html", {"form": form})
+
 
 def mandate_detail(request, id):
 	try:

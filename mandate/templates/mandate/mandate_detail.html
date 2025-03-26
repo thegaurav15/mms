@@ -173,20 +173,30 @@
 	{% endif %}	
 </div>
 
-{% if not mandate.presentation_set.count and mandate.mandate_image %}
-<form id="undoImageForm" action="{% url 'mandate:delete_image' id=mandate.id %}" method="post" class="text-center m-4">
-	{% csrf_token %}
-	<button id="undoImage" class="btn btn-danger btn-sm" type="submit">Undo Image Upload</button>
-</form>
-<script>
-	undoImage.addEventListener('click', function(e) {
-		if(confirm('Are you sure you want to delete the mandate image?\nThe mandate will not be considered submitted unless the image is uploaded again.')) {
-			undoImageForm.submit();
-		} else {
-			e.preventDefault();
-		}
-	})
-</script>
-{% endif %}
+<div class="container m-4">
+	<div class="row text-center justify-content-center">
+		{% if not mandate.presentation_set.count and mandate.mandate_image %}
+		<form id="undoImageForm" action="{% url 'mandate:delete_image' id=mandate.id %}" method="post" class="mx-2">
+			{% csrf_token %}
+			<button id="undoImage" class="btn btn-danger btn-sm" type="submit">Undo Image Upload</button>
+		</form>
+		<script>
+			undoImage.addEventListener('click', function(e) {
+				if(confirm('Are you sure you want to delete the mandate image?\nThe mandate will not be considered submitted unless the image is uploaded again.')) {
+					undoImageForm.submit();
+				} else {
+					e.preventDefault();
+				}
+			})
+		</script>
+		{% endif %}
+		
+		{% if request.user.userextended.office.type == 'HO' %}
+		<a id="cloneButton" class="btn btn-warning btn-sm mx-2" href="{% url 'mandate:mandate_clone' id=mandate.id %}">Clone Mandate</a>
+		{% endif %}
+	</div>
+</div>
+
+
 
 {% endblock %}
