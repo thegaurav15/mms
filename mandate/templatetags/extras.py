@@ -5,7 +5,13 @@ register = template.Library()
 
 @register.filter()
 def dict_value(dict, key):
-    return dict[key]
+    key_sequence = key.split('__')
+    value = dict
+
+    for key in key_sequence:
+        value = value[key]
+
+    return value
 
 
 @register.filter()

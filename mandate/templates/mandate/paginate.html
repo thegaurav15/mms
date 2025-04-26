@@ -31,11 +31,7 @@
         {% else %} <a class="page-link" href="#">
         {% endif %}Previous</a>
       </li>
-      
-      {% for i in range %}
-      <li class="page-item {% if i == mandates.number %} disabled font-weight-bold{% endif %}"><a class="page-link" href="{% url 'mandate:paginate' pagenum=i %}">{{i}}</a></li>
-      {% endfor %}
-      
+
       <li class="page-item {% if not mandates.has_next %} disabled{% endif %}">
         {% if mandates.has_next %}<a class="page-link" href="{% url 'mandate:paginate' pagenum=mandates.next_page_number %}">
         {% else %}<a class="page-link" href="#">

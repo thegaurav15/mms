@@ -83,45 +83,52 @@ def process_ack(file):
     print('Presentation object saved.')
 
 def process_status(file):
-    str = io.StringIO(file.read().decode('utf-8'))
-    dictreader = csv.DictReader(str)
-    messages = {}
+    filerow = io.StringIO(file.read().decode('utf-8'))
+    dictreader = csv.DictReader(filerow)
+    messages = []
     for row in dictreader:
         require_save = False
-        message = ''
+        message = {
+            'umrn': None,
+            'status': None,
+            'code': None,
+            'save': False
+        }
         try:
             try:
                 p = Presentation.objects.get(npci_umrn = row['UMRN'])
+                message['umrn'] = row['UMRN']
             except KeyError:
-                messages['not found'] = 'UMRN key not found in the dict'
+                messages['umrn'] = 'UMRN key not found in the dict'
                 break
             
+            #updating status (active/rejected)
             if p.npci_status == None:
                 p.npci_status = row['Status']
                 require_save = True
-                message = "New status: " + p.npci_status
+                message['status'] = "New status: " + p.npci_status
             else:
                 # status already updated
-                message = "Status already updated."
+                message['status'] = "Status already updated."
             
-            if p.npci_reason_code == None:
-                try:
-                    p.npci_reason_code = row['Code']
-                    require_save = True
-                    message = message + " New response code:" + p.npci_reason_code
-                except KeyError:
-                    message = message + " 'Code' not found in response file."
-            else:
-                message = message + " Code already updated."
-
+            #updating code
+            try:
+                p.set_reason_code(row['Code'])
+                require_save = True
+                message['code'] = "New response code: " + p.npci_reason_code
+            except KeyError:
+                message['code'] = "'Code' not found in response file."
+            except ValueError as err:
+                message['code'] = str(err)
+            
             if require_save:
                 p.save()
-                print('Saved', p.npci_umrn, p.npci_status, p.npci_reason_code)
+                message['save'] = True
 
         except Presentation.DoesNotExist:
-            message = "UMRN not found in Presentation table"
+            message['status'] = "UMRN not found in Presentation table"
         
-        messages[row['UMRN']] = message
+        messages.append(message)
     
     return messages
 

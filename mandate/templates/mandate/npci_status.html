@@ -22,18 +22,26 @@
 
 {% if messages %}
 
-<table class="table table-sm">
+<table class="table table-sm text-center">
     <thead>
         <tr>
             <th scope="col">UMRN</th>
-            <th scope="col">Result</th>
+            <th scope="col">Status</th>
+            <th scope="col">Code</th>
+            <th scope="col">Saved</th>
         </tr>
     </thead>
     <tbody>
         {% for message in messages %}
         <tr>
-            <td>{{message}}</td>
-            <td>{{messages|dict_value:message}}</td>
+            <td>{{message.umrn}}</td>
+            <td>{{message.status}}</td>
+            <td>{{message.code}}</td>
+            <td>
+                {% if message.save %}
+                Yes
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
