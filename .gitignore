@@ -2,3 +2,5 @@
 __pycache__/
 /mandate/images/mandate/
 /venv/
+/.venv/
+/media/
