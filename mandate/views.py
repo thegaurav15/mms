@@ -23,7 +23,7 @@ def index(request):
 	context = {"mandates": mandates, "mandates_pending_image": mandates_pending_image}
 	
 	context['new'] = mandates.filter(init_req_flag=True).count()
-	context['npci'] = mandates.filter(presentation__npci_status=None).exclude(presentation__npci_upload_time__exact=None).count()
+	context['npci'] = mandates.exclude(presentation__npci_upload_time = None).filter(presentation__npci_status = None, presentation__npci_upload_error = None).count()
 	context['rejected'] = mandates.filter(presentation__npci_status='Rejected').count()
 	context['rejected_no_response'] = mandates.filter(presentation__npci_status='Rejected', presentation__npci_reason_code__exact=None).count()
 	context['active'] = mandates.filter(presentation__npci_status='Active').count()
