@@ -47,8 +47,16 @@ class MandateForm(ModelForm):
 			"phone",
 			"email"
 		]
+
+		date_attrs = {
+			'type': 'date',
+			'class': 'form-control',
+			'min': (date.today() - timedelta(days=120)).isoformat(),
+			'max': (date.today() + timedelta(days=14)).isoformat()
+		}
+
 		widgets = {
-			"date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'min': (date.today() - timedelta(days=120)).isoformat(), 'max': (date.today() + timedelta(days=14)).isoformat()}),
+			"date": forms.DateInput(attrs=date_attrs),
 			"start_date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
 			"end_date": forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
 			"amount": forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': '0.01', 'min': '0.01', 'max': '10000000'}),
@@ -61,10 +69,15 @@ class MandateForm(ModelForm):
 			"phone": forms.TextInput(attrs={'class': 'form-control', 'pattern': r'\d{10}'}),
 			"email": forms.TextInput(attrs={'class': 'form-control', 'type': 'email'}),
 		}
+
+		def __init__(self):
+			print('Initiating the Meta class inside MandateForm class')
 	
 	def __init__(self, branch, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields["office"].queryset = get_office_queryset(branch)
+		print("initiating the MandateForm class")
+
 
 class MandateImageForm(ModelForm):
 
