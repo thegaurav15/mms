@@ -90,7 +90,7 @@
 		  </tr>
 		</thead>
 		<tbody>
-		  {% for p in mandate.presentation_set.all %}
+		  {% for p in presentation %}
 		  <tr class="alert">
 			<th scope="row">{{p.npci_umrn}}</th>
 			<td>{{p.npci_upload_time|date:"d-m-Y g:i:s A"}}</td>
