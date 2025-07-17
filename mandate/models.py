@@ -227,6 +227,21 @@ class Mandate(models.Model):
 				return False
 		except Presentation.DoesNotExist:
 			return False
+	
+	@property
+	def can_delete(self):
+		if self.presentation_set.count() > 0:
+			return False
+		if self.is_deleted:
+			return False
+		return True
+	
+	def delete_mandate(self):
+		if self.presentation_set.count() == 0:
+			self.is_deleted = True
+			self.save()
+			return True
+		return False
 
 
 	def __str__ (self):

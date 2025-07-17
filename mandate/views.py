@@ -291,18 +291,33 @@ def check_mandate_by_acc_api(request):
 	
 def delete_image(request, id):
 	try:
-		mandate = Mandate.objects.get(id=id)
+		mandate = Mandate.objects.filter(is_deleted=False).get(id=id)
 	except Mandate.DoesNotExist:
-		raise Http404
+		raise Http404("Mandate either does not exist or is deleted")
 	
 	if not user_mandate_allowed(request.user, mandate):
-		return HttpResponse('Unauthorized request')
+		HttpResponse('Unauthorized', status=401)
 	
 	if request.method == "POST":
 		if mandate.delete_image():
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 		else:
-			return HttpResponse('Could not delete. There was some error.')
+			return HttpResponse('Could not delete mandate image.', status=500)
+
+def delete_mandate(request, id):
+	try:
+		mandate = Mandate.objects.filter(is_deleted=False).get(id=id)
+	except Mandate.DoesNotExist:
+		raise Http404("Mandate either does not exist or is deleted")
+	
+	if not user_mandate_allowed(request.user, mandate):
+		HttpResponse('Unauthorized', status=401)
+	
+	if request.method == "POST":
+		if mandate.delete_mandate():
+			return HttpResponse("Deleted")
+		else:
+			return HttpResponse('Could not delete mandate.', status=500)
 
 @login_not_required
 def sop(request):
