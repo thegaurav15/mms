@@ -397,6 +397,25 @@ class Presentation(models.Model):
 		
 		return status
 
+	def set_reason_code(self, code:str):
+		if self.npci_reason_code is not None:
+			raise ValueError('Reason code already set')
+		
+		if code not in Presentation.npci_codes:
+			raise ValueError(f'Invalid reason code ({code})')
+		
+		if code == 'ac01' and self.npci_status == 'Rejected':
+			raise ValueError('Invalid code ac01 for Rejected')
+		
+		self.npci_reason_code = code
+
+	def reset_npci_status(self):
+		self.npci_upload_error = None
+		self.npci_status = None
+		self.npci_reason_code = None
+		self.npci_response_time = None
+		self.save()
+
 	class Meta:
 		get_latest_by = ["date", "seq_no"]
 		ordering = ["date", "seq_no"]

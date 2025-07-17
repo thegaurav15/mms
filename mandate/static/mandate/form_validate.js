@@ -5,16 +5,32 @@ if (id_end_date.value == '') {
     id_end_date.setAttribute('readonly', '');
 }
 
+// joint account - getting elements from id
+debtor_joint_elem = document.getElementById('id_debtor_joint');
 let d2 = document.getElementById('id_debtor_name_2');
 let d3 = document.getElementById('id_debtor_name_3');
 let ct_d2 = d2.parentElement.parentElement;
 let ct_d3 = d3.parentElement.parentElement;
 
-// initially hide account name 2, 3
-d2.setAttribute('disabled', true);
-ct_d2.style.display = 'none';
-d3.setAttribute('disabled', true);
-ct_d3.style.display = 'none';
+// Initiating the show/hide for joint account holder names.
+console.log(debtor_joint_elem.checked);
+jointToggle(debtor_joint_elem.checked);
+
+// function for showing/hiding the debtor names 2 and 3
+function jointToggle(checked) {
+    if(checked) {
+        d2.removeAttribute('disabled');
+        ct_d2.style.display = '';
+        d3.removeAttribute('disabled');
+        ct_d3.style.display = '';
+    } else {
+        d2.setAttribute('disabled', true);
+        ct_d2.style.display = 'none';
+
+        d3.setAttribute('disabled', true);
+        ct_d3.style.display = 'none';
+    };
+}
 
 //making d2 required
 d2.setAttribute('required', 'true');
@@ -133,21 +149,6 @@ id_debtor_acc_ifsc.addEventListener('change', function() {
 id_credit_account.addEventListener('change', function() {
     this.value = this.value.toUpperCase();
 });
-
-function jointToggle(checked) {
-    if(checked) {
-        d2.removeAttribute('disabled');
-        ct_d2.style.display = '';
-        d3.removeAttribute('disabled');
-        ct_d3.style.display = '';
-    } else {
-        d2.setAttribute('disabled', true);
-        ct_d2.style.display = 'none';
-
-        d3.setAttribute('disabled', true);
-        ct_d3.style.display = 'none';
-    };
-}
 
 function currency(str) {
 	function comma(str) {
