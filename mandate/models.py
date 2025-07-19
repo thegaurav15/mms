@@ -137,6 +137,8 @@ class Mandate(models.Model):
 	create_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="create", null=True)
 	submit_time = models.DateTimeField(null=True)
 	submit_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="submit", null=True)
+	delete_time = models.DateTimeField(null=True)
+	delete_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="delete", null=True)
 	lm_time = models.DateTimeField(null=True)
 	is_deleted = models.BooleanField(default=False)
 
@@ -236,9 +238,11 @@ class Mandate(models.Model):
 			return False
 		return True
 	
-	def delete_mandate(self):
+	def delete_mandate(self, user):
 		if self.presentation_set.count() == 0:
 			self.is_deleted = True
+			self.delete_time = datetime.now()
+			self.delete_user = user
 			self.save()
 			return True
 		return False

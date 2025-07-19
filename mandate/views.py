@@ -315,7 +315,7 @@ def delete_mandate(request, id):
 		return HttpResponse('Unauthorized', status=401)
 	
 	if request.method == "POST":
-		if mandate.delete_mandate():
+		if mandate.delete_mandate(request.user):
 			return HttpResponse("Deleted")
 		else:
 			return HttpResponse('Could not delete mandate.', status=500)
