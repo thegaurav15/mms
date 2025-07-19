@@ -14,6 +14,7 @@ from django.core import serializers
 from .custom_functions import *
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.decorators import login_not_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -311,7 +312,7 @@ def delete_mandate(request, id):
 		raise Http404("Mandate either does not exist or is deleted")
 	
 	if not user_mandate_allowed(request.user, mandate):
-		HttpResponse('Unauthorized', status=401)
+		return HttpResponse('Unauthorized', status=401)
 	
 	if request.method == "POST":
 		if mandate.delete_mandate():

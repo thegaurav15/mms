@@ -1,5 +1,6 @@
 {% extends "mandate/base.html" %}
 
+{% load static %}
 {% load humanize %}
 
 {% block content %}
@@ -50,7 +51,7 @@
 
   <hr class="my-4">
 
-  {% if mandates_pending_image %}
+    {% if mandates_pending_image %}
   <!-- image upload pending -->
   <h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
   <p class="text-danger">Mandate image is mandatory. Please upload image for final submission.</p>
@@ -73,7 +74,10 @@
         <td class="align-middle">{{m.debtor_acc_no}}</td>
         <td class="align-middle">{{m.credit_account}}</td>
         <td class="text-right align-middle">{{m.amount|intcomma}}</td>
-        <td scope="row" class="text-center align-middle"><a class="btn btn-outline-dark btn-sm" href="/mandates/mandate/{{m.id}}/">Upload Image</a></td>
+        <td scope="row" class="text-center align-middle">
+          <a class="btn btn-outline-dark btn-sm" href="/mandates/mandate/{{m.id}}/">Upload Image</a>
+          <button class="deleteButton btn btn-danger btn-sm" dataId="{{m.id}}">Del</button>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
@@ -81,5 +85,9 @@
   {% endif %}
 
 <!-- main container end -->
+
+<!-- This script is required for implementing AJAX for deleting mandate -->
+<script src="{% static 'mandate/mandate_delete.js' %}"></script>
+
 
 {% endblock %}
