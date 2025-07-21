@@ -377,6 +377,14 @@ class Presentation(models.Model):
 	npci_reason_code = models.CharField(max_length=10, null=True)
 	npci_response_time = models.DateTimeField(null=True)
 
+	# Flags for cancellation logic
+	cancel_req_flg = models.BooleanField(default=False)
+	cancel_req_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="cancel_req", null=True)
+	cancel_req_time = models.DateTimeField(null=True)
+	cancel_flg = models.BooleanField(default=False)
+	cancel_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="cancel", null=True)
+	cancel_time = models.DateTimeField(null=True)
+
 	def __str__(self):
 		return self.filename_prefix
 	
@@ -385,6 +393,11 @@ class Presentation(models.Model):
 		if self.npci_upload_time == None:
 			raise Presentation.DoesNotExist
 		
+		elif self.cancel_flg:
+			status['short'] = 'Cancelled'
+			status['message'] = "Mandate cancelled"
+			status['class'] = "dark"
+
 		elif self.npci_upload_error != None:
 			status['short'] = 'Error'
 			status['message'] = "Error: " + self.npci_upload_error
@@ -435,6 +448,23 @@ class Presentation(models.Model):
 		self.npci_response_time = None
 		self.save()
 
+	def canTakeCancelReq(self):
+		if not self.cancel_req_flg and not self.cancel_flg and self.npci_status == 'Active':
+			return True
+		return False
+	
+	def setCancelReq(self, user):
+		self.cancel_req_flg = True
+		self.cancel_req_user = user
+		self.cancel_req_time = datetime.now()
+		self.save()
+
+	def markCancelled(self, user):
+		self.cancel_flg = True
+		self.cancel_user = user
+		self.cancel_time = datetime.now()
+		self.save()
+	
 	class Meta:
 		get_latest_by = ["date", "seq_no"]
 		ordering = ["date", "seq_no"]
