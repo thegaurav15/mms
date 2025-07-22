@@ -9,27 +9,30 @@
     height: 100%;
     width: 100%;
     z-index: 1000;
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(2px);
 ">
     <div id="cancelReqModalContainer" style="
-        padding: 24px;
+        padding: 32px;
         border: 1px solid lightgrey;
         border-radius: 6px;
         background-color: white;
     ">
-        <h3 id="cancelReqModalHeading">
-            The following mandate(s) already exist for the given credit account.
-        </h3>
+        <h4 id="cancelReqModalHeading" class="mb-4">
+            Are you sure?
+        </h4>
 
         <div id="cancelReqModalContents"></div>
 
         <p>
-            Click <span class="font-weight-bold">Continue</span> to create another mandate for the same account.
+            This active mandate <strong id="modalUmrn">UMRN Here</strong> will be cancelled at NPCI portal permanently.
+        </p>
+        <p>
+            This cannot be undone.
         </p>
 
         <div id="cancelReqModalButtons" class="text-center" style="margin-top: 6px;">
-            <button class="btn btn-outline-dark btn-sm" id="cancelReqModalBack">Go back</button>
-            <button class="btn btn-primary btn-sm" id="cancelReqModalSubmit">Continue and create another mandate</button>
+            <button class="btn btn-outline-dark btn-sm" id="cancelReqModalBack">Back</button>
+            <button class="btn btn-danger btn-sm" id="cancelReqModalSubmit">Confirm cancellation of active mandate</button>
         </div>
     </div>
 </div>

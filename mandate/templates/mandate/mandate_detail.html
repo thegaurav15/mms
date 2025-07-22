@@ -8,6 +8,9 @@
 
 {% block content %}
 
+<!-- Modal for existing account(s) -->
+{% include './include/cancel_req_modal.html' %}
+
 	{% if mandate.init_req_flag %}
 	<div class="alert alert-warning text-center" role="alert">
 		Request submitted, pending for upload on NPCI portal.
@@ -101,13 +104,13 @@
 				{{p.get_status.message}}
 				<br>
 				{% if p.canTakeCancelReq %}
-				<button class="btn btn-sm btn-outline-danger py-0">Request Cancellation</button>
+				<button class="reqCancelButton btn btn-sm btn-outline-danger py-0" dataId="{{p.id}}" dataUmrn="{{p.npci_umrn}}">Request Cancellation</button>
 				{% elif p.cancel_req_flg and not p.cancel_flg %}
 				<button class="btn btn-sm btn-outline-danger py-0 disabled">Cancellation requested</button>
 				{% endif %}
 
 				{% if request.user.userextended.office.type == 'HO' and p.canCancel %}
-				<button class="btn btn-sm btn-outline-dark py-0">Mark Cancelled</button>
+				<button class="markCancelButton btn btn-sm btn-outline-dark py-0" dataId="{{p.id}}">Mark Cancelled</button>
 				{% endif %}
 			</td>
 		  </tr>
@@ -212,6 +215,6 @@
 	</div>
 </div>
 
-
+<script src="{% static 'mandate/pres_cancel.js' %}"></script>
 
 {% endblock %}
