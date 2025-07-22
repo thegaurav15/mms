@@ -81,20 +81,35 @@
 	<!-- List of presentations -->
 	{% if presentation %}
 	<h6>Mandate presentations on NPCI portal</h6>
-	<table class="table table-sm">
+	<table class="table table-sm table-bordered text-center">
 		<thead class="thead-light">
 		  <tr>
 			<th scope="col">UMRN</th>
-			<th scope="col">Presentation Time</th>
 			<th scope="col">Current status</th>
 		  </tr>
 		</thead>
 		<tbody>
 		  {% for p in presentation %}
 		  <tr class="alert">
-			<th scope="row">{{p.npci_umrn}}</th>
-			<td>{{p.npci_upload_time|date:"d-m-Y g:i:s A"}}</td>
-			<td class="text-{{p.get_status.class}}">{{p.get_status.message}}</td>
+			<td>
+				<strong>{{p.npci_umrn}}</strong>
+				<br>
+				<small class="text-muted">{{p.npci_upload_time|date:"d-m-Y g:i:s A"}}</small>
+			</td>
+
+			<td class="text-{{p.get_status.class}}">
+				{{p.get_status.message}}
+				<br>
+				{% if p.canTakeCancelReq %}
+				<button class="btn btn-sm btn-outline-danger py-0">Request Cancellation</button>
+				{% elif p.cancel_req_flg and not p.cancel_flg %}
+				<button class="btn btn-sm btn-outline-danger py-0 disabled">Cancellation requested</button>
+				{% endif %}
+
+				{% if request.user.userextended.office.type == 'HO' and p.canCancel %}
+				<button class="btn btn-sm btn-outline-dark py-0">Mark Cancelled</button>
+				{% endif %}
+			</td>
 		  </tr>
 		  {% endfor %}
 		</tbody>

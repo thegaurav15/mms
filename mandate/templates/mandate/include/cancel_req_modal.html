@@ -1,0 +1,35 @@
+<div id="cancelReqModalMain" style="
+    background-color: rgba(182, 182, 182, 0.5);
+    display: none;
+    justify-items: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(1px);
+">
+    <div id="cancelReqModalContainer" style="
+        padding: 24px;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        background-color: white;
+    ">
+        <h3 id="cancelReqModalHeading">
+            The following mandate(s) already exist for the given credit account.
+        </h3>
+
+        <div id="cancelReqModalContents"></div>
+
+        <p>
+            Click <span class="font-weight-bold">Continue</span> to create another mandate for the same account.
+        </p>
+
+        <div id="cancelReqModalButtons" class="text-center" style="margin-top: 6px;">
+            <button class="btn btn-outline-dark btn-sm" id="cancelReqModalBack">Go back</button>
+            <button class="btn btn-primary btn-sm" id="cancelReqModalSubmit">Continue and create another mandate</button>
+        </div>
+    </div>
+</div>

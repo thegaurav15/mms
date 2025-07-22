@@ -448,22 +448,31 @@ class Presentation(models.Model):
 		self.npci_response_time = None
 		self.save()
 
+	@property
+	def canCancel(self):
+		return not self.cancel_flg and self.npci_status == 'Active'
+	
+	@property
 	def canTakeCancelReq(self):
-		if not self.cancel_req_flg and not self.cancel_flg and self.npci_status == 'Active':
-			return True
-		return False
+		return not self.cancel_req_flg and self.canCancel
 	
 	def setCancelReq(self, user):
+		if not self.canTakeCancelReq:
+			return False
 		self.cancel_req_flg = True
 		self.cancel_req_user = user
 		self.cancel_req_time = datetime.now()
 		self.save()
+		return True
 
 	def markCancelled(self, user):
+		if not self.canCancel:
+			return False
 		self.cancel_flg = True
 		self.cancel_user = user
 		self.cancel_time = datetime.now()
 		self.save()
+		return True
 	
 	class Meta:
 		get_latest_by = ["date", "seq_no"]

@@ -34,6 +34,7 @@ def index(request):
 
 	return render(request, "mandate/index.html", context)
 
+
 def paginate(request, pagenum):
 	print(request.GET)
 	form = FilterMandates(request.GET)
@@ -180,6 +181,7 @@ def mandate_print(request, id):
 	
 	return render(request, "mandate/mandate_print.html", {"mandate": mandate})
 
+
 def mandate_download(request):
 	if request.method == 'POST':
 		npci_user = request.POST.get('user')
@@ -242,6 +244,7 @@ def npciAck(request):
 		form = NpciAckForm()
 	return render(request, "mandate/npci_ack.html", {"form": form})
 
+
 def npciStatus(request):
 	ctx = {}
 
@@ -258,6 +261,7 @@ def npciStatus(request):
 	ctx['form'] = form	
 	return render(request, "mandate/npci_status.html", ctx)
 
+
 def searchAcc(request):
 	base_queryset = get_mandate_queryset(request.user.userextended.office)
 	ctx = {}
@@ -271,6 +275,7 @@ def searchAcc(request):
 	ctx['form'] = form
 	return render(request, "mandate/search_acc.html", ctx)
 
+
 def reinit_request(request, id):
 	if request.method == "POST":
 		mandate = Mandate.objects.get(id=id)
@@ -279,7 +284,8 @@ def reinit_request(request, id):
 		mandate.last_init_req_user = request.user
 		mandate.save()
 		return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
-	
+
+
 def check_mandate_by_acc_api(request):
 	acc = request.GET['account']
 	mandates = Mandate.objects.filter(credit_account__exact = acc)
@@ -290,7 +296,8 @@ def check_mandate_by_acc_api(request):
 	elif mandates.count() >= 0:
 		ctx = {'mandates': mandates}
 		return render(request, "mandate/include/mandate_table.html", ctx)
-	
+
+
 def delete_image(request, id):
 	try:
 		mandate = Mandate.objects.filter(is_deleted=False).get(id=id)
@@ -305,6 +312,7 @@ def delete_image(request, id):
 			return HttpResponseRedirect("/mandates/mandate/" + str(mandate.id) + "/")
 		else:
 			return HttpResponse('Could not delete mandate image.', status=500)
+
 
 def delete_mandate(request, id):
 	try:
@@ -324,3 +332,38 @@ def delete_mandate(request, id):
 @login_not_required
 def sop(request):
 	return render(request, "mandate/sop.html")
+
+
+# The next 2 view functions implement the cancellation of active mandates
+
+def cancelRequest(request, id):
+	try:
+		pres = Presentation.objects.get(id=id)
+	except Presentation.DoesNotExist:
+		raise Http404("Invalid parameter 'id'")
+	
+	mandate = pres.mandate
+	if not user_mandate_allowed(request.user, mandate):
+		return HttpResponse('Unauthorized', status=401)
+	
+	if request.method == 'POST':
+		if pres.setCancelReq(request.user):
+			return HttpResponse("Cancel Req Flag set to 'True'")
+		else:
+			return HttpResponse('Bad request', status=401)
+
+
+def cancelMark(request, id):
+	if request.user.userextended.office.type != 'HO':
+		return HttpResponse('Unauthorized', status=401)
+
+	try:
+		pres = Presentation.objects.get(id=id)
+	except Presentation.DoesNotExist:
+		raise Http404("Invalid parameter 'id'")
+	
+	if request.method == 'POST':
+		if pres.markCancelled(request.user):
+			return HttpResponse("Presentation cancelled")
+		else:
+			return HttpResponse('Bad request', status=401)
