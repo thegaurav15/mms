@@ -33,6 +33,14 @@
           {% endfor %}
       </tbody>
     </table>
+    <select name="user" required>
+      <option value="" selected disabled hidden>Select user</option>
+      <option value="HGBX344857">HGBX344857 :: Gaurav</option>
+      <option value="HGBX345575">HGBX344857 :: Prakhar</option>
+      <option value="HGBX345968">HGBX345968 :: Uday</option>
+      <option value="HGBX342341">HGBX342341 :: Hooda</option>
+      <option value="HGBX342438">HGBX342438 :: Pankaj</option>
+    </select>
     <button type="submit">Download Selected</button>
 </form>
 </div> 
@@ -41,7 +49,7 @@
 <script>
   let selectAll = document.getElementById('selectAll');
   let tableBody = document.getElementById('tableBody');
-  inputAll = tableBody.querySelectorAll('input');
+  inputAll = tableBody.querySelectorAll("input[name='download']");
   selectAll.addEventListener('change', function(e) {
     if (e.target.checked) {
       for (elem of inputAll) {

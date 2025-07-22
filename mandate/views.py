@@ -182,16 +182,17 @@ def mandate_print(request, id):
 
 def mandate_download(request):
 	if request.method == 'POST':
+		npci_user = request.POST.get('user')
 		if request.POST.getlist('download'):
 			file_zip = tempfile.TemporaryFile()
 			zip = zipfile.ZipFile(file_zip, 'w')
-			zip_object = zip_object_factory('HGBX344857')
+			zip_object = zip_object_factory(npci_user)
 			
 			for id in request.POST.getlist('download'):
 				m = Mandate.objects.get(id=id)
 				print(m.id, m.mandate_image)
 
-				p = presentation_object_factory('HGBX344857')
+				p = presentation_object_factory(npci_user)
 				p.mandate = m
 				p.zip = zip_object
 				p.save()
