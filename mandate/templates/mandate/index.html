@@ -48,6 +48,36 @@
     <a href="{% url 'mandate:paginate' pagenum=1 %}" type="button" class="btn btn-light btn-lg">View All Submitted Mandates ({{ mandates.count }})</a>
   </div>
   
+  {% if cancelation_req %}
+  <hr class="my-4">
+  <h4>Pending cancellation requests</h4>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Debtor Name</th>
+        <th scope="col">Debtor Bank</th>
+        <th scope="col">UMRN</th>
+        <th scope="col">Credit Acc</th>
+        <th scope="col" class="text-right">Amount</th>
+        <th scope="col" class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in cancelation_req %}
+      <tr>
+        <td class="align-middle">{{p.mandate.debtor_name}}</td>
+        <td class="align-middle">{{p.mandate.debtor_bank}}</td>
+        <td class="align-middle">{{p.npci_umrn}}</td>
+        <td class="align-middle">{{p.mandate.credit_account}}</td>
+        <td class="text-right align-middle">{{p.mandate.amount|intcomma}}</td>
+        <td class="align-middle text-center"><a href="{% url 'mandate:mandate_detail' p.mandate.id %}">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+
 
   <hr class="my-4">
 
@@ -55,7 +85,7 @@
   <!-- image upload pending -->
   <h4>Pending for image upload ({{ mandates_pending_image.count }})</h4>
   <p class="text-danger">Mandate image is mandatory. Please upload image for final submission.</p>
-  <table class="table">
+  <table class="table table-sm">
     <thead>
       <tr>
         <th scope="col">Debtor Name</th>

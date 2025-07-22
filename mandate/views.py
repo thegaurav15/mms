@@ -32,6 +32,8 @@ def index(request):
 	context['rejected_no_response'] = mandates.filter(presentation__npci_status='Rejected', presentation__npci_reason_code__exact=None).count()
 	context['active'] = mandates.filter(presentation__npci_status='Active').count()
 
+	context['cancelation_req'] = Presentation.objects.filter(cancel_req_flg=True, cancel_flg=False, id__in=base_queryset.values_list('presentation__id', flat=True))
+
 	return render(request, "mandate/index.html", context)
 
 
