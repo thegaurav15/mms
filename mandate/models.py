@@ -385,6 +385,14 @@ class Presentation(models.Model):
 	cancel_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="cancel", null=True)
 	cancel_time = models.DateTimeField(null=True)
 
+	# Flags for cancellation logic
+	cancel_req_flg = models.BooleanField(default=False)
+	cancel_req_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="cancel_req", null=True)
+	cancel_req_time = models.DateTimeField(null=True)
+	cancel_flg = models.BooleanField(default=False)
+	cancel_user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="cancel", null=True)
+	cancel_time = models.DateTimeField(null=True)
+
 	def __str__(self):
 		return self.filename_prefix
 	
@@ -392,6 +400,12 @@ class Presentation(models.Model):
 		status = {}
 		if self.npci_upload_time == None:
 			raise Presentation.DoesNotExist
+		
+		elif self.cancel_flg:
+			status['short'] = 'Cancelled'
+			status['message'] = "Mandate cancelled"
+			status['class'] = "dark"
+
 		
 		elif self.cancel_flg:
 			status['short'] = 'Cancelled'
