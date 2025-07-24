@@ -6,6 +6,9 @@ from datetime import datetime
 from stat import S_IFREG
 from stream_zip import ZIP_32
 
+def bytes_to_generator(b):
+    yield b
+
 
 def filesGenerator(list, npci_user):
     for id in list:
@@ -18,7 +21,7 @@ def filesGenerator(list, npci_user):
             datetime.now(),
             S_IFREG | 0o600,
             ZIP_32,
-            makeJpg(imageFile)
+            bytes_to_generator(makeJpg(imageFile))
         )
 
         yield (
@@ -26,7 +29,7 @@ def filesGenerator(list, npci_user):
             datetime.now(),
             S_IFREG | 0o600,
             ZIP_32,
-            makeTif(imageFile)
+            bytes_to_generator(makeTif(imageFile))
         )
 
         yield (
@@ -34,5 +37,5 @@ def filesGenerator(list, npci_user):
             datetime.now(),
             S_IFREG | 0o600,
             ZIP_32,
-            makeXml(mandate, p.npci_MsgId).read()
+            bytes_to_generator(makeXml(mandate, p.npci_MsgId).read())
         )
