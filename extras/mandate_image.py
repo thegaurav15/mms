@@ -25,7 +25,7 @@ def makeJpg(file):
     
     print(output, pass_counter)
     output.seek(0)
-    return output
+    return output.read()
 
 def makeTif(file):
     img = Image.open(file)
@@ -46,4 +46,4 @@ def makeTif(file):
     
     print(output, pass_counter)
     output.seek(0)
-    return output
+    return output.read()

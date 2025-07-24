@@ -20,7 +20,7 @@ def zip_object_factory(npci_username):
         filename = filename
     )
 
-    zip_obj.save()
+    # zip_obj.save()
 
     return zip_obj
 

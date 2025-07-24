@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from .forms import *
 from .models import *
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound, Http404, StreamingHttpResponse
 from django.db.models import Q, Subquery
 import tempfile, zipfile
 from datetime import datetime, date
-from extras.mandate_image import makeJpg, makeTif
-from extras.mandate_xml import makeXml
+# from extras.mandate_image import makeJpg, makeTif
+# from extras.mandate_xml import makeXml
+from extras.files_generator import filesGenerator
+from stream_zip import stream_zip
 from extras.xml2csv import zip2dict
 from djangoproject.settings import MEDIA_URL
 from django.core.paginator import Paginator
@@ -188,38 +190,10 @@ def mandate_download(request):
 	if request.method == 'POST':
 		npci_user = request.POST.get('user')
 		if request.POST.getlist('download'):
-			file_zip = tempfile.TemporaryFile()
-			zip = zipfile.ZipFile(file_zip, 'w')
 			zip_object = zip_object_factory(npci_user)
-			
-			for id in request.POST.getlist('download'):
-				m = Mandate.objects.get(id=id)
-				print(m.id, m.mandate_image)
 
-				p = presentation_object_factory(npci_user)
-				p.mandate = m
-				p.zip = zip_object
-				p.save()
-				
-				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
-					fp.write(makeJpg(m.mandate_image).read())
-					fp.close()
-					zip.write(fp.name, arcname=p.filename_prefix + '_detailfront.jpg')
-				
-				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
-					fp.write(makeTif(m.mandate_image).read())
-					fp.close()
-					zip.write(fp.name, arcname=p.filename_prefix + '_front.tif')
-				
-				with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
-					fp.write(makeXml(m, p.npci_MsgId).read())
-					fp.close()
-					zip.write(fp.name, arcname=p.filename_prefix + '-INP.xml')
-			
-			zip.close()
-			file_zip.seek(0)
-			response = HttpResponse(
-				file_zip,
+			response = StreamingHttpResponse(
+				stream_zip(filesGenerator(request.POST.getlist('download'), npci_user)),
 				headers={
 					"Content-Type": "application/zip",
 					"Content-Disposition": 'attachment; filename="' + zip_object.filename + '"',
