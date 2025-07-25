@@ -21,7 +21,7 @@ def filesGenerator(list, npci_user):
             datetime.now(),
             S_IFREG | 0o600,
             ZIP_32,
-            bytes_to_generator(makeJpg(imageFile))
+            makeJpg(imageFile)
         )
 
         yield (
@@ -29,7 +29,7 @@ def filesGenerator(list, npci_user):
             datetime.now(),
             S_IFREG | 0o600,
             ZIP_32,
-            bytes_to_generator(makeTif(imageFile))
+            makeTif(imageFile)
         )
 
         yield (
