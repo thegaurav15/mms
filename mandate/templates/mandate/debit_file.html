@@ -1,0 +1,42 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'mandate/test.css' %}">
+<link rel="stylesheet" href="{% static 'mandate/testpdf.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Download Debit File (.xlsx)</h1>
+<hr>
+<form action="{% url 'mandate:debit_file' %}" method="get">
+
+    <div class="row mt-4">
+
+    <div class="col-md-5">
+	<label class="col-form-label" for="date_choice">Select debit date:</label>
+    </div>
+    
+    <div class="col-md-7">
+    <select class="form-control" id="date_choice" name="date_choice">
+        {% for key, value in date_choices %}
+
+        <option value="{{ key }}">{{ value }}</option>
+
+        {% endfor %}
+    </select>
+    </div>
+    
+    </div>
+
+
+    <div class="row justify-content-center mt-4">
+    <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+
+
+</form>
+
+{% endblock %}

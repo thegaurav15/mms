@@ -2,7 +2,7 @@ for p in Presentation.objects.filter(npci_status='Active').filter(mandate__debit
     
     list = (
         p.npci_umrn,
-        p.mandate.start_date.isoformat(),
+        p.mandate.date.isoformat(),
         p.mandate.start_date.isoformat(),
         p.mandate.end_date.isoformat(),
         p.mandate.debtor_name,

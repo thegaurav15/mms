@@ -25,5 +25,6 @@ urlpatterns = [
     path("create/checkacc/", views.check_mandate_by_acc_api, name="checkacc"),
     path("sop/", views.sop, name="sop"),
     path("presentation/<int:id>/cancel_request/", views.cancelRequest, name="cancelRequest"),
-    path("presentation/<int:id>/cancel_mark/", views.cancelMark, name="cancelMark")
+    path("presentation/<int:id>/cancel_mark/", views.cancelMark, name="cancelMark"),
+    path("debit_file/", views.debit_file, name="debit_file")
 ]

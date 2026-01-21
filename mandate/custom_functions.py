@@ -1,6 +1,8 @@
 from datetime import datetime, date
 from .models import *
 import csv, io, re
+from openpyxl import Workbook
+from io import BytesIO
 
 def to_midnight(d):
     return datetime(d.year, d.month, d.day)
@@ -184,3 +186,56 @@ def user_mandate_allowed(user, mandate):
         return True
     
     return False
+
+# for creating and returning the excel file bytes for a particular date
+def create_excel_debit_list(dt):
+
+    workbook = Workbook()
+    worksheet = workbook.active
+    # worksheet = workbook.create_sheet()
+
+    header = [
+        'UMRN',
+        'Date of Manate',
+        'Start Date',
+        'End Date',
+        'Debtor Name',
+        'Debtor Bank',
+        'Debtor Account',
+        'Debtor IFSC',
+        'Credit Account',
+        'Amount',
+        'Ref no.',
+        'Cancel Request Flag',
+        'Cancel Request User',
+        'Cancel Request Time'
+    ]
+    worksheet.append(header)
+
+    for p in Presentation.objects.filter(npci_status='Active', cancel_flg=False).filter(mandate__debit_date=dt):
+    
+        list = (
+            p.npci_umrn,
+            p.mandate.date,
+            p.mandate.start_date,
+            p.mandate.end_date,
+            p.mandate.debtor_name,
+            p.mandate.debtor_bank.name,
+            p.mandate.debtor_acc_no,
+            p.mandate.debtor_acc_ifsc,
+            p.mandate.credit_account,
+            p.mandate.amount,
+            p.mandate.ref,
+            p.cancel_req_flg,
+            p.cancel_req_user.username if p.cancel_req_user != None else None,
+            p.cancel_req_time.replace(tzinfo=None) if p.cancel_req_time != None else None
+        )
+        
+        # append this row to sheet
+        worksheet.append(list)
+    
+    buffer = BytesIO()
+    workbook.save(buffer)
+    workbook.close()
+    buffer.seek(0)
+    return buffer

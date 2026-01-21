@@ -391,3 +391,29 @@ def cancelMark(request, id):
 			return HttpResponse("Presentation cancelled")
 		else:
 			return HttpResponse('Bad request', status=401)
+		
+
+def debit_file(request):
+	ctx = {"date_choices" : Mandate.debit_date_choices}
+
+	if 'date_choice' in request.GET.keys():
+		debit_date = request.GET['date_choice']
+		# print("Selected option: " + debit_date)
+		# return the excel file here
+
+		if debit_date in (t[0] for t in Mandate.debit_date_choices) and debit_date != None:
+			bytes_buffer = create_excel_debit_list(debit_date)
+			filename = "Debit_list_" + debit_date + "_" + datetime.now().isoformat(timespec="seconds") + ".xlsx"
+
+			response = HttpResponse(
+				bytes_buffer.getvalue(),
+				headers={
+					"Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+					"Content-Disposition": 'attachment; filename="' + filename + '"',
+				},
+			)
+			return response
+
+	else:
+		return render(request, "mandate/debit_file.html", ctx)
+	
