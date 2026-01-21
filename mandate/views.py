@@ -394,6 +394,9 @@ def cancelMark(request, id):
 		
 
 def debit_file(request):
+	if request.user.userextended.office.type != 'HO':
+		return HttpResponse('Unauthorized', status=401)
+	
 	ctx = {"date_choices" : Mandate.debit_date_choices}
 
 	if 'date_choice' in request.GET.keys():
@@ -416,4 +419,15 @@ def debit_file(request):
 
 	else:
 		return render(request, "mandate/debit_file.html", ctx)
+
+
+def pending_at_npci_list(request):
+	if request.user.userextended.office.type != 'HO':
+		return HttpResponse('Unauthorized', status=401)
 	
+	ctx = {}
+	
+	# ctx["list"] = Presentation.objects.filter(npci_upload_time__isnull = False, npci_umrn__isnull = False, npci_status__isnull = True, npci_upload_error__isnull = True).order_by("npci_upload_time")
+	ctx["list"] = Presentation.objects.filter(npci_upload_time__isnull = False, npci_umrn__isnull = False).order_by("npci_upload_time")
+
+	return render(request, "mandate/pending_npci.html", ctx)

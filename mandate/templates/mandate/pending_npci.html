@@ -1,0 +1,34 @@
+{% extends "mandate/base.html" %}
+
+{% load extras %}
+{% load static %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{% static 'mandate/test.css' %}">
+<link rel="stylesheet" href="{% static 'mandate/testpdf.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Pending for Status Update</h1>
+<hr>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">UMRN</th>
+      <th scope="col">Upload Date/Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in list %}
+
+    <tr>
+        <td>{{ p.npci_umrn }}</td>
+        <td>{{ p.npci_upload_time|date:"d-m-Y g:i:s A" }}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

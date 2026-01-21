@@ -26,5 +26,6 @@ urlpatterns = [
     path("sop/", views.sop, name="sop"),
     path("presentation/<int:id>/cancel_request/", views.cancelRequest, name="cancelRequest"),
     path("presentation/<int:id>/cancel_mark/", views.cancelMark, name="cancelMark"),
-    path("debit_file/", views.debit_file, name="debit_file")
+    path("debit_file/", views.debit_file, name="debit_file"),
+    path("pending_npci/", views.pending_at_npci_list, name="pending_npci")
 ]
